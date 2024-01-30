@@ -1557,6 +1557,27 @@
                     `/atcoder/content/${new URL(url).searchParams.get('lang') ?? 'en'}/${new URL(url).searchParams.get('ratedType') ?? '0'}/${new URL(url).searchParams.get('category') ?? '0'}/${
                         new URL(url).searchParams.get('keyword') ?? ''
                     }` } ] },
+  "auto-stats.org.cn":{ _name:"中国汽车工业协会统计信息网",
+    ".":[ { title:"分类",
+        docs:"https://docs.rsshub.app/routes/other#zhong-guo-qi-che-xie-hui-tong-ji-xin-xi-wang-fen-lei",
+        source:[ "/:category" ],
+        target:(params) => {
+                    const category = params.category;
+
+                    return `/auto-stats${category ? `/${category.replace(/\.asp$/, '')}` : ''}`;
+                } },
+      { title:"信息快递",
+        docs:"https://docs.rsshub.app/routes/other#zhong-guo-qi-che-xie-hui-tong-ji-xin-xi-wang-fen-lei",
+        source:[ "/xxkd.asp" ],
+        target:"/auto-stats/xxkd" },
+      { title:"工作动态",
+        docs:"https://docs.rsshub.app/routes/other#zhong-guo-qi-che-xie-hui-tong-ji-xin-xi-wang-fen-lei",
+        source:[ "/gzdt.asp" ],
+        target:"/auto-stats/gzdt" },
+      { title:"专题分析",
+        docs:"https://docs.rsshub.app/routes/other#zhong-guo-qi-che-xie-hui-tong-ji-xin-xi-wang-fen-lei",
+        source:[ "/ztfx.asp" ],
+        target:"/auto-stats/ztfx" } ] },
   "baai.ac.cn":{ _name:"北京智源人工智能研究院",
     hub:[ { title:"智源社区",
         docs:"https://docs.rsshub.app/routes/programming#bei-jing-zhi-yuan-ren-gong-zhi-neng-yan-jiu-yuan",
@@ -11162,6 +11183,11 @@
         docs:"https://docs.rsshub.app/routes/programming#modelscope-mo-da-she-qu",
         source:[ "/" ],
         target:"/modelscope/community" } ] },
+  "modrinth.com":{ _name:"Modrinth",
+    ".":[ { title:"Project versions",
+        docs:"https://docs.rsshub.app/routes/game#modrinth-project-versions",
+        source:[ "/*/:id/*" ],
+        target:"/modrinth/project/:id/versions" } ] },
   "mohw.gov.tw":{ _name:"台灣衛生福利部",
     ".":[ { title:"即時新聞澄清",
         docs:"https://docs.rsshub.app/routes/government#tai-wan-wei-sheng-fu-li-bu-ji-shi-xin-wen-cheng-qing",
