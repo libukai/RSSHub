@@ -467,10 +467,11 @@ RSSHub 支持使用访问密钥 / 码，允许清单和拒绝清单三种方式�
 
 ### Twitter
 
-请使用未开启两步验证的账号，并建议使用非重要账号
+建议使用非重要账号，新账号或者不同地区登录可能会被限制登录
 
 -   `TWITTER_USERNAME`: Twitter 用户名
 -   `TWITTER_PASSWORD`: Twitter 密码
+-   `TWITTER_AUTHENTICATION_SECRET`: 可选，Twitter 两步验证 -> 认证应用 -> `otpauth://totp/Twitter:@_RSSHub?secret=xxxxxxxxxxxxxxxx&issuer=Twitter` 中的 secret 部分
 
 ### Wordpress
 
