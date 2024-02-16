@@ -157,9 +157,18 @@
     "/423down/:category/:type": [
         "Fatpandac"
     ],
-    "/4gamers/category/:category": [],
-    "/4gamers/tag/:tag": [],
-    "/4gamers/topic/:topic": [],
+    "/4gamers": [
+        "TonyRL"
+    ],
+    "/4gamers/category/:category": [
+        "hoilc"
+    ],
+    "/4gamers/tag/:tag": [
+        "hoilc"
+    ],
+    "/4gamers/topic/:topic": [
+        "bestpika"
+    ],
     "/4ksj/forum/:id?": [
         "nczitzk"
     ],
@@ -1003,6 +1012,9 @@
     "/buaa/sme/:path*": [
         "MeanZhang"
     ],
+    "/bulianglin": [
+        "cnkmmk"
+    ],
     "/bupt/funbox": [],
     "/bupt/grs": [],
     "/bupt/news": [],
@@ -1086,7 +1098,7 @@
     "/cas/cg/:caty?": [
         "nczitzk"
     ],
-    "/cas/genetics/xshd": [
+    "/cas/genetics/:path+": [
         "panyq357"
     ],
     "/cas/ia/yjs": [
@@ -1257,6 +1269,9 @@
     "/chinafile/:category?": [],
     "/chinaisa/:id?": [
         "nczitzk"
+    ],
+    "/chinamoney/:channelId?": [
+        "TonyRL"
     ],
     "/chinanews": [
         "yuxinliu-alex"
@@ -1525,7 +1540,15 @@
     "/crossbell/notes/source/:source": [
         "DIYgod"
     ],
-    "/cs/news/:caty": [],
+    "/cs/:category?": [
+        "nczitzk"
+    ],
+    "/cs/video/:category?": [
+        "nczitzk"
+    ],
+    "/cs/zzkx": [
+        "nczitzk"
+    ],
     "/csdn/blog": [
         "Jkker"
     ],
@@ -2169,6 +2192,12 @@
     "/fanfou/public_timeline/:keyword": [],
     "/fanfou/trends": [],
     "/fanfou/user_timeline/:uid": [],
+    "/fansly/tag/:tag": [
+        "TonyRL"
+    ],
+    "/fansly/user/:username": [
+        "TonyRL"
+    ],
     "/fantia/search/:type?/:caty?/:peroid?/:order?/:rating?/:keyword?": [
         "nczitzk"
     ],
@@ -4444,6 +4473,9 @@
     "/mihoyo/bbs/official/:gids/:type?/:page_size?/:last_id?": [
         "CaoMeiYouRen"
     ],
+    "/mihoyo/bbs/timeline": [
+        "CaoMeiYouRen"
+    ],
     "/mihoyo/bbs/user-post/:uid": [
         "CaoMeiYouRen"
     ],
@@ -5959,6 +5991,9 @@
         "imbytecat",
         "simonsmh"
     ],
+    "/shoac/recent-show": [
+        "TonyRL"
+    ],
     "/shopback/:store": [
         "nczitzk"
     ],
@@ -6416,6 +6451,9 @@
     ],
     "/taptap/topic/:id/:type?/:sort?/:lang?": [
         "hoilc",
+        "TonyRL"
+    ],
+    "/tass/:category?": [
         "TonyRL"
     ],
     "/techcrunch/news": [
@@ -7207,6 +7245,9 @@
     "/wizfile/updates": [
         "Fatpandac"
     ],
+    "/wmc-bj/publish/:category?": [
+        "nczitzk"
+    ],
     "/wnacg": [
         "KenMizz"
     ],
@@ -7694,7 +7735,7 @@
     "/zhihu/timeline": [
         "SeanChao"
     ],
-    "/zhihu/topic/:topicId": [
+    "/zhihu/topic/:topicId/:isTop?": [
         "xyqfer"
     ],
     "/zhihu/weekly": [
