@@ -5377,6 +5377,9 @@
     "/playno1/st/:catid?": [
         "TonyRL"
     ],
+    "/playpcesor": [
+        "cnkmmk"
+    ],
     "/plurk/anonymous": [
         "TonyRL"
     ],
@@ -5484,6 +5487,9 @@
     ],
     "/putty/changes": [
         "nczitzk"
+    ],
+    "/pwc/strategyand/sustainability": [
+        "mintyfrankie"
     ],
     "/qbitai/category/:category": [
         "FuryMartin"
@@ -6769,6 +6775,9 @@
         "nczitzk"
     ],
     "/trakt/collection/:username/:type?": [],
+    "/transcriptforest/:channel?": [
+        "nczitzk"
+    ],
     "/treasury/press-releases/:category?/:title?": [],
     "/trending/:keywords/:numberOfDays?": [
         "Jkker"
