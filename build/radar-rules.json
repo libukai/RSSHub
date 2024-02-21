@@ -13699,6 +13699,19 @@
       }
     ]
   },
+  "free.com.tw": {
+    "_name": "免費資源網路社群",
+    ".": [
+      {
+        "title": "博客",
+        "docs": "https://docs.rsshub.app/routes/blog#mian-fei-zi-yuan-wang-lu-she-qun",
+        "source": [
+          "/"
+        ],
+        "target": "/free"
+      }
+    ]
+  },
   "freebuf.com": {
     "_name": "Freebuf",
     ".": [
@@ -19319,6 +19332,54 @@
       }
     ]
   },
+  "indienova.com": {
+    "_name": "indienova 独立游戏",
+    ".": [
+      {
+        "title": "文章",
+        "docs": "https://docs.rsshub.app/routes/game#indienova-du-li-you-xi",
+        "source": [
+          "/indie-game-news",
+          "/"
+        ],
+        "target": "/indienova/article"
+      },
+      {
+        "title": "开发",
+        "docs": "https://docs.rsshub.app/routes/game#indienova-du-li-you-xi",
+        "source": [
+          "/indie-game-development",
+          "/"
+        ],
+        "target": "/indienova/development"
+      },
+      {
+        "title": "专题",
+        "docs": "https://docs.rsshub.app/routes/game#indienova-du-li-you-xi",
+        "source": [
+          "/column/:columnId"
+        ],
+        "target": "/indienova/column/:columnId"
+      },
+      {
+        "title": "GameDB 游戏库",
+        "docs": "https://docs.rsshub.app/routes/game#indienova-du-li-you-xi",
+        "source": [
+          "/gamedb/recent/:platform/p/1"
+        ],
+        "target": "/indienova/gamedb/recent/:platform"
+      },
+      {
+        "title": "会员开发游戏库",
+        "docs": "https://docs.rsshub.app/routes/game#indienova-du-li-you-xi",
+        "source": [
+          "/usergames",
+          "/"
+        ],
+        "target": "/indienova/usergames"
+      }
+    ]
+  },
   "inewsweek.cn": {
     "_name": "中国新闻周刊",
     ".": [
@@ -22511,6 +22572,25 @@
           "/people/:user"
         ],
         "target": "/jisilu/topic/:user"
+      }
+    ]
+  },
+  "jjwxc.net": {
+    "_name": "晋江文学城",
+    ".": [
+      {
+        "title": "作者最新作品",
+        "docs": "https://docs.rsshub.app/routes/reading#jin-jiang-wen-xue-cheng-zuo-zhe-zui-xin-zuo-pin",
+        "source": [
+          "oneauthor.php"
+        ]
+      },
+      {
+        "title": "作品",
+        "docs": "https://docs.rsshub.app/routes/reading#jin-jiang-wen-xue-cheng-zuo-pin",
+        "source": [
+          "onebook.php"
+        ]
       }
     ]
   },
@@ -28823,6 +28903,17 @@
           "/"
         ],
         "target": "/qdu/jwc"
+      }
+    ],
+    "houqin": [
+      {
+        "title": "后勤管理处通知",
+        "docs": "https://docs.rsshub.app/routes/university#qing-dao-da-xue",
+        "source": [
+          "/tzgg.htm",
+          "/"
+        ],
+        "target": "/qdu/houqin"
       }
     ]
   },
