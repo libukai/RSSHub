@@ -4136,6 +4136,9 @@
     "/laimanhua/:id": [
         "TonyRL"
     ],
+    "/lala": [
+        "cnkmmk"
+    ],
     "/lang/live/room/:id": [
         "MittWillson"
     ],
@@ -4395,6 +4398,12 @@
         "Kiotlin"
     ],
     "/lyu/news/:type": [],
+    "/m4/mil/:category?": [
+        "nczitzk"
+    ],
+    "/m4/news/:category?": [
+        "nczitzk"
+    ],
     "/macfilos/blog": [
         "nczitzk"
     ],
@@ -6034,6 +6043,9 @@
     "/shiep/:type/:id?": [
         "gumibea",
         "TeamSUEP"
+    ],
+    "/shisu/news/:category": [
+        "Duuckjing"
     ],
     "/shmeea/:id?": [
         "jialinghui",
