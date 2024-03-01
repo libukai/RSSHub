@@ -23,17 +23,17 @@
     "build:all": "npm run build:radar && npm run build:maintainer",
     "build:maintainer": "node scripts/workflow/build-maintainer.js",
     "build:radar": "node scripts/workflow/build-radar.js",
-    "dev": "cross-env NODE_ENV=dev nodemon --inspect lib/index.js",
-    "format": "eslint --cache --fix \"**/*.{js,yml}\" && node website/docs/.format/format.mjs && prettier \"**/*.{js,json}\" --write",
-    "format:check": "eslint --cache \"**/*.{js,yml}\" && prettier \"**/*.{js,json}\" --check",
+    "dev": "cross-env NODE_ENV=dev tsx watch --no-cache lib/index.ts",
+    "format": "eslint --cache --fix \"**/*.{ts,js,yml}\" && node website/docs/.format/format.mjs && prettier \"**/*.{ts,js,json}\" --write",
+    "format:check": "eslint --cache \"**/*.{ts,js,yml}\" && prettier \"**/*.{ts,js,json}\" --check",
     "format:staged": "lint-staged",
     "jest": "cross-env NODE_ENV=test jest --runInBand --forceExit --detectOpenHandles",
     "jest:coverage": "cross-env NODE_ENV=test jest --coverage --reporters=default --reporters=jest-junit --runInBand --forceExit --detectOpenHandles",
     "jest:watch": "cross-env NODE_ENV=test jest --watch",
     "lint": "eslint --cache .",
     "prepare": "husky || true",
-    "profiling": "NODE_ENV=production node --prof lib/index.js",
-    "start": "node lib/index.js",
+    "profiling": "NODE_ENV=production tsx --prof lib/index.ts",
+    "start": "tsx lib/index.ts",
     "test": "npm run format:check && npm run jest:coverage"
   },
   "lint-staged": {
@@ -41,27 +41,21 @@
       "eslint --cache --fix",
       "prettier --ignore-unknown --ignore-path ./.gitignore --write"
     ],
+    "*.ts": [
+      "eslint --cache --fix",
+      "prettier --ignore-unknown --ignore-path ./.gitignore --write"
+    ],
     "*.md?(x)": "node website/docs/.format/format.mjs --staged",
     "*.yml": "eslint --cache --fix"
-  },
-  "nodemonConfig": {
-    "ext": "art,js,mjs,json",
-    "watch": [
-      ".env",
-      "lib",
-      "test"
-    ]
   },
   "jest": {
     "bail": true,
     "collectCoverageFrom": [
       "lib/**/*.js",
-      "!lib/routes/**/*.js",
-      "!lib/v2/**/*.js",
-      "!lib/router.js",
-      "!lib/maintainer.js",
-      "!lib/radar.js",
-      "!lib/radar-rules.js"
+      "lib/**/*.ts",
+      "!lib/routes/**",
+      "!lib/routes-deprecated/**",
+      "!lib/router.js"
     ],
     "coverageReporters": [
       "text-summary",
@@ -72,22 +66,24 @@
     },
     "testEnvironment": "node",
     "testMatch": [
-      "**/test/**/*.js"
+      "**/lib/**/*.test.ts"
     ],
     "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/lib/"
+      "/node_modules/"
     ]
   },
   "jest-junit": {
     "outputDirectory": "coverage"
   },
   "dependencies": {
+    "@fullerstack/nax-ipware": "0.10.0",
+    "@hono/node-server": "1.8.2",
     "@koa/router": "12.0.1",
     "@notionhq/client": "2.2.14",
     "@postlight/parser": "2.2.3",
     "@sentry/node": "7.103.0",
     "@tonyrl/rand-user-agent": "2.0.52",
+    "@types/node": "20.11.24",
     "aes-js": "3.1.2",
     "art-template": "4.13.2",
     "bbcodejs": "0.0.4",
@@ -97,6 +93,7 @@
     "crypto-js": "4.2.0",
     "currency-symbol-map": "5.1.0",
     "dayjs": "1.11.8",
+    "directory-import": "3.2.1",
     "dotenv": "16.4.5",
     "entities": "4.5.0",
     "etag": "1.8.1",
@@ -104,14 +101,15 @@
     "git-rev-sync": "3.0.2",
     "googleapis": "133.0.0",
     "got": "11.8.6",
+    "hono": "4.0.8",
     "html-to-text": "9.0.5",
     "https-proxy-agent": "7.0.4",
     "iconv-lite": "0.6.3",
-    "imapflow": "1.0.152",
+    "imapflow": "1.0.153",
     "instagram-private-api": "1.45.3",
     "ioredis": "5.3.2",
+    "ip": "2.0.1",
     "ip-regex": "4.3.0",
-    "is-localhost-ip": "2.0.0",
     "jsdom": "24.0.0",
     "json-bigint": "1.0.0",
     "json5": "2.2.3",
@@ -123,7 +121,7 @@
     "koa-static": "5.0.0",
     "lru-cache": "10.2.0",
     "lz-string": "1.5.0",
-    "mailparser": "3.6.7",
+    "mailparser": "3.6.9",
     "markdown-it": "14.0.0",
     "module-alias": "2.2.3",
     "notion-to-md": "3.1.1",
@@ -146,20 +144,26 @@
     "simplecc-wasm": "0.1.5",
     "socks-proxy-agent": "8.0.2",
     "source-map": "0.7.4",
+    "telegram": "2.19.20",
     "tiny-async-pool": "2.1.0",
     "title": "3.5.3",
+    "tldts": "6.1.11",
     "tough-cookie": "4.1.3",
+    "tsx": "4.7.1",
     "twitter-api-v2": "1.16.0",
     "uuid": "9.0.1",
     "winston": "3.11.0",
     "xxhash-wasm": "1.0.2"
   },
   "devDependencies": {
+    "@babel/preset-env": "7.23.9",
+    "@babel/preset-typescript": "7.23.3",
+    "@jest/globals": "29.7.0",
     "@microsoft/eslint-formatter-sarif": "3.0.0",
-    "@stylistic/eslint-plugin-js": "1.6.2",
+    "@stylistic/eslint-plugin-js": "1.6.3",
     "@types/aes-js": "3.1.4",
     "@types/crypto-js": "4.2.2",
-    "@types/eslint": "8.56.4",
+    "@types/eslint": "8.56.5",
     "@types/eslint-config-prettier": "6.11.3",
     "@types/etag": "1.8.3",
     "@types/fs-extra": "11.0.4",
@@ -178,13 +182,14 @@
     "@types/mailparser": "3.4.4",
     "@types/markdown-it": "13.0.7",
     "@types/module-alias": "2.0.4",
-    "@types/nodemon": "1.19.6",
     "@types/plist": "3.0.5",
     "@types/request-promise-native": "1.0.21",
     "@types/require-all": "3.0.6",
     "@types/supertest": "6.0.2",
     "@types/tiny-async-pool": "2.0.3",
     "@types/tough-cookie": "4.0.5",
+    "@typescript-eslint/eslint-plugin": "7.1.0",
+    "@typescript-eslint/parser": "7.1.0",
     "@vercel/nft": "0.26.4",
     "cross-env": "7.0.3",
     "eslint": "8.57.0",
@@ -201,7 +206,6 @@
     "lint-staged": "15.2.2",
     "mockdate": "3.0.5",
     "nock": "13.5.4",
-    "nodemon": "3.1.0",
     "prettier": "3.2.5",
     "remark": "14.0.3",
     "remark-custom-heading-id": "1.0.1",
@@ -218,6 +222,8 @@
     "supertest": "6.3.4",
     "to-vfile": "8.0.0",
     "tosource": "2.0.0-alpha.3",
+    "ts-jest": "29.1.2",
+    "typescript": "5.3.3",
     "unified": "9.2.2",
     "unist-util-visit": "4.1.2",
     "unist-util-visit-parents": "5.1.3"
