@@ -468,8 +468,6 @@
     "/android/platform-tools-releases": [
         "nczitzk"
     ],
-    "/anigamer/anime/:sn": [],
-    "/anigamer/new_anime": [],
     "/anime1/anime/:time/:name": [],
     "/anime1/search/:keyword": [],
     "/annualreviews/:id": [
@@ -2433,12 +2431,18 @@
     "/gamegene/news": [
         "lone1y-51"
     ],
+    "/gamer/anime/:sn": [
+        "maple3142"
+    ],
     "/gamer/gnn/:category?": [
         "Arracc"
     ],
     "/gamer/hot/:bsn": [
         "nczitzk",
         "TonyRL"
+    ],
+    "/gamer/new_anime": [
+        "maple3142"
     ],
     "/gameres/hot": [],
     "/gameres/list/:id": [],
@@ -4958,8 +4962,14 @@
         "real-jiakai"
     ],
     "/nku/jwc/:type?": [],
+    "/nlc/read/:type?": [
+        "nczitzk"
+    ],
     "/nltimes/news/:category?": [
         "Hivol"
+    ],
+    "/nmc/weatheralarm/:province?": [
+        "ylc395"
     ],
     "/nmtv/column/:id?": [
         "nczitzk"
@@ -6824,7 +6834,9 @@
     "/tongji/yjs": [
         "shengmaosu"
     ],
-    "/tongli/news/:type": [],
+    "/tongli/news/:type": [
+        "CokeMine"
+    ],
     "/toodaylab/column/:id": [
         "nczitzk"
     ],
@@ -7193,7 +7205,6 @@
     "/wdc/download/:id": [
         "nczitzk"
     ],
-    "/weatheralarm/:province?": [],
     "/web3caff/:path?": [
         "nczitzk"
     ],

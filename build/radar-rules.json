@@ -14112,16 +14112,33 @@
     "acg": [
       {
         "title": "GNN 新聞",
-        "docs": "https://docs.rsshub.app/routes/bbs#ba-ha-mu-te-dian-wan-zi-xun-zhan",
+        "docs": "https://docs.rsshub.app/routes/anime#ba-ha-mu-te-dian-wan-zi-xun-zhan",
         "source": [
           "/news.php"
+        ]
+      }
+    ],
+    "ani": [
+      {
+        "title": "動畫瘋 - 最後更新",
+        "docs": "https://docs.rsshub.app/routes/anime#ba-ha-mu-te-dian-wan-zi-xun-zhan",
+        "source": [
+          "/"
+        ],
+        "target": "/gamer/new_anime"
+      },
+      {
+        "title": "動畫瘋 - 動畫",
+        "docs": "https://docs.rsshub.app/routes/anime#ba-ha-mu-te-dian-wan-zi-xun-zhan",
+        "source": [
+          "/animeVideo.php"
         ]
       }
     ],
     "forum": [
       {
         "title": "熱門推薦",
-        "docs": "https://docs.rsshub.app/routes/bbs#ba-ha-mu-te-dian-wan-zi-xun-zhan",
+        "docs": "https://docs.rsshub.app/routes/anime#ba-ha-mu-te-dian-wan-zi-xun-zhan",
         "source": [
           "/A.php",
           "/B.php"
@@ -14131,7 +14148,7 @@
     "gnn": [
       {
         "title": "GNN 新聞",
-        "docs": "https://docs.rsshub.app/routes/bbs#ba-ha-mu-te-dian-wan-zi-xun-zhan",
+        "docs": "https://docs.rsshub.app/routes/anime#ba-ha-mu-te-dian-wan-zi-xun-zhan",
         "source": [
           "/index.php"
         ]
@@ -27462,6 +27479,82 @@
       }
     ]
   },
+  "nlc.cn": {
+    "_name": "中国国家图书馆",
+    "read": [
+      {
+        "title": "读者云平台",
+        "docs": "https://docs.rsshub.app/routes/other#zhong-guo-guo-jia-tu-shu-guan-du-zhe-yun-ping-tai",
+        "source": [
+          "/outRes/outResList"
+        ]
+      },
+      {
+        "title": "电子图书",
+        "docs": "https://docs.rsshub.app/routes/other#zhong-guo-guo-jia-tu-shu-guan-du-zhe-yun-ping-tai",
+        "source": [
+          "/outRes/outResList"
+        ],
+        "target": "/nlc/read/电子图书"
+      },
+      {
+        "title": "电子期刊",
+        "docs": "https://docs.rsshub.app/routes/other#zhong-guo-guo-jia-tu-shu-guan-du-zhe-yun-ping-tai",
+        "source": [
+          "/outRes/outResList"
+        ],
+        "target": "/nlc/read/电子期刊"
+      },
+      {
+        "title": "电子论文",
+        "docs": "https://docs.rsshub.app/routes/other#zhong-guo-guo-jia-tu-shu-guan-du-zhe-yun-ping-tai",
+        "source": [
+          "/outRes/outResList"
+        ],
+        "target": "/nlc/read/电子论文"
+      },
+      {
+        "title": "电子报纸",
+        "docs": "https://docs.rsshub.app/routes/other#zhong-guo-guo-jia-tu-shu-guan-du-zhe-yun-ping-tai",
+        "source": [
+          "/outRes/outResList"
+        ],
+        "target": "/nlc/read/电子报纸"
+      },
+      {
+        "title": "音视频",
+        "docs": "https://docs.rsshub.app/routes/other#zhong-guo-guo-jia-tu-shu-guan-du-zhe-yun-ping-tai",
+        "source": [
+          "/outRes/outResList"
+        ],
+        "target": "/nlc/read/音视频"
+      },
+      {
+        "title": "标准专利",
+        "docs": "https://docs.rsshub.app/routes/other#zhong-guo-guo-jia-tu-shu-guan-du-zhe-yun-ping-tai",
+        "source": [
+          "/outRes/outResList"
+        ],
+        "target": "/nlc/read/标准专利"
+      },
+      {
+        "title": "工具书",
+        "docs": "https://docs.rsshub.app/routes/other#zhong-guo-guo-jia-tu-shu-guan-du-zhe-yun-ping-tai",
+        "source": [
+          "/outRes/outResList"
+        ],
+        "target": "/nlc/read/工具书"
+      },
+      {
+        "title": "少儿资源",
+        "docs": "https://docs.rsshub.app/routes/other#zhong-guo-guo-jia-tu-shu-guan-du-zhe-yun-ping-tai",
+        "source": [
+          "/outRes/outResList"
+        ],
+        "target": "/nlc/read/少儿资源"
+      }
+    ]
+  },
   "nltimes.nl": {
     "_name": "NL Times",
     ".": [
@@ -27476,6 +27569,20 @@
         "docs": "https://docs.rsshub.app/routes/new-media#nl-times",
         "source": "/top-stories",
         "target": "/nltimes/news/top-stories"
+      }
+    ]
+  },
+  "nmc.cn": {
+    "_name": "中央气象台",
+    ".": [
+      {
+        "title": "全国气象预警",
+        "docs": "https://docs.rsshub.app/routes/forecast#zhong-yang-qi-xiang-tai",
+        "source": [
+          "/publish/alarm.html",
+          "/"
+        ],
+        "target": "/nmc/weatheralarm"
       }
     ]
   },
@@ -34337,6 +34444,18 @@
           "/"
         ],
         "target": "/tongji/yjs"
+      }
+    ]
+  },
+  "tongli.com.tw": {
+    "_name": "東立出版社",
+    ".": [
+      {
+        "title": "新聞",
+        "docs": "https://docs.rsshub.app/routes/reading#dong-li-chu-ban-she",
+        "source": [
+          "/TNews_List.aspx"
+        ]
       }
     ]
   },
