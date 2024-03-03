@@ -840,6 +840,9 @@
     "/bilibili/user/followings/:uid/:loginUid": [
         "Qixingchen"
     ],
+    "/bilibili/user/like/:uid/:disableEmbed?": [
+        "ygguorun"
+    ],
     "/bilibili/user/video/:uid/:disableEmbed?": [
         "DIYgod"
     ],
@@ -7906,6 +7909,9 @@
         "nczitzk"
     ],
     "/zhuixinfan/list": [],
+    "/zhujiceping": [
+        "cnkmmk"
+    ],
     "/zimuku/:type?": [],
     "/zimuxia/:category?": [
         "nczitzk"

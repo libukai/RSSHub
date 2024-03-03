@@ -3570,6 +3570,12 @@
         "target": "/bilibili/user/coin/:uid"
       },
       {
+        "title": "UP 主点赞视频",
+        "docs": "https://docs.rsshub.app/routes/social-media#bilibili",
+        "source": "/:uid",
+        "target": "/bilibili/user/like/:uid"
+      },
+      {
         "title": "UP 主粉丝",
         "docs": "https://docs.rsshub.app/routes/social-media#bilibili",
         "source": "/:uid",
@@ -38973,6 +38979,19 @@
           "/"
         ],
         "target": "/zhubai/top20"
+      }
+    ]
+  },
+  "zhujiceping.com": {
+    "_name": "国外主机测评",
+    ".": [
+      {
+        "title": "最新发布",
+        "docs": "https://docs.rsshub.app/routes/blog#guo-wai-zhu-ji-ce-ping",
+        "source": [
+          "/"
+        ],
+        "target": "/zhujiceping"
       }
     ]
   },
