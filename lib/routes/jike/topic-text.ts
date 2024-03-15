@@ -30,7 +30,7 @@ async function handler(ctx) {
     const data = await constructTopicEntry(ctx, topicUrl);
 
     if (data) {
-        const result = ctx.get('data');
+        const result = data.result;
         result.item = data.posts.map((item) => {
             const date = dayjs(item.createdAt);
             return {
@@ -40,6 +40,6 @@ async function handler(ctx) {
                 link: `https://m.okjike.com/originalPosts/${item.id}`,
             };
         });
-        ctx.set('data', result);
+        return result;
     }
 }

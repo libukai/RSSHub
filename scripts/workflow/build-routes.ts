@@ -1,22 +1,12 @@
 import { namespaces } from '../../lib/registry';
+import { Radar } from '../../lib/types';
 import { parse } from 'tldts';
 import fs from 'node:fs';
 import * as path from 'node:path';
+import toSource from 'tosource';
 
 const maintainers: Record<string, string[]> = {};
-const radar: {
-    [domain: string]: {
-        _name: string;
-        [subdomain: string]:
-            | {
-                  title: string;
-                  docs: string;
-                  source: string[];
-                  target: string | ((params: any, url: string) => string);
-              }[]
-            | string;
-    };
-} = {};
+const radar: Radar = {};
 const docs = {};
 
 for (const namespace in namespaces) {
@@ -68,6 +58,7 @@ for (const namespace in namespaces) {
 }
 
 fs.writeFileSync(path.join(__dirname, '../../assets/build/radar-rules.json'), JSON.stringify(radar, null, 2));
+fs.writeFileSync(path.join(__dirname, '../../assets/build/radar-rules.js'), `(${toSource(radar)})`);
 fs.writeFileSync(path.join(__dirname, '../../assets/build/maintainers.json'), JSON.stringify(maintainers, null, 2));
 fs.writeFileSync(path.join(__dirname, '../../assets/build/routes.json'), JSON.stringify(namespaces, null, 2));
 
