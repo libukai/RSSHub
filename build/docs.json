@@ -7670,28 +7670,6 @@
       },
       "name": "浙江省土地使用权网上交易系统"
     },
-    "zrblog": {
-      "routes": {
-        "/zrblog/": {
-          "path": "/",
-          "radar": [
-            {
-              "source": [
-                "zrblog.net/"
-              ],
-              "target": ""
-            }
-          ],
-          "name": "Unknown",
-          "maintainers": [
-            "cnkmmk"
-          ],
-          "url": "zrblog.net/",
-          "location": "rss.ts"
-        }
-      },
-      "name": "赵容部落"
-    },
     "zyshow": {
       "routes": {
         "/zyshow*": {
@@ -15832,7 +15810,8 @@
           ],
           "name": "每日早报",
           "maintainers": [
-            "nczitzk"
+            "nczitzk",
+            "fashioncj"
           ],
           "url": "readhub.cn/daily",
           "location": "daily.ts"
@@ -19022,6 +19001,32 @@
       },
       "name": "DoMP4 影视",
       "description": ":::tip\n由于网站有多个备用域名，默认使用 `mp4us.com`，可以通过在路由最后加上 `?domain=<域名>` 切换域名。\n\n目前可用域名有：\n\n```javascript\n['domp4.cc', 'mp4kan.com', 'mp4us.com', 'wemp4.com', 'dbmp4.com']\n```\n:::"
+    },
+    "fanxinzhui": {
+      "routes": {
+        "/fanxinzhui/": {
+          "path": "/",
+          "name": "最近更新",
+          "url": "fanxinzhui.com/lastest",
+          "maintainers": [
+            "nczitzk"
+          ],
+          "example": "/fanxinzhui",
+          "categories": [
+            "multimedia"
+          ],
+          "radar": [
+            {
+              "source": [
+                "fanxinzhui.com/lastest"
+              ],
+              "target": "/"
+            }
+          ],
+          "location": "index.ts"
+        }
+      },
+      "name": "追新番"
     },
     "iqiyi": {
       "routes": {
@@ -25067,6 +25072,53 @@
       },
       "name": "京东"
     },
+    "mi": {
+      "routes": {
+        "/mi/crowdfunding": {
+          "path": "/crowdfunding",
+          "categories": [
+            "shopping"
+          ],
+          "example": "/mi/crowdfunding",
+          "name": "小米众筹",
+          "maintainers": [
+            "DIYgod"
+          ],
+          "location": "crowdfunding.ts"
+        }
+      },
+      "name": "小米"
+    },
+    "modian": {
+      "routes": {
+        "/modian/zhongchou/:category?/:sort?/:status?": {
+          "path": "/zhongchou/:category?/:sort?/:status?",
+          "categories": [
+            "shopping"
+          ],
+          "example": "/modian/zhongchou",
+          "parameters": {
+            "category": "分类，见下表，默认为全部",
+            "sort": "排序，见下表，默认为最新上线",
+            "status": "状态，见下表，默认为全部"
+          },
+          "name": "众筹",
+          "maintainers": [
+            "nczitzk"
+          ],
+          "description": "分类\n\n    | 全部 | 游戏  | 动漫   | 出版       | 桌游       |\n    | ---- | ----- | ------ | ---------- | ---------- |\n    | all  | games | comics | publishing | tablegames |\n\n    | 卡牌  | 潮玩模型 | 影视       | 音乐  | 活动       |\n    | ----- | -------- | ---------- | ----- | ---------- |\n    | cards | toys     | film-video | music | activities |\n\n    | 设计   | 科技       | 食品 | 爱心通道 | 动物救助 |\n    | ------ | ---------- | ---- | -------- | -------- |\n    | design | technology | food | charity  | animals  |\n\n    | 个人愿望 | 其他   |\n    | -------- | ------ |\n    | wishes   | others |\n\n    排序\n\n    | 最新上线  | 金额最高   | 评论最多     |\n    | --------- | ---------- | ------------ |\n    | top_time | top_money | top_comment |\n\n    状态\n\n    | 全部 | 创意 | 预热    | 众筹中 | 众筹成功 |\n    | ---- | ---- | ------- | ------ | -------- |\n    | all  | idea | preheat | going  | success  |",
+          "radar": [
+            {
+              "source": [
+                "zhongchou.modian.com/:category/:sort/:status"
+              ]
+            }
+          ],
+          "location": "zhongchou.ts"
+        }
+      },
+      "name": "摩点"
+    },
     "myfigurecollection": {
       "routes": {
         "/myfigurecollection/activity/:category?/:language?/:latestAdditions?/:latestEdits?/:latestAlerts?/:latestPictures?": {
@@ -28607,9 +28659,15 @@
             "requireConfig": false,
             "requirePuppeteer": false,
             "antiCrawler": false,
+            "supportRadar": true,
             "supportBT": false,
             "supportPodcast": false,
             "supportScihub": false
+          },
+          "radar": {
+            "source": [
+              "mmda.booru.org/index.php"
+            ]
           },
           "name": "MMDArchive 标签查询",
           "maintainers": [
@@ -40826,9 +40884,10 @@
           "radar": [
             {
               "source": [
-                "github.com/:user/:repo/:type"
+                "github.com/:user/:repo/:type",
+                "github.com/:user/:repo/:type/:number"
               ],
-              "target": "/comments/:user/:repo"
+              "target": "/comments/:user/:repo/:number?"
             }
           ],
           "name": "Issue / Pull Request comments",
@@ -42553,6 +42612,35 @@
       },
       "name": "Node.js"
     },
+    "nosec": {
+      "routes": {
+        "/nosec/:keykind?": {
+          "path": "/:keykind?",
+          "categories": [
+            "programming"
+          ],
+          "example": "/nosec/hole",
+          "parameters": {
+            "keykind": "对应文章分类"
+          },
+          "name": "Posts",
+          "maintainers": [
+            "hellodword"
+          ],
+          "description": "  | 分类     | 标识       |\n    | :------- | :--------- |\n    | 威胁情报 | `threaten` |\n    | 安全动态 | `security` |\n    | 漏洞预警 | `hole`     |\n    | 数据泄露 | `leakage`  |\n    | 专题报告 | `speech`   |\n    | 技术分析 | `skill`    |\n    | 安全工具 | `tool`     |",
+          "radar": [
+            {
+              "source": [
+                "nosec.org/home/index/:keykind",
+                "nosec.org/home/index"
+              ]
+            }
+          ],
+          "location": "index.ts"
+        }
+      },
+      "name": "NOSEC 安全讯息平台"
+    },
     "oschina": {
       "routes": {
         "/oschina/news/:category?": {
@@ -42772,6 +42860,32 @@
       },
       "name": "Quicker"
     },
+    "reactiflux": {
+      "routes": {
+        "/reactiflux/transcripts": {
+          "path": "/transcripts",
+          "name": "Transcripts",
+          "url": "reactiflux.com/transcripts",
+          "maintainers": [
+            "nczitzk"
+          ],
+          "example": "/reactiflux/transcripts",
+          "categories": [
+            "programming"
+          ],
+          "radar": [
+            {
+              "source": [
+                "www.reactiflux.com/transcripts"
+              ],
+              "target": "/transcripts"
+            }
+          ],
+          "location": "transcripts.ts"
+        }
+      },
+      "name": "Reactiflux"
+    },
     "rustcc": {
       "routes": {
         "/rustcc/jobs": {
@@ -42802,6 +42916,26 @@
           ],
           "url": "rustcc.cn/",
           "location": "jobs.ts"
+        },
+        "/rustcc/news": {
+          "path": "/news",
+          "categories": [
+            "programming"
+          ],
+          "example": "/rustcc/news",
+          "radar": [
+            {
+              "source": [
+                "rustcc.cn/"
+              ]
+            }
+          ],
+          "name": "新闻/聚合",
+          "maintainers": [
+            "zhenlohuang"
+          ],
+          "url": "rustcc.cn/",
+          "location": "news.ts"
         }
       },
       "name": "Rust 语言中文社区"
@@ -43099,6 +43233,73 @@
         }
       },
       "name": "Go 语言中文网"
+    },
+    "web": {
+      "routes": {
+        "/web/articles": {
+          "path": "/articles",
+          "categories": [
+            "programming"
+          ],
+          "example": "/web/articles",
+          "radar": [
+            {
+              "source": [
+                "web.dev/articles"
+              ]
+            }
+          ],
+          "name": "Articles",
+          "maintainers": [
+            "KarasuShin"
+          ],
+          "location": "articles.ts"
+        },
+        "/web/blog": {
+          "path": "/blog",
+          "categories": [
+            "programming"
+          ],
+          "example": "/web/blog",
+          "radar": [
+            {
+              "source": [
+                "web.dev/blog"
+              ]
+            }
+          ],
+          "name": "Blog",
+          "maintainers": [
+            "KarasuShin"
+          ],
+          "location": "blog.ts"
+        },
+        "/web/series/:seriesName": {
+          "path": "/series/:seriesName",
+          "parameters": {
+            "seriesName": "topic name in the series section"
+          },
+          "categories": [
+            "programming"
+          ],
+          "example": "/web/series/new-to-the-web",
+          "radar": [
+            {
+              "source": [
+                "web.dev/series/:seriesName"
+              ],
+              "target": "/series/:seriesName"
+            }
+          ],
+          "name": "Series",
+          "maintainers": [
+            "KarasuShin"
+          ],
+          "description": ":::tip\n    The `seriesName` can be extracted from the Series page URL: `https://web.dev/series/:seriesName`\n:::",
+          "location": "series.ts"
+        }
+      },
+      "name": "web.dev"
     },
     "wechat": {
       "routes": {
@@ -47104,6 +47305,27 @@
       },
       "name": "ImageMagick"
     },
+    "ipsw": {
+      "routes": {
+        "/ipsw/index/:ptype/:pname": {
+          "path": "/index/:ptype/:pname",
+          "categories": [
+            "program-update"
+          ],
+          "example": "/ipsw/index/ipsws/iPad8,11",
+          "parameters": {
+            "ptype": "Fill in ipsws or otas to get different versions of firmware",
+            "pname": "Product name, `http://rsshub.app/ipsw/index/ipsws/iPod`, if you fill in the iPad, follow the entire iPad series(ptype default to ipsws).`http://rsshub.app/ipsw/index/ipsws/iPhone11,8`, if you fill in the specific iPhone11,8, submit to the ipsws firmware information of this model"
+          },
+          "name": "Apple Firmware Update-IPSWs/OTAs version",
+          "maintainers": [
+            "Jeason0228"
+          ],
+          "location": "index.ts"
+        }
+      },
+      "name": "IPSW.me"
+    },
     "macupdate": {
       "routes": {
         "/macupdate/app/:appId/:appSlug?": {
@@ -47140,6 +47362,23 @@
       },
       "name": "MacUpdate"
     },
+    "mi": {
+      "routes": {
+        "/mi/golden": {
+          "path": "/golden",
+          "categories": [
+            "program-update"
+          ],
+          "example": "/mi/golden",
+          "name": "小米应用商店金米奖",
+          "maintainers": [
+            "nczitzk"
+          ],
+          "location": "golden.ts"
+        }
+      },
+      "name": "小米"
+    },
     "microsoft": {
       "routes": {
         "/microsoft/edge/addon/:crxid": {
@@ -47175,6 +47414,29 @@
         }
       },
       "name": "Microsoft Edge"
+    },
+    "miui": {
+      "routes": {
+        "/miui/:device/:type?/:region?": {
+          "path": "/:device/:type?/:region?",
+          "categories": [
+            "program-update"
+          ],
+          "example": "/miui/aries",
+          "parameters": {
+            "device": "the device `codename` eg. `aries` for Mi 2S",
+            "type": "type",
+            "region": "Region, default to `cn`"
+          },
+          "name": "New firmware",
+          "maintainers": [
+            "Indexyz"
+          ],
+          "description": "  | stable  | development |\n    | ------- | ----------- |\n    | release | dev         |\n  \n    | region | region |\n    | ------ | ------ |\n    | China  | cn     |\n    | Global | global |",
+          "location": "index.ts"
+        }
+      },
+      "name": "MIUI"
     },
     "neatdownloadmanager": {
       "routes": {
@@ -48904,6 +49166,31 @@
       },
       "name": "Paul Graham"
     },
+    "pianyivps": {
+      "routes": {
+        "/pianyivps/": {
+          "path": "/",
+          "categories": [
+            "blog"
+          ],
+          "example": "/pianyivps",
+          "radar": [
+            {
+              "source": [
+                "pianyivps.com/"
+              ]
+            }
+          ],
+          "name": "最新发布",
+          "maintainers": [
+            "cnkmmk"
+          ],
+          "url": "pianyivps.com/",
+          "location": "rss.ts"
+        }
+      },
+      "name": "便宜VPS网"
+    },
     "uber": {
       "routes": {
         "/uber/blog/:maxPage?": {
@@ -49093,6 +49380,31 @@
         }
       },
       "name": "浙江大学可视分析小组"
+    },
+    "zrblog": {
+      "routes": {
+        "/zrblog/": {
+          "path": "/",
+          "categories": [
+            "blog"
+          ],
+          "example": "/zrblog",
+          "radar": [
+            {
+              "source": [
+                "zrblog.net/"
+              ]
+            }
+          ],
+          "name": "最新文章",
+          "maintainers": [
+            "cnkmmk"
+          ],
+          "url": "zrblog.net/",
+          "location": "rss.ts"
+        }
+      },
+      "name": "赵容部落"
     }
   },
   "traditional-media": {
@@ -54132,8 +54444,8 @@
           ],
           "location": "user-channel.ts"
         },
-        "/bilibili/user/collection/:uid/:sid/:disableEmbed?": {
-          "path": "/user/collection/:uid/:sid/:disableEmbed?",
+        "/bilibili/user/collection/:uid/:sid/:disableEmbed?/:sortReverse?/:page?": {
+          "path": "/user/collection/:uid/:sid/:disableEmbed?/:sortReverse?/:page?",
           "categories": [
             "social-media"
           ],
@@ -54141,7 +54453,9 @@
           "parameters": {
             "uid": "用户 id, 可在 UP 主主页中找到",
             "sid": "合集 id, 可在合集页面的 URL 中找到",
-            "disableEmbed": "默认为开启内嵌视频, 任意值为关闭"
+            "disableEmbed": "默认为开启内嵌视频, 任意值为关闭",
+            "sortReverse": "默认:默认排序 1:升序排序",
+            "page": "页码, 默认1"
           },
           "features": {
             "requireConfig": false,

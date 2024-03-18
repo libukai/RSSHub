@@ -4122,6 +4122,19 @@
       }
     ]
   },
+  "fanxinzhui.com": {
+    "_name": "追新番",
+    ".": [
+      {
+        "title": "最近更新",
+        "docs": "https://docs.rsshub.app/routes/multimedia",
+        "source": [
+          "/lastest"
+        ],
+        "target": "/fanxinzhui/"
+      }
+    ]
+  },
   "farmatters.com": {
     "_name": "Farmatters",
     ".": [
@@ -4875,9 +4888,10 @@
         "title": "Issue / Pull Request comments",
         "docs": "https://docs.rsshub.app/routes/programming",
         "source": [
-          "/:user/:repo/:type"
+          "/:user/:repo/:type",
+          "/:user/:repo/:type/:number"
         ],
-        "target": "/github/comments/:user/:repo"
+        "target": "/github/comments/:user/:repo/:number?"
       },
       {
         "title": "Repo Contributors",
@@ -8184,6 +8198,19 @@
       }
     ]
   },
+  "modian.com": {
+    "_name": "摩点",
+    "zhongchou": [
+      {
+        "title": "众筹",
+        "docs": "https://docs.rsshub.app/routes/shopping",
+        "source": [
+          "/:category/:sort/:status"
+        ],
+        "target": "/modian/zhongchou/:category?/:sort?/:status?"
+      }
+    ]
+  },
   "mohw.gov.tw": {
     "_name": "台灣衛生福利部",
     ".": [
@@ -9091,6 +9118,20 @@
       }
     ]
   },
+  "nosec.org": {
+    "_name": "NOSEC 安全讯息平台",
+    ".": [
+      {
+        "title": "Posts",
+        "docs": "https://docs.rsshub.app/routes/programming",
+        "source": [
+          "/home/index/:keykind",
+          "/home/index"
+        ],
+        "target": "/nosecparams=>`/nosec${params.keykind?`/${params.keybind.replace(\".html\",\"\")}`:\"\"}`"
+      }
+    ]
+  },
   "notateslaapp.com": {
     "_name": "Not a Tesla App",
     ".": [
@@ -9705,6 +9746,19 @@
           "/:category?/:topic?"
         ],
         "target": "/phoronix/:category?/:topic?"
+      }
+    ]
+  },
+  "pianyivps.com": {
+    "_name": "便宜VPS网",
+    ".": [
+      {
+        "title": "最新发布",
+        "docs": "https://docs.rsshub.app/routes/blog",
+        "source": [
+          "/"
+        ],
+        "target": "/pianyivps/"
       }
     ]
   },
@@ -10550,6 +10604,19 @@
       }
     ]
   },
+  "reactiflux.com": {
+    "_name": "Reactiflux",
+    "www": [
+      {
+        "title": "Transcripts",
+        "docs": "https://docs.rsshub.app/routes/programming",
+        "source": [
+          "/transcripts"
+        ],
+        "target": "/reactiflux/transcripts"
+      }
+    ]
+  },
   "readhub.cn": {
     "_name": "Readhub",
     ".": [
@@ -10736,6 +10803,14 @@
           "/"
         ],
         "target": "/rustcc/jobs"
+      },
+      {
+        "title": "新闻/聚合",
+        "docs": "https://docs.rsshub.app/routes/programming",
+        "source": [
+          "/"
+        ],
+        "target": "/rustcc/news"
       }
     ]
   },
@@ -14137,6 +14212,35 @@
       }
     ]
   },
+  "web.dev": {
+    "_name": "web.dev",
+    ".": [
+      {
+        "title": "Articles",
+        "docs": "https://docs.rsshub.app/routes/programming",
+        "source": [
+          "/articles"
+        ],
+        "target": "/web/articles"
+      },
+      {
+        "title": "Blog",
+        "docs": "https://docs.rsshub.app/routes/programming",
+        "source": [
+          "/blog"
+        ],
+        "target": "/web/blog"
+      },
+      {
+        "title": "Series",
+        "docs": "https://docs.rsshub.app/routes/programming",
+        "source": [
+          "/series/:seriesName"
+        ],
+        "target": "/web/series/:seriesName"
+      }
+    ]
+  },
   "cimidata.com": {
     "_name": "微信小程序",
     ".": [
@@ -15371,8 +15475,8 @@
     "_name": "赵容部落",
     ".": [
       {
-        "title": "Unknown",
-        "docs": "https://docs.rsshub.app/routes/other",
+        "title": "最新文章",
+        "docs": "https://docs.rsshub.app/routes/blog",
         "source": [
           "/"
         ],

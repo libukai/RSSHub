@@ -643,7 +643,7 @@
   "/bilibili/user/channel/:uid/:sid/:disableEmbed?": [
     "weirongxu"
   ],
-  "/bilibili/user/collection/:uid/:sid/:disableEmbed?": [
+  "/bilibili/user/collection/:uid/:sid/:disableEmbed?/:sortReverse?/:page?": [
     "shininome"
   ],
   "/bilibili/user/fav/:uid/:disableEmbed?": [
@@ -1730,6 +1730,9 @@
   ],
   "/fantia/search/:type?/:caty?/:period?/:order?/:rating?/:keyword?": [],
   "/fantia/user/:id": [
+    "nczitzk"
+  ],
+  "/fanxinzhui/": [
     "nczitzk"
   ],
   "/farmatters/exclusive/:locale?": [
@@ -2841,6 +2844,9 @@
   "/instructables/projects/:category?": [
     "wolfg1969"
   ],
+  "/ipsw/index/:ptype/:pname": [
+    "Jeason0228"
+  ],
   "/iqilu/v/:category{.+}?": [],
   "/iqiyi/album/:id": [
     "TonyRL"
@@ -3365,6 +3371,12 @@
     "TonyRL"
   ],
   "/metmuseum/exhibitions/:state?": [],
+  "/mi/crowdfunding": [
+    "DIYgod"
+  ],
+  "/mi/golden": [
+    "nczitzk"
+  ],
   "/microsoft/edge/addon/:crxid": [
     "hoilc",
     "DIYgod"
@@ -3422,6 +3434,9 @@
     "EsuRt",
     "queensferryme"
   ],
+  "/miui/:device/:type?/:region?": [
+    "Indexyz"
+  ],
   "/mixcloud/:username/:type?": [
     "Misaka13514"
   ],
@@ -3439,6 +3454,9 @@
   ],
   "/modelscope/studios": [
     "TonyRL"
+  ],
+  "/modian/zhongchou/:category?/:sort?/:status?": [
+    "nczitzk"
   ],
   "/modrinth/project/:id/versions/:routeParams?": [
     "SettingDust"
@@ -3769,6 +3787,9 @@
     "crispgm",
     "Fatpandac"
   ],
+  "/nosec/:keykind?": [
+    "hellodword"
+  ],
   "/notateslaapp/ota": [
     "mrbruce516"
   ],
@@ -4070,6 +4091,9 @@
   "/phoronix/:category?/:topic?": [
     "oppliate",
     "Rongronggg9"
+  ],
+  "/pianyivps/": [
+    "cnkmmk"
   ],
   "/pianyuan/index/:media?": [
     "greatcodeeer",
@@ -4416,11 +4440,15 @@
   "/rawkuma/manga/:id": [
     "nczitzk"
   ],
+  "/reactiflux/transcripts": [
+    "nczitzk"
+  ],
   "/reactnewsletter/": [
     "meixger"
   ],
   "/readhub/daily": [
-    "nczitzk"
+    "nczitzk",
+    "fashioncj"
   ],
   "/readhub/:category?": [
     "WhiteWorld",
@@ -4482,6 +4510,9 @@
   ],
   "/rustcc/jobs": [
     "CcccFz"
+  ],
+  "/rustcc/news": [
+    "zhenlohuang"
   ],
   "/sakurazaka46/blog/:id?/:page?": [
     "victor21813",
@@ -5662,6 +5693,15 @@
     "axojhf"
   ],
   "/wdc/download/:id?": [],
+  "/web/articles": [
+    "KarasuShin"
+  ],
+  "/web/blog": [
+    "KarasuShin"
+  ],
+  "/web/series/:seriesName": [
+    "KarasuShin"
+  ],
   "/web3caff*": [],
   "/wechat/announce": [
     "xyqfer"
