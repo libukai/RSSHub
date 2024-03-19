@@ -1,12 +1,11 @@
 import { Route } from '@/types';
-import api from './api';
 import utils from './utils';
+import api from './api';
 
 export const route: Route = {
-    path: '/keyword/:keyword/:routeParams?',
+    path: '/home/:routeParams?',
     categories: ['social-media'],
-    example: '/twitter/keyword/RSSHub',
-    parameters: { keyword: 'keyword', routeParams: 'extra parameters, see the table above' },
+    example: '/twitter/home',
     features: {
         requireConfig: [
             {
@@ -28,27 +27,34 @@ export const route: Route = {
         supportPodcast: false,
         supportScihub: false,
     },
-    name: 'Keyword',
-    maintainers: ['DIYgod', 'yindaheng98', 'Rongronggg9'],
+    name: 'Home timeline',
+    maintainers: ['DIYgod'],
     handler,
     radar: [
         {
-            source: ['twitter.com/search'],
+            source: ['twitter.com/home'],
+            target: '/home',
         },
     ],
 };
 
 async function handler(ctx) {
-    const keyword = ctx.req.param('keyword');
+    // For compatibility
+    const { count, include_rts } = utils.parseRouteParams(ctx.req.param('routeParams'));
+    const params = count ? { count } : {};
+
     await api.init();
-    const data = await api.getSearch(keyword);
+    let data = await api.getHomeTimeline('', params);
+    if (!include_rts) {
+        data = utils.excludeRetweet(data);
+    }
 
     return {
-        title: `Twitter Keyword - ${keyword}`,
-        link: `https://twitter.com/search?q=${encodeURIComponent(keyword)}`,
+        title: `Twitter following timeline`,
+        link: `https://twitter.com/home`,
+        // description: userInfo?.description,
         item: utils.ProcessFeed(ctx, {
             data,
         }),
-        allowEmpty: true,
     };
 }
