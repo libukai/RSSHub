@@ -326,10 +326,6 @@ Language
 
 ### Unknown <Site url="kjt.ah.gov.cn" size="sm" />
 
-<Route namespace="gov" :data='{"path":"/chongqing/gzw/:category{.+}?","name":"Unknown","maintainers":[],"location":"chongqing/gzw.ts"}' />
-
-### Unknown <Site url="kjt.ah.gov.cn" size="sm" />
-
 <Route namespace="gov" :data='{"path":"/cmse/*","name":"Unknown","maintainers":[],"location":"cmse/index.ts"}' />
 
 ### Unknown <Site url="kjt.ah.gov.cn" size="sm" />
@@ -462,10 +458,6 @@ Language
 
 ### Unknown <Site url="kjt.ah.gov.cn" size="sm" />
 
-<Route namespace="gov" :data='{"path":"/stats/*","name":"Unknown","maintainers":[],"location":"stats/index.ts"}' />
-
-### Unknown <Site url="kjt.ah.gov.cn" size="sm" />
-
 <Route namespace="gov" :data='{"path":"/suzhou/fg/:category{.+}?","name":"Unknown","maintainers":[],"location":"suzhou/fg.ts"}' />
 
 ### Unknown <Site url="kjt.ah.gov.cn" size="sm" />
@@ -523,6 +515,18 @@ Language
   | 生态修复 | stxf |
   | 用材林   | ycl  |
   | 其他     | qt   |
+
+### 国家统计局 通用 <Site url="www.stats.gov.cn" size="sm" />
+
+<Route namespace="gov" :data='{"path":"/stats/*","name":"国家统计局 通用","url":"www.stats.gov.cn","categories":["government"],"maintainers":["bigfei","nczitzk"],"example":"/stats/sj/zxfb","radar":[{"title":"国家统计局 通用","source":["www.stats.gov.cn/*path"],"target":"/gov/stats/*path"}],"description":"::: tip\n    路径处填写对应页面 URL 中 `http://www.stats.gov.cn/` 后的字段。下面是一个例子。\n\n    若订阅 [数据 > 数据解读](http://www.stats.gov.cn/sj/sjjd/) 则将对应页面 URL `http://www.stats.gov.cn/sj/sjjd/` 中 `http://www.stats.gov.cn/` 后的字段 `sj/sjjd` 作为路径填入。此时路由为 [`/gov/stats/sj/sjjd`](https://rsshub.app/gov/stats/sj/sjjd)\n\n    若订阅 [新闻 > 时政要闻 > 中央精神](http://www.stats.gov.cn/xw/szyw/zyjs/) 则将对应页面 URL `http://www.stats.gov.cn/xw/szyw/zyjs/` 中 `http://www.stats.gov.cn/` 后的字段 `xw/szyw/zyjs` 作为路径填入。此时路由为 [`/gov/stats/xw/szyw/zyjs`](https://rsshub.app/gov/stats/xw/szyw/zyjs)\n    :::","location":"stats/index.ts"}' />
+
+::: tip
+    路径处填写对应页面 URL 中 `http://www.stats.gov.cn/` 后的字段。下面是一个例子。
+
+    若订阅 [数据 > 数据解读](http://www.stats.gov.cn/sj/sjjd/) 则将对应页面 URL `http://www.stats.gov.cn/sj/sjjd/` 中 `http://www.stats.gov.cn/` 后的字段 `sj/sjjd` 作为路径填入。此时路由为 [`/gov/stats/sj/sjjd`](https://rsshub.app/gov/stats/sj/sjjd)
+
+    若订阅 [新闻 > 时政要闻 > 中央精神](http://www.stats.gov.cn/xw/szyw/zyjs/) 则将对应页面 URL `http://www.stats.gov.cn/xw/szyw/zyjs/` 中 `http://www.stats.gov.cn/` 后的字段 `xw/szyw/zyjs` 作为路径填入。此时路由为 [`/gov/stats/xw/szyw/zyjs`](https://rsshub.app/gov/stats/xw/szyw/zyjs)
+    :::
 
 ### 国务院政策文件库 <Site url="kjt.ah.gov.cn" size="sm" />
 
@@ -685,15 +689,6 @@ Language
 :::warning
   由于区域限制，建议在国内 IP 的机器上自建
   :::
-
-### 人力社保局 <Site url="rlsbj.cq.gov.cn/" size="sm" />
-
-<Route namespace="gov" :data='{"path":"/chongqing/sydwgkzp","categories":["government"],"example":"/gov/chongqing/sydwgkzp","parameters":{},"features":{"requireConfig":false,"requirePuppeteer":false,"antiCrawler":false,"supportBT":false,"supportPodcast":false,"supportScihub":false},"radar":[{"source":["rlsbj.cq.gov.cn/"]}],"name":"人力社保局","maintainers":["MajexH"],"url":"rlsbj.cq.gov.cn/","description":"#### 人事考试通知 {#chong-qing-shi-ren-min-zheng-fu-ren-li-she-bao-ju-ren-shi-kao-shi-tong-zhi}\n\n\n#### 事业单位公开招聘 {#chong-qing-shi-ren-min-zheng-fu-ren-li-she-bao-ju-shi-ye-dan-wei-gong-kai-zhao-pin}","location":"chongqing/sydwgkzp.ts"}' />
-
-#### 人事考试通知 {#chong-qing-shi-ren-min-zheng-fu-ren-li-she-bao-ju-ren-shi-kao-shi-tong-zhi}
-
-
-#### 事业单位公开招聘 {#chong-qing-shi-ren-min-zheng-fu-ren-li-she-bao-ju-shi-ye-dan-wei-gong-kai-zhao-pin}
 
 ### 上海市职业能力考试院 考试项目 <Site url="rsj.sh.gov.cn/" size="sm" />
 
@@ -951,9 +946,21 @@ Language
   如需订阅完整的热点专题，仅需订阅 **热点专题**`rdzt` 一项即可。
   :::
 
-### 重庆人事考试通知公告 <Site url="rlsbj.cq.gov.cn/" size="sm" />
+### 重庆市人民政府 国有资产监督管理委员会 <Site url="gzw.cq.gov.cn" size="sm" />
 
-<Route namespace="gov" :data='{"path":"/chongqing/rsks","categories":["government"],"example":"/gov/chongqing/rsks","parameters":{},"features":{"requireConfig":false,"requirePuppeteer":false,"antiCrawler":false,"supportBT":false,"supportPodcast":false,"supportScihub":false},"radar":[{"source":["rlsbj.cq.gov.cn/"]}],"name":"重庆人事考试通知公告","maintainers":["Mai19930513"],"url":"rlsbj.cq.gov.cn/","location":"chongqing/rsks.ts"}' />
+<Route namespace="gov" :data='{"path":"/chongqing/gzw/:category{.+}?","parameters":{"category":"分类，见下表，默认为通知公告"},"name":"重庆市人民政府 国有资产监督管理委员会","url":"gzw.cq.gov.cn","maintainers":["nczitzk"],"radar":[{"source":"gzw.cq.gov.cn/*category","target":"/chongqing/gzw/*category"}],"description":"| 通知公告  | 国企资讯 | 国企简介 | 国企招聘 |\n    | --------- | -------- | -------- | -------- |\n    | tzgg_191 | gqdj     | gqjj     | gqzp     |","location":"chongqing/gzw.ts"}' />
+
+| 通知公告  | 国企资讯 | 国企简介 | 国企招聘 |
+    | --------- | -------- | -------- | -------- |
+    | tzgg_191 | gqdj     | gqjj     | gqzp     |
+
+### 重庆市人民政府 人力社保局 - 人事考试通知 <Site url="rlsbj.cq.gov.cn/" size="sm" />
+
+<Route namespace="gov" :data='{"path":"/chongqing/rsks","categories":["government"],"example":"/gov/chongqing/rsks","radar":[{"source":["rlsbj.cq.gov.cn/"]}],"name":"重庆市人民政府 人力社保局 - 人事考试通知","maintainers":["Mai19930513"],"url":"rlsbj.cq.gov.cn/","location":"chongqing/rsks.ts"}' />
+
+### 重庆市人民政府 人力社保局 - 事业单位公开招聘 <Site url="rlsbj.cq.gov.cn/" size="sm" />
+
+<Route namespace="gov" :data='{"path":"/chongqing/sydwgkzp/:year?","url":"rlsbj.cq.gov.cn/","categories":["government"],"example":"/gov/chongqing/sydwgkzp","parameters":{"year":"需要订阅的年份，格式为`YYYY`，必须小于等于当前年份，默认为当前年份"},"radar":[{"source":["rlsbj.cq.gov.cn/"]}],"name":"重庆市人民政府 人力社保局 - 事业单位公开招聘","maintainers":["MajexH"],"location":"chongqing/sydwgkzp.ts"}' />
 
 ### 专题 <Site url="kjt.ah.gov.cn" size="sm" />
 

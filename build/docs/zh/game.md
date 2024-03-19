@@ -408,6 +408,12 @@ Region
 
 <Route namespace="sega" :data='{"path":"/pjsekai/news","categories":["game"],"example":"/sega/pjsekai/news","parameters":{},"features":{"requireConfig":false,"requirePuppeteer":false,"antiCrawler":false,"supportBT":false,"supportPodcast":false,"supportScihub":false},"radar":[{"source":["pjsekai.sega.jp/news/index.html"]}],"name":"世界计划 多彩舞台 ｜ ProjectSekai ｜ プロセカ","maintainers":["15x15G"],"url":"pjsekai.sega.jp/news/index.html","location":"pjsekai.ts"}' />
 
+## Steam <Site url="store.steampowered.com"/>
+
+### Store Search <Site url="store.steampowered.com" size="sm" />
+
+<Route namespace="steam" :data='{"path":"/search/:params","categories":["game"],"example":"/steam/search/sort_by=Released_DESC&tags=492&category1=10&os=linux","parameters":{"params":"Query parameters for a Steam Store search."},"radar":[{"source":["store.steampowered.com","store.steampowered.com/search/:params"]}],"name":"Store Search","maintainers":["moppman"],"location":"search.ts"}' />
+
 ## TapTap 中国 <Site url="taptap.com"/>
 
 :::warning
@@ -470,6 +476,16 @@ Region
 
 News data from [https://warthunder.com/en/news/](https://warthunder.com/en/news/)
   The year, month and day provided under UTC time zone are the same as the official website, so please ignore the specific time!!!
+
+## 电玩巴士 TGBUS <Site url="tgbus.com"/>
+
+### 文章列表 <Site url="tgbus.com" size="sm" />
+
+<Route namespace="tgbus" :data='{"path":"/list/:category","parameters":{"category":"列表分类，见下表"},"categories":["game"],"example":"/tgbus/list/news","radar":[{"source":["www.tgbus.com/list/:category/"],"target":"/list/:category"}],"name":"文章列表","maintainers":["Xzonn"],"description":"| 最新资讯 | 游戏评测 | 游戏视频 | 巴士首页特稿 | 硬件资讯 |\n    | -------- | -------- | -------- | ------------ | -------- |\n    | news     | review   | video    | special      | hardware |","location":"list.ts"}' />
+
+| 最新资讯 | 游戏评测 | 游戏视频 | 巴士首页特稿 | 硬件资讯 |
+    | -------- | -------- | -------- | ------------ | -------- |
+    | news     | review   | video    | special      | hardware |
 
 ## 二柄 APP <Site url="diershoubing.com"/>
 
@@ -663,6 +679,24 @@ News data from [https://warthunder.com/en/news/](https://warthunder.com/en/news/
 ### 用户发帖 <Site url="163.com" size="sm" />
 
 <Route namespace="163" :data='{"path":"/ds/:id","categories":["game"],"example":"/163/ds/63dfbaf4117741daaf73404601165843","parameters":{"id":"用户ID"},"features":{"requireConfig":false,"requirePuppeteer":false,"antiCrawler":false,"supportBT":false,"supportPodcast":false,"supportScihub":false},"radar":[{"source":["ds.163.com/user/:id"]}],"name":"用户发帖","maintainers":["luyuhuang"],"location":"ds.ts"}' />
+
+## 小黑盒 <Site url="xiaoheihe.cn"/>
+
+### 用户动态 <Site url="xiaoheihe.cn" size="sm" />
+
+<Route namespace="xiaoheihe" :data='{"path":"/user/:id","categories":["game"],"example":"/xiaoheihe/user/30664023","parameters":{"id":"用户 ID"},"features":{"requireConfig":false,"requirePuppeteer":false,"antiCrawler":false,"supportBT":false,"supportPodcast":false,"supportScihub":false},"name":"用户动态","maintainers":["tssujt"],"location":"user.ts"}' />
+
+### 游戏折扣 <Site url="xiaoheihe.cn" size="sm" />
+
+<Route namespace="xiaoheihe" :data='{"path":"/discount/:platform","categories":["game"],"example":"/xiaoheihe/discount/pc","parameters":{"platform":"平台分类，见下表"},"features":{"requireConfig":false,"requirePuppeteer":false,"antiCrawler":false,"supportBT":false,"supportPodcast":false,"supportScihub":false},"name":"游戏折扣","maintainers":["tssujt"],"description":"| PC  | Switch  | PSN   | Xbox |\n  | ----- | ------ | ----- | ----- |\n  | pc    | switch | psn   | xbox  |","location":"discount.ts"}' />
+
+| PC  | Switch  | PSN   | Xbox |
+  | ----- | ------ | ----- | ----- |
+  | pc    | switch | psn   | xbox  |
+
+### 游戏新闻 <Site url="xiaoheihe.cn" size="sm" />
+
+<Route namespace="xiaoheihe" :data='{"path":"/news","categories":["game"],"example":"/xiaoheihe/news","features":{"requireConfig":false,"requirePuppeteer":false,"antiCrawler":false,"supportBT":false,"supportPodcast":false,"supportScihub":false},"name":"游戏新闻","maintainers":["tssujt"],"location":"news.ts"}' />
 
 ## 英雄联盟 <Site url="lol.garena.tw"/>
 

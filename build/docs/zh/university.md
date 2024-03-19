@@ -1927,6 +1927,16 @@ author 列表：
   | -------- | -------- | -------- | -------- | -------- |
   | 1        | 2        | 3        | 4        | 5        |
 
+## 浙江工业大学 <Site url="zjut.edu.cn"/>
+
+### 设计与建筑学院 <Site url="zjut.edu.cn" size="sm" />
+
+<Route namespace="zjut" :data='{"path":"/da/:type","categories":["university"],"example":"/zjut/da/1","parameters":{"type":"分类，见下表"},"features":{"requireConfig":false,"requirePuppeteer":false,"antiCrawler":false,"supportBT":false,"supportPodcast":false,"supportScihub":false},"name":"设计与建筑学院","maintainers":["yikZero"],"description":"| 学院新闻 | 公告通知 | 科研申报 | 科研成果 | 文件与资源 | 学术交流 |\n| -------- | -------- | -------- | -------- | -------- | -------- |\n| 1        | 2        | 3        | 4        | 5        | 6        |","location":"da/index.ts"}' />
+
+| 学院新闻 | 公告通知 | 科研申报 | 科研成果 | 文件与资源 | 学术交流 |
+| -------- | -------- | -------- | -------- | -------- | -------- |
+| 1        | 2        | 3        | 4        | 5        | 6        |
+
 ## 中国科学院 <Site url="www.cas.cn"/>
 
 ### Unknown <Site url="www.cas.cn" size="sm" />
@@ -2002,6 +2012,10 @@ author 列表：
 <Route namespace="cuc" :data='{"path":"/yz","categories":["university"],"example":"/cuc/yz","parameters":{},"features":{"requireConfig":false,"requirePuppeteer":false,"antiCrawler":false,"supportBT":false,"supportPodcast":false,"supportScihub":false},"radar":[{"source":["yz.cuc.edu.cn/8549/list.htm","yz.cuc.edu.cn/"]}],"name":"研究生招生网","maintainers":["niuyi1017"],"url":"yz.cuc.edu.cn/8549/list.htm","location":"yz.ts"}' />
 
 ## 中国海洋大学 <Site url="it.ouc.edu.cn"/>
+
+### 后勤公告通知 <Site url="hqsz.ouc.edu.cn/news.html?typeId=02" size="sm" />
+
+<Route namespace="ouc" :data='{"path":"/hqsz","categories":["university"],"example":"/ouc/hqsz","parameters":{},"features":{"requireConfig":false,"requirePuppeteer":false,"antiCrawler":true,"supportBT":false,"supportPodcast":false,"supportScihub":false},"radar":[{"source":["hqsz.ouc.edu.cn/news.html"]}],"name":"后勤公告通知","maintainers":["ladeng07"],"url":"hqsz.ouc.edu.cn/news.html?typeId=02","location":"hqsz.ts"}' />
 
 ### 教务处 <Site url="jwc.ouc.edu.cn/" size="sm" />
 

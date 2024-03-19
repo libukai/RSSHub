@@ -4545,8 +4545,8 @@
     "_name": "Free Computer Books",
     ".": [
       {
-        "title": "Unknown",
-        "docs": "https://docs.rsshub.app/routes/other",
+        "title": "Book List",
+        "docs": "https://docs.rsshub.app/routes/reading",
         "source": [
           "/",
           "/index.html"
@@ -5163,7 +5163,7 @@
     "_name": "中国人民银行",
     "rlsbj": [
       {
-        "title": "重庆人事考试通知公告",
+        "title": "重庆市人民政府 人力社保局 - 人事考试通知",
         "docs": "https://docs.rsshub.app/routes/government",
         "source": [
           "/"
@@ -5171,12 +5171,12 @@
         "target": "/gov/chongqing/rsks"
       },
       {
-        "title": "人力社保局",
+        "title": "重庆市人民政府 人力社保局 - 事业单位公开招聘",
         "docs": "https://docs.rsshub.app/routes/government",
         "source": [
           "/"
         ],
-        "target": "/gov/chongqing/sydwgkzp"
+        "target": "/gov/chongqing/sydwgkzp/:year?"
       }
     ]
   },
@@ -5485,6 +5485,19 @@
           "/*"
         ],
         "target": "/gov/sichuan/deyang/mztoday"
+      }
+    ]
+  },
+  "stats.gov.cn": {
+    "_name": "中国人民银行",
+    "www": [
+      {
+        "title": "国家统计局 通用",
+        "docs": "https://docs.rsshub.app/routes/government",
+        "source": [
+          "/*path"
+        ],
+        "target": "/gov/gov/stats/*path"
       }
     ]
   },
@@ -6037,8 +6050,8 @@
     "_name": "HiFeng'Blog",
     ".": [
       {
-        "title": "Unknown",
-        "docs": "https://docs.rsshub.app/routes/other",
+        "title": "最近发表",
+        "docs": "https://docs.rsshub.app/routes/blog",
         "source": [
           "/"
         ],
@@ -6351,8 +6364,8 @@
     "_name": "Howtoforge Linux Tutorials",
     ".": [
       {
-        "title": "Unknown",
-        "docs": "https://docs.rsshub.app/routes/other",
+        "title": "Tutorials",
+        "docs": "https://docs.rsshub.app/routes/study",
         "source": [
           "/"
         ],
@@ -7330,6 +7343,19 @@
       }
     ]
   },
+  "kaopu.news": {
+    "_name": "靠谱新闻",
+    ".": [
+      {
+        "title": "全部",
+        "docs": "https://docs.rsshub.app/routes/new-media",
+        "source": [
+          "/"
+        ],
+        "target": "/kaopu/news/:language?"
+      }
+    ]
+  },
   "kbs.co.kr": {
     "_name": "KBS",
     "world": [
@@ -7502,8 +7528,8 @@
     "_name": "荒岛",
     ".": [
       {
-        "title": "Unknown",
-        "docs": "https://docs.rsshub.app/routes/other",
+        "title": "最新发布",
+        "docs": "https://docs.rsshub.app/routes/blog",
         "source": [
           "/"
         ],
@@ -9509,6 +9535,16 @@
   },
   "ouc.edu.cn": {
     "_name": "中国海洋大学",
+    "hqsz": [
+      {
+        "title": "后勤公告通知",
+        "docs": "https://docs.rsshub.app/routes/university",
+        "source": [
+          "/news.html"
+        ],
+        "target": "/ouc/hqsz"
+      }
+    ],
     "it": [
       {
         "title": "信息科学与工程学院研究生招生通知公告",
@@ -10055,8 +10091,8 @@
     "_name": "电脑玩物",
     ".": [
       {
-        "title": "Unknown",
-        "docs": "https://docs.rsshub.app/routes/other",
+        "title": "每日精选文章",
+        "docs": "https://docs.rsshub.app/routes/blog",
         "source": [
           "/"
         ],
@@ -12541,6 +12577,20 @@
       }
     ]
   },
+  "steampowered.com": {
+    "_name": "Steam",
+    "store": [
+      {
+        "title": "Store Search",
+        "docs": "https://docs.rsshub.app/routes/game",
+        "source": [
+          "/",
+          "/search/:params"
+        ],
+        "target": "/steam/search/:params"
+      }
+    ]
+  },
   "stockedge.com": {
     "_name": "Stock Edge",
     "web": [
@@ -13060,6 +13110,19 @@
       }
     ]
   },
+  "tgbus.com": {
+    "_name": "电玩巴士 TGBUS",
+    "www": [
+      {
+        "title": "文章列表",
+        "docs": "https://docs.rsshub.app/routes/game",
+        "source": [
+          "/list/:category/"
+        ],
+        "target": "/tgbus/list/:category"
+      }
+    ]
+  },
   "theatlantic.com": {
     "_name": "The Atlantic",
     "www": [
@@ -13479,12 +13542,28 @@
     "_name": "Twitter",
     ".": [
       {
+        "title": "Home timeline",
+        "docs": "https://docs.rsshub.app/routes/social-media",
+        "source": [
+          "/home"
+        ],
+        "target": "/twitter/home"
+      },
+      {
         "title": "Keyword",
         "docs": "https://docs.rsshub.app/routes/social-media",
         "source": [
           "/search"
         ],
         "target": "/twitter/keyword/:keyword/:routeParams?"
+      },
+      {
+        "title": "List timeline",
+        "docs": "https://docs.rsshub.app/routes/social-media",
+        "source": [
+          "/i/lists/:id"
+        ],
+        "target": "/twitter/list/:id"
       },
       {
         "title": "User media",
@@ -15422,8 +15501,8 @@
     "_name": "国外主机测评",
     ".": [
       {
-        "title": "Unknown",
-        "docs": "https://docs.rsshub.app/routes/other",
+        "title": "最新发布",
+        "docs": "https://docs.rsshub.app/routes/blog",
         "source": [
           "/"
         ],

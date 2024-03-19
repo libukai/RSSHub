@@ -62,6 +62,12 @@
   username 为博主用户名，而非`xxx.hashnode.dev`中`xxx`所代表的 blog 地址。
   :::
 
+## HiFeng'Blog <Site url="hicairo.com"/>
+
+### 最近发表 <Site url="hicairo.com/" size="sm" />
+
+<Route namespace="hicairo" :data='{"path":"/","categories":["blog"],"example":"/hicairo","radar":[{"source":["hicairo.com/"]}],"name":"最近发表","maintainers":["cnkmmk"],"url":"hicairo.com/","location":"rss.ts"}' />
+
 ## Ian Spriggss <Site url="ianspriggs.com"/>
 
 ### Category <Site url="ianspriggs.com" size="sm" />
@@ -206,6 +212,12 @@ There are many tags, which can be obtained by clicking on a tag from the homepag
   | -------- | -------- | -------- | -------- |
   | windows  | android  | tutorial | other    |
 
+## 电脑玩物 <Site url="playpcesor.com"/>
+
+### 每日精选文章 <Site url="playpcesor.com/" size="sm" />
+
+<Route namespace="playpcesor" :data='{"path":"/","categories":["blog"],"example":"/playpcesor","radar":[{"source":["playpcesor.com/"]}],"name":"每日精选文章","maintainers":["cnkmmk"],"url":"playpcesor.com/","location":"rss.ts"}' />
+
 ## 纷享销客 CRM <Site url="fxiaoke.com"/>
 
 ### 文章 <Site url="fxiaoke.com" size="sm" />
@@ -216,11 +228,23 @@ There are many tags, which can be obtained by clicking on a tag from the homepag
   | -------- | -------- | -------- | --------------- | --------- |
   | news     | blog     | articles | about-influence | customers |
 
+## 国外主机测评 <Site url="zhujiceping.com"/>
+
+### 最新发布 <Site url="zhujiceping.com/" size="sm" />
+
+<Route namespace="zhujiceping" :data='{"path":"/","categories":["blog"],"example":"/zhujiceping","radar":[{"source":["zhujiceping.com/"]}],"name":"最新发布","maintainers":["cnkmmk"],"url":"zhujiceping.com/","location":"rss.ts"}' />
+
 ## 虎皮椒 <Site url="www.xunhupay.com"/>
 
 ### 文章 <Site url="www.xunhupay.com/blog" size="sm" />
 
 <Route namespace="xunhupay" :data='{"path":"/blog","categories":["blog"],"example":"/xunhupay/blog","parameters":{},"features":{"requireConfig":false,"requirePuppeteer":false,"antiCrawler":false,"supportBT":false,"supportPodcast":false,"supportScihub":false},"radar":[{"source":["www.xunhupay.com/blog"]}],"name":"文章","maintainers":["Joey"],"url":"www.xunhupay.com/blog","location":"index.ts"}' />
+
+## 荒岛 <Site url="lala.im"/>
+
+### 最新发布 <Site url="lala.im/" size="sm" />
+
+<Route namespace="lala" :data='{"path":"/","categories":["blog"],"example":"/lala","radar":[{"source":["lala.im/"]}],"name":"最新发布","maintainers":["cnkmmk"],"url":"lala.im/","location":"rss.ts"}' />
 
 ## 免費資源網路社群 <Site url="free.com.tw"/>
 

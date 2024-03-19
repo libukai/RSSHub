@@ -1239,7 +1239,7 @@
   "/crossbell/notes/source/:source": [
     "DIYgod"
   ],
-  "/cs/:category?": [
+  "/cs/:category{.+}?": [
     "nczitzk"
   ],
   "/cs/video/:category?": [
@@ -1885,7 +1885,9 @@
   "/freebuf/articles/:type": [
     "trganda"
   ],
-  "/freecomputerbooks/:category?": [],
+  "/freecomputerbooks/:category?": [
+    "cubroe"
+  ],
   "/freewechat/profile/:id": [
     "TonyRL"
   ],
@@ -2135,11 +2137,13 @@
     "nczitzk",
     "fuzy112"
   ],
-  "/gov/chongqing/gzw/:category{.+}?": [],
+  "/gov/chongqing/gzw/:category{.+}?": [
+    "nczitzk"
+  ],
   "/gov/chongqing/rsks": [
     "Mai19930513"
   ],
-  "/gov/chongqing/sydwgkzp": [
+  "/gov/chongqing/sydwgkzp/:year?": [
     "MajexH"
   ],
   "/gov/cmse/fxrw": [
@@ -2317,7 +2321,10 @@
   "/gov/sichuan/deyang/mztoday/:infoType?": [
     "zytomorrow"
   ],
-  "/gov/stats/*": [],
+  "/gov/stats/*": [
+    "bigfei",
+    "nczitzk"
+  ],
   "/gov/suzhou/doc": [
     "EsuRt"
   ],
@@ -3101,6 +3108,9 @@
     "nczitzk"
   ],
   "/kantarworldpanel/:region?/:category{.+}?": [],
+  "/kaopu/news/:language?": [
+    "fashioncj"
+  ],
   "/kbs/news/:category?/:language?": [
     "nczitzk"
   ],
@@ -4027,6 +4037,9 @@
   ],
   "/otobanana/user/:id": [
     "TonyRL"
+  ],
+  "/ouc/hqsz": [
+    "ladeng07"
   ],
   "/ouc/it/postgraduate": [
     "shengmaosu"
@@ -5015,6 +5028,9 @@
   "/stdaily/digitalpaper": [
     "lyqluis"
   ],
+  "/steam/search/:params": [
+    "moppman"
+  ],
   "/stheadline/std/realtime/:category{.+}?": [],
   "/stockedge/daily-updates/news": [
     "Rjnishant530"
@@ -5245,6 +5261,9 @@
   "/tfc-taiwan/topic/:id": [
     "TonyRL"
   ],
+  "/tgbus/list/:category": [
+    "Xzonn"
+  ],
   "/theatlantic/:category": [
     "EthanWng97"
   ],
@@ -5435,10 +5454,7 @@
   "/twitch/video/:login/:filter?": [
     "hoilc"
   ],
-  "/twitter/collection/:uid/:collectionId/:routeParams?": [
-    "TonyRL"
-  ],
-  "/twitter/followings/:id/:routeParams?": [
+  "/twitter/home/:routeParams?": [
     "DIYgod"
   ],
   "/twitter/keyword/:keyword/:routeParams?": [
@@ -5449,10 +5465,12 @@
   "/twitter/likes/:id/:routeParams?": [
     "xyqfer"
   ],
-  "/twitter/list/:id/:name/:routeParams?": [
+  "/twitter/list/:id/:routeParams?": [
+    "DIYgod",
     "xyqfer"
   ],
   "/twitter/media/:id/:routeParams?": [
+    "DIYgod",
     "yindaheng98",
     "Rongronggg9"
   ],
@@ -5903,6 +5921,15 @@
   "/xboxfan/news": [
     "XXY233"
   ],
+  "/xiaoheihe/discount/:platform": [
+    "tssujt"
+  ],
+  "/xiaoheihe/news": [
+    "tssujt"
+  ],
+  "/xiaoheihe/user/:id": [
+    "tssujt"
+  ],
   "/xiaohongshu/board/:board_id": [
     "lotosbin"
   ],
@@ -6319,6 +6346,9 @@
   ],
   "/zju/physics/:type": [
     "Caicailiushui"
+  ],
+  "/zjut/da/:type": [
+    "yikZero"
   ],
   "/zjuvag/blog": [
     "KaiyoungYu"
