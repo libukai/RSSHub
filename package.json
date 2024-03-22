@@ -23,7 +23,7 @@
     "build:all": "npm run build:radar && npm run build:maintainer",
     "build:maintainer": "node scripts/workflow/build-maintainer.js",
     "build:radar": "node scripts/workflow/build-radar.js",
-    "dev": "cross-env NODE_ENV=dev nodemon --inspect --openssl-config=./openssl.cnf lib/index.js",
+    "dev": "cross-env NODE_ENV=dev nodemon --inspect lib/index.js",
     "format": "eslint --cache --fix \"**/*.{js,yml}\" && node website/docs/.format/format.mjs && prettier \"**/*.{js,json}\" --write",
     "format:check": "eslint --cache \"**/*.{js,yml}\" && prettier \"**/*.{js,json}\" --check",
     "format:staged": "lint-staged",
@@ -33,7 +33,7 @@
     "lint": "eslint --cache .",
     "prepare": "husky || true",
     "profiling": "NODE_ENV=production node --prof lib/index.js",
-    "start": "node lib/index.js",
+    "start": "node --openssl-config=./openssl.cnf lib/index.js",
     "test": "npm run format:check && npm run jest:coverage"
   },
   "lint-staged": {
