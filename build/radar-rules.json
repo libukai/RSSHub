@@ -1443,6 +1443,16 @@
         ],
         "target": "/bilibili/platform/:area?/:p_type?/:uid?"
       }
+    ],
+    "game": [
+      {
+        "title": "最新公告",
+        "docs": "https://docs.rsshub.app/routes/game",
+        "source": [
+          "/pcr/news.html"
+        ],
+        "target": "/priconne-redive/news/zh-cn"
+      }
     ]
   },
   "bing.com": {
@@ -6903,6 +6913,19 @@
       }
     ]
   },
+  "infzm.com": {
+    "_name": "infzm",
+    ".": [
+      {
+        "title": "频道",
+        "docs": "https://docs.rsshub.app/routes/traditional-media",
+        "source": [
+          "/contents"
+        ],
+        "target": "/infzm(_,url)=>url?`/infzm/${url.match(/contents\\?term_id=(\\d*)/)?.[1]}`:\"\""
+      }
+    ]
+  },
   "instructables.com": {
     "_name": "Instructables",
     ".": [
@@ -7883,6 +7906,19 @@
           "/work/tags/:tag"
         ],
         "target": "/logonews*"
+      }
+    ]
+  },
+  "loongarch.org": {
+    "_name": "LA UOSC社区",
+    "bbs": [
+      {
+        "title": "最热 / 最新帖子",
+        "docs": "https://docs.rsshub.app/routes/bbs",
+        "source": [
+          "/"
+        ],
+        "target": "/loongarch/post/:type?"
       }
     ]
   },
@@ -10202,7 +10238,20 @@
         "source": [
           "/news"
         ],
-        "target": "/priconne-redive/news/:location?"
+        "target": "/priconne-redive/news/jp"
+      }
+    ]
+  },
+  "so-net.tw": {
+    "_name": "PRINCESS CONNECT! Re Dive プリンセスコネクト！Re Dive",
+    "princessconnect": [
+      {
+        "title": "最新公告",
+        "docs": "https://docs.rsshub.app/routes/game",
+        "source": [
+          "/news"
+        ],
+        "target": "/priconne-redive/news/zh-tw"
       }
     ]
   },
