@@ -202,7 +202,7 @@
         "source": [
           "/games/:name/:type"
         ],
-        "target": "/3dmgame/:name/:type?"
+        "target": "/3dmgame/games/:name/:type?"
       },
       {
         "title": "新闻中心",
@@ -1775,6 +1775,19 @@
           "/"
         ],
         "target": "/boc/whpj"
+      }
+    ]
+  },
+  "booru.org": {
+    "_name": "Booru",
+    "mmda": [
+      {
+        "title": "MMDArchive 标签查询",
+        "docs": "https://docs.rsshub.app/routes/picture",
+        "source": [
+          "/index.php"
+        ],
+        "target": "/booru/mmda/tags/:tags?"
       }
     ]
   },
@@ -6939,6 +6952,19 @@
       }
     ]
   },
+  "ippa.top": {
+    "_name": "子方有料",
+    ".": [
+      {
+        "title": "最新文章",
+        "docs": "https://docs.rsshub.app/routes/blog",
+        "source": [
+          "/"
+        ],
+        "target": "/ippa/"
+      }
+    ]
+  },
   "iqiyi.com": {
     "_name": "爱奇艺",
     ".": [
@@ -7800,6 +7826,19 @@
       }
     ]
   },
+  "linovelib.com": {
+    "_name": "哔哩轻小说",
+    "www": [
+      {
+        "title": "卷",
+        "docs": "https://docs.rsshub.app/routes/reading",
+        "source": [
+          "/novel/:id/catalog"
+        ],
+        "target": "/linovelib/volume/:id"
+      }
+    ]
+  },
   "liquipedia.net": {
     "_name": "Liquipedia",
     ".": [
@@ -8270,6 +8309,30 @@
           "/:category/:sort/:status"
         ],
         "target": "/modian/zhongchou/:category?/:sort?/:status?"
+      }
+    ]
+  },
+  "modrinth.com": {
+    "_name": "Modrinth",
+    ".": [
+      {
+        "title": "Project versions",
+        "docs": "https://docs.rsshub.app/routes/game",
+        "source": [
+          "/mod/:id/*",
+          "/plugin/:id/*",
+          "/datapack/:id/*",
+          "/shader/:id/*",
+          "/resourcepack/:id/*",
+          "/modpack/:id/*",
+          "/mod/:id",
+          "/plugin/:id",
+          "/datapack/:id",
+          "/shader/:id",
+          "/resourcepack/:id",
+          "/modpack/:id"
+        ],
+        "target": "/modrinth/project/:id/versions"
       }
     ]
   },
@@ -14998,6 +15061,19 @@
           "/"
         ],
         "target": "/yahoo/news/:region/:category?"
+      }
+    ]
+  },
+  "blogspot.com": {
+    "_name": "甬哥侃侃侃YouTube教程摘要随笔",
+    "ygkkk": [
+      {
+        "title": "最新发表",
+        "docs": "https://docs.rsshub.app/routes/blog",
+        "source": [
+          "/"
+        ],
+        "target": "/ygkkk/"
       }
     ]
   },

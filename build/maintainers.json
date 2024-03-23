@@ -131,13 +131,15 @@
     "nczitzk",
     "fashioncj"
   ],
-  "/3dmgame/:name/:type?": [
+  "/3dmgame/games/:name/:type?": [
     "sinchang",
     "jacky2001114",
-    "HenryQW"
+    "HenryQW",
+    "lyqluis"
   ],
   "/3dmgame/news/:category?": [
-    "zhboner"
+    "zhboner",
+    "lyqluis"
   ],
   "/423down/:category/:type?": [],
   "/4gamers/": [
@@ -2881,6 +2883,9 @@
   "/instructables/projects/:category?": [
     "wolfg1969"
   ],
+  "/ippa/": [
+    "cnkmmk"
+  ],
   "/ipsw/index/:ptype/:pname": [
     "Jeason0228"
   ],
@@ -3251,6 +3256,9 @@
   ],
   "/linovelib/novel/:id": [
     "misakicoca"
+  ],
+  "/linovelib/volume/:id": [
+    "rkscv"
   ],
   "/liquipedia/counterstrike/matches/:team": [
     "CookiePieWw"
@@ -6088,6 +6096,9 @@
   "/yangtzeu/dongke/*": [],
   "/ycwb/:node": [
     "TimWu007"
+  ],
+  "/ygkkk/": [
+    "cnkmmk"
   ],
   "/yicai/author/:id?": [
     "nczitzk"

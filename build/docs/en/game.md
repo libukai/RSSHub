@@ -4,7 +4,7 @@
 
 ### 新闻中心 <Site url="3dmgame.com" size="sm" />
 
-<Route namespace="3dmgame" :data='{"path":"/news/:category?","categories":["game"],"example":"/3dmgame/news","parameters":{"category":"分类名或 ID，见下表，默认为新闻推荐，ID 可从分类 URL 中找到，如 Steam 为 `22221`"},"features":{"requireConfig":false,"requirePuppeteer":false,"antiCrawler":false,"supportBT":false,"supportPodcast":false,"supportScihub":false},"radar":[{"source":["3dmgame.com/news/:category?","3dmgame.com/news"]}],"name":"新闻中心","maintainers":["zhboner"],"description":"| 新闻推荐 | 游戏新闻 | 动漫影视 | 智能数码 | 时事焦点    |\n  | -------- | -------- | -------- | -------- | ----------- |\n  |          | game     | acg      | next     | news_36_1 |","location":"news-center.ts"}' />
+<Route namespace="3dmgame" :data='{"path":"/news/:category?","categories":["game"],"example":"/3dmgame/news","parameters":{"category":"分类名或 ID，见下表，默认为新闻推荐，ID 可从分类 URL 中找到，如 Steam 为 `22221`"},"features":{"requireConfig":false,"requirePuppeteer":false,"antiCrawler":false,"supportBT":false,"supportPodcast":false,"supportScihub":false},"radar":[{"source":["3dmgame.com/news/:category?","3dmgame.com/news"]}],"name":"新闻中心","maintainers":["zhboner","lyqluis"],"description":"| 新闻推荐 | 游戏新闻 | 动漫影视 | 智能数码 | 时事焦点    |\n  | -------- | -------- | -------- | -------- | ----------- |\n  |          | game     | acg      | next     | news_36_1 |","location":"news-center.ts"}' />
 
 | 新闻推荐 | 游戏新闻 | 动漫影视 | 智能数码 | 时事焦点    |
   | -------- | -------- | -------- | -------- | ----------- |
@@ -12,7 +12,7 @@
 
 ### 游戏资讯 <Site url="3dmgame.com" size="sm" />
 
-<Route namespace="3dmgame" :data='{"path":"/:name/:type?","radar":[{"source":["3dmgame.com/games/:name/:type"]}],"name":"游戏资讯","categories":["game"],"maintainers":["sinchang","jacky2001114","HenryQW"],"location":"game.ts"}' />
+<Route namespace="3dmgame" :data='{"path":"/games/:name/:type?","radar":[{"source":["3dmgame.com/games/:name/:type"]}],"name":"游戏资讯","categories":["game"],"maintainers":["sinchang","jacky2001114","HenryQW","lyqluis"],"location":"game.ts"}' />
 
 ## 4Gamers <Site url="www.4gamers.com.tw"/>
 
@@ -334,7 +334,7 @@ Region
 
 ### Project versions <Site url="modrinth.com" size="sm" />
 
-<Route namespace="modrinth" :data='{"path":"/project/:id/versions/:routeParams?","categories":["game"],"example":"/modrinth/project/sodium/versions","parameters":{"id":"Id or slug of the Modrinth project","routeParams":"Extra route params. See the table below for options"},"features":{"requireConfig":false,"requirePuppeteer":false,"antiCrawler":false,"supportBT":false,"supportPodcast":false,"supportScihub":false},"radar":{"source":["modrinth.com/mod/:id/*","modrinth.com/plugin/:id/*","modrinth.com/datapack/:id/*","modrinth.com/shader/:id/*","modrinth.com/resourcepack/:id/*","modrinth.com/modpack/:id/*","modrinth.com/mod/:id","modrinth.com/plugin/:id","modrinth.com/datapack/:id","modrinth.com/shader/:id","modrinth.com/resourcepack/:id","modrinth.com/modpack/:id"],"target":"/project/:id/versions"},"name":"Project versions","maintainers":["SettingDust"],"description":"| Name           | Example                                      |\n| -------------- | -------------------------------------------- |\n| loaders        | loaders=fabric&loaders=quilt&loaders=forge |\n| game_versions | game_versions=1.20.1&game_versions=1.20.2 |\n| featured       | featured=true                                |","location":"versions.ts"}' />
+<Route namespace="modrinth" :data='{"path":"/project/:id/versions/:routeParams?","categories":["game"],"example":"/modrinth/project/sodium/versions","parameters":{"id":"Id or slug of the Modrinth project","routeParams":"Extra route params. See the table below for options"},"features":{"requireConfig":false,"requirePuppeteer":false,"antiCrawler":false,"supportBT":false,"supportPodcast":false,"supportScihub":false},"radar":[{"source":["modrinth.com/mod/:id/*","modrinth.com/plugin/:id/*","modrinth.com/datapack/:id/*","modrinth.com/shader/:id/*","modrinth.com/resourcepack/:id/*","modrinth.com/modpack/:id/*","modrinth.com/mod/:id","modrinth.com/plugin/:id","modrinth.com/datapack/:id","modrinth.com/shader/:id","modrinth.com/resourcepack/:id","modrinth.com/modpack/:id"],"target":"/project/:id/versions"}],"name":"Project versions","maintainers":["SettingDust"],"description":"| Name           | Example                                      |\n| -------------- | -------------------------------------------- |\n| loaders        | loaders=fabric&loaders=quilt&loaders=forge |\n| game_versions | game_versions=1.20.1&game_versions=1.20.2 |\n| featured       | featured=true                                |","location":"versions.ts"}' />
 
 | Name           | Example                                      |
 | -------------- | -------------------------------------------- |
@@ -718,13 +718,13 @@ News data from [https://warthunder.com/en/news/](https://warthunder.com/en/news/
 
 ### 游戏星辰 <Site url="www.2023game.com/" size="sm" />
 
-<Route namespace="2023game" :data='{"path":"/:category?/:tab?","categories":["game"],"example":"/2023game/sgame/topicList","parameters":{"category":"分类，见下表","tab":"标签, 所有:all;最新:topicList;热门:jhcpb"},"features":{"requireConfig":false,"requirePuppeteer":false,"antiCrawler":false,"supportBT":false,"supportPodcast":false,"supportScihub":false},"name":"游戏星辰","maintainers":["xzzpig"],"url":"www.2023game.com/","description":"分类\n\n    | PS4游戏 | switch游戏 | 3DS游戏 | PSV游戏 | Xbox360 | PS3游戏 | 世嘉MD/SS | PSP游戏 | PC周边 | 怀旧掌机 | 怀旧主机 | PS4教程 | PS4金手指 | switch金手指 | switch教程 | switch补丁 | switch主题 | switch存档 |\n    | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- |\n    | ps4 | sgame | 3ds | psv | jiaocheng | ps3yx | zhuji.md | zhangji.psp | pcgame | zhangji | zhuji | ps4.psjc | ps41.ps4pkg | nsaita.cundang | nsaita.pojie | nsaita.buding | nsaita.zhutie | nsaita.zhuti |","location":"index.ts"}' />
+<Route namespace="2023game" :data='{"path":"/:category?/:tab?","categories":["game"],"example":"/2023game/sgame/topicList","parameters":{"category":"分类，见下表","tab":"标签, 所有:all;最新:topicList;热门:jhcpb"},"features":{"requireConfig":false,"requirePuppeteer":false,"antiCrawler":false,"supportBT":false,"supportPodcast":false,"supportScihub":false},"name":"游戏星辰","maintainers":["xzzpig"],"url":"www.2023game.com/","description":"分类\n\n  | PS4游戏 | switch游戏 | 3DS游戏 | PSV游戏 | Xbox360 | PS3游戏 | 世嘉MD/SS | PSP游戏 | PC周边 | 怀旧掌机 | 怀旧主机 | PS4教程 | PS4金手指 | switch金手指 | switch教程 | switch补丁 | switch主题 | switch存档 |\n  | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- |\n  | ps4 | sgame | 3ds | psv | jiaocheng | ps3yx | zhuji.md | zhangji.psp | pcgame | zhangji | zhuji | ps4.psjc | ps41.ps4pkg | nsaita.cundang | nsaita.pojie | nsaita.buding | nsaita.zhutie | nsaita.zhuti |","location":"index.ts"}' />
 
 分类
 
-    | PS4游戏 | switch游戏 | 3DS游戏 | PSV游戏 | Xbox360 | PS3游戏 | 世嘉MD/SS | PSP游戏 | PC周边 | 怀旧掌机 | 怀旧主机 | PS4教程 | PS4金手指 | switch金手指 | switch教程 | switch补丁 | switch主题 | switch存档 |
-    | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- |
-    | ps4 | sgame | 3ds | psv | jiaocheng | ps3yx | zhuji.md | zhangji.psp | pcgame | zhangji | zhuji | ps4.psjc | ps41.ps4pkg | nsaita.cundang | nsaita.pojie | nsaita.buding | nsaita.zhutie | nsaita.zhuti |
+  | PS4游戏 | switch游戏 | 3DS游戏 | PSV游戏 | Xbox360 | PS3游戏 | 世嘉MD/SS | PSP游戏 | PC周边 | 怀旧掌机 | 怀旧主机 | PS4教程 | PS4金手指 | switch金手指 | switch教程 | switch补丁 | switch主题 | switch存档 |
+  | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- |
+  | ps4 | sgame | 3ds | psv | jiaocheng | ps3yx | zhuji.md | zhangji.psp | pcgame | zhangji | zhuji | ps4.psjc | ps41.ps4pkg | nsaita.cundang | nsaita.pojie | nsaita.buding | nsaita.zhutie | nsaita.zhuti |
 
 ## 游戏基因 <Site url="news.gamegene.cn"/>
 
