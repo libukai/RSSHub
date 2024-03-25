@@ -1766,6 +1766,16 @@
         "target": "/bnu/dwxgb/:category/:type"
       }
     ],
+    "jwb": [
+      {
+        "title": "教务部（研究生院）",
+        "docs": "https://docs.rsshub.app/routes/university",
+        "source": [
+          "/"
+        ],
+        "target": "/bnu/jwb"
+      }
+    ],
     "www.lib": [
       {
         "title": "Unknown",
@@ -15694,6 +15704,19 @@
           "/portfolio/:id"
         ],
         "target": "/zimuxia/portfolio/:id"
+      }
+    ]
+  },
+  "zjut.edu.cn": {
+    "_name": "浙江工业大学",
+    "www.news": [
+      {
+        "title": "浙工大新闻",
+        "docs": "https://docs.rsshub.app/routes/university",
+        "source": [
+          "/:type/list.htm"
+        ],
+        "target": "/zjut/news/:type"
       }
     ]
   },
