@@ -4001,6 +4001,25 @@
     "name": "App Store/Mac App Store",
     "url": "apps.apple.com"
   },
+  "appstorrent": {
+    "routes": {
+      "/programs": {
+        "path": "/programs",
+        "categories": [
+          "program-update"
+        ],
+        "example": "/appstorrent/programs",
+        "name": "Programs",
+        "maintainers": [
+          "xzzpig"
+        ],
+        "url": "appstorrent.ru/programs/",
+        "location": "programs.ts"
+      }
+    },
+    "name": "AppsTorrent",
+    "url": "appstorrent.ru"
+  },
   "aqara": {
     "routes": {
       "/community/:id?/:keyword?": {
@@ -7427,6 +7446,31 @@
     },
     "name": "Blizzard",
     "url": "news.blizzard.com"
+  },
+  "blogread": {
+    "routes": {
+      "/newest": {
+        "path": "/newest",
+        "categories": [
+          "programming"
+        ],
+        "example": "/blogread/newest",
+        "radar": [
+          {
+            "source": [
+              "blogread.cn/news/newest.php"
+            ]
+          }
+        ],
+        "name": "最新文章",
+        "maintainers": [
+          "fashioncj"
+        ],
+        "location": "index.ts"
+      }
+    },
+    "name": "技术头条",
+    "url": "blogread.cn"
   },
   "bloomberg": {
     "routes": {
@@ -13534,6 +13578,32 @@
     },
     "name": "大眼仔旭",
     "url": "dayanzai.me"
+  },
+  "dbaplus": {
+    "routes": {
+      "/": {
+        "path": "/",
+        "categories": [
+          "programming"
+        ],
+        "example": "/dbaplus",
+        "radar": [
+          {
+            "source": [
+              "dbaplus.cn/"
+            ]
+          }
+        ],
+        "name": "最新文章",
+        "maintainers": [
+          "cnkmmk"
+        ],
+        "url": "dbaplus.cn/",
+        "location": "rss.ts"
+      }
+    },
+    "name": "dbaplus社群",
+    "url": "dbaplus.cn"
   },
   "dblp": {
     "routes": {
@@ -60935,7 +61005,12 @@
           "embed": "Default to embed the video, set to any value to disable embedding"
         },
         "features": {
-          "requireConfig": false,
+          "requireConfig": [
+            {
+              "name": "YOUTUBE_KEY",
+              "description": " YouTube API Key, support multiple keys, split them with `,`, [API Key application](https://console.developers.google.com/)"
+            }
+          ],
           "requirePuppeteer": false,
           "antiCrawler": false,
           "supportBT": false,

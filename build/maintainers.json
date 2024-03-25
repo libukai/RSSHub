@@ -410,6 +410,9 @@
   "/appstore/xianmian": [
     "Andiedie"
   ],
+  "/appstorrent/programs": [
+    "xzzpig"
+  ],
   "/aqara/community/:id?/:keyword?": [
     "nczitzk"
   ],
@@ -758,6 +761,9 @@
   ],
   "/blizzard/news/:language?/:category?": [
     "nczitzk"
+  ],
+  "/blogread/newest": [
+    "fashioncj"
   ],
   "/bloomberg/authors/:id/:slug/:source?": [
     "josh"
@@ -1347,6 +1353,9 @@
     "nczitzk"
   ],
   "/dayanzai/:category/:fulltext?": [],
+  "/dbaplus/": [
+    "cnkmmk"
+  ],
   "/dblp/:field": [
     "ytno1"
   ],
