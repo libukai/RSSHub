@@ -2051,7 +2051,9 @@
   "/github/contributors/:user/:repo/:order?/:anon?": [
     "zoenglinghou"
   ],
-  "/github/file/:user/:repo/:branch/:filepath{.+}": [],
+  "/github/file/:user/:repo/:branch/:filepath{.+}": [
+    "zengxs"
+  ],
   "/github/user/followers/:user": [
     "HenryQW"
   ],
@@ -3146,6 +3148,9 @@
   ],
   "/jump/discount/:platform/:filter?/:countries?": [
     "zytomorrow"
+  ],
+  "/junhe/legal-updates": [
+    "nczitzk"
   ],
   "/kamen-rider-official/news/:category?": [
     "nczitzk"
