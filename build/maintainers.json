@@ -430,6 +430,9 @@
   "/aqara/cn/news": [],
   "/aqara*": [],
   "/aqara/:region/:type?": [],
+  "/aqicn/:city/:pollution?": [
+    "ladeng07"
+  ],
   "/arcteryx/new-arrivals/:country/:gender": [
     "EthanWng97"
   ],
@@ -1519,6 +1522,9 @@
   ],
   "/dongqiudi/top_news/:id?": [
     "HendricksZheng"
+  ],
+  "/dora-world/article/:topic/:topicId?": [
+    "AChangAZha"
   ],
   "/dorohedoro/news": [
     "nczitzk"
@@ -6003,6 +6009,9 @@
   "/xboxfan/news": [
     "XXY233"
   ],
+  "/xiaoheihe/add2cart/:platform": [
+    "ladeng07"
+  ],
   "/xiaoheihe/discount/:platform": [
     "tssujt"
   ],
@@ -6116,6 +6125,9 @@
   "/xueqiu/stock_comments/:id": [],
   "/xueqiu/stock_info/:id/:type?": [
     "YuYang"
+  ],
+  "/xueqiu/timeline/:usergroup_id?": [
+    "ErnestDong"
   ],
   "/xueqiu/today": [
     "nczitzk"

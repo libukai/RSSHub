@@ -4237,6 +4237,37 @@
     "name": "Aqara",
     "url": "aqara.com"
   },
+  "aqicn": {
+    "routes": {
+      "/:city/:pollution?": {
+        "path": "/:city/:pollution?",
+        "categories": [
+          "other"
+        ],
+        "example": "/aqicn/beijing/pm25",
+        "parameters": {
+          "city": "城市拼音或地区 ID，详见[aqicn.org](http://aqicn.org/city/)",
+          "pollution": "可选择显示更详细的空气污染成分"
+        },
+        "radar": [
+          {
+            "source": [
+              "aqicn.org"
+            ]
+          }
+        ],
+        "name": "实时 AQI",
+        "maintainers": [
+          "ladeng07"
+        ],
+        "url": "aqicn.org",
+        "descriptions": "\n|   参数   | 污染成分 |\n| -------- | -------- |\n|   pm25   |  PM2.5   |\n|   pm10   |  PM10    |\n|   o3     |  O3      |\n|   no2    |  NO2     |\n|   so2    |  SO2     |\n|   co     |  CO      |\n\n举例: [https://rsshub.app/aqicn/beijing/pm25,pm10](https://rsshub.app/aqicn/beijing/pm25,pm10)\n\n1. 显示单个污染成分，例如「pm25」, [https://rsshub.app/aqicn/beijing/pm25](https://rsshub.app/aqicn/beijing/pm25)\n2. 逗号分隔显示多个污染成分，例如「pm25,pm10」，[https://rsshub.app/aqicn/beijing/pm25,pm10](https://rsshub.app/aqicn/beijing/pm25,pm10)\n3. 城市子站 ID 获取方法：右键显示网页源代码，搜索 \"idx\" （带双冒号），后面的 ID 就是子站的 ID，如你给的链接 ID 是 4258，RSS 地址就是 [https://rsshub.app/aqicn/4258](https://rsshub.app/aqicn/4258)\n",
+        "location": "aqi.ts"
+      }
+    },
+    "name": "空气质量",
+    "url": "aqicn.org"
+  },
   "arcteryx": {
     "routes": {
       "/new-arrivals/:country/:gender": {
@@ -5004,7 +5035,7 @@
         "maintainers": [
           "JimenezLi"
         ],
-        "description": "| 键           | 含义                                                       | 接受的值      | 默认值 |\n  | ------------ | ---------------------------------------------------------- | ------------- | ------ |\n  | kw           | 在名为 kw 的贴吧中搜索                                     | 任意名称 / 无 | 无     |\n  | only_thread | 只看主题帖，默认为 0 关闭                                  | 0/1           | 0      |\n  | rn           | 返回条目的数量                                             | 1-20          | 20     |\n  | sm           | 排序方式，0 为按时间顺序，1 为按时间倒序，2 为按相关性顺序 | 0/1/2         | 1      |\n\n  用例：`/baidu/tieba/search/neuro/kw=neurosama&only_thread=1&sm=2`",
+        "description": "| 键           | 含义                                                       | 接受的值      | 默认值 |\n  | ------------ | ---------------------------------------------------------- | ------------- | ------ |\n  | kw           | 在名为 kw 的贴吧中搜索                                     | 任意名称 / 无 | 无     |\n  | only_thread  | 只看主题帖，默认为 0 关闭                                  | 0/1           | 0      |\n  | rn           | 返回条目的数量                                             | 1-20          | 20     |\n  | sm           | 排序方式，0 为按时间顺序，1 为按时间倒序，2 为按相关性顺序 | 0/1/2         | 1      |\n\n  用例：`/baidu/tieba/search/neuro/kw=neurosama&only_thread=1&sm=2`",
         "location": "tieba/search.ts"
       },
       "/tieba/user/:uid": {
@@ -15342,6 +15373,43 @@
     "name": "懂球帝",
     "url": "m.dongqiudi.com",
     "description": ":::tip\n-   可以通过头条新闻 + 参数过滤的形式获得早报、专题等内容。\n:::"
+  },
+  "dora-world": {
+    "routes": {
+      "/article/:topic/:topicId?": {
+        "path": "/article/:topic/:topicId?",
+        "categories": [
+          "anime"
+        ],
+        "example": "/dora-world/article/contents",
+        "parameters": {
+          "topic": "Topic name, can be found in URL. For example: the topic name of [https://www.dora-world.com/movie](https://www.dora-world.com/movie) is `movie`",
+          "topicId": "Topic id, can be found in URL. For example: the topic id of [https://www.dora-world.com/contents?t=197](https://www.dora-world.com/contents?t=197) is `197`"
+        },
+        "features": {
+          "requireConfig": false,
+          "requirePuppeteer": false,
+          "antiCrawler": false,
+          "supportBT": false,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "radar": [
+          {
+            "source": [
+              "www.dora-world.com/:topic"
+            ]
+          }
+        ],
+        "name": "Article",
+        "maintainers": [
+          "AChangAZha"
+        ],
+        "location": "article.ts"
+      }
+    },
+    "name": "Doraemon Channel",
+    "url": "www.dora-world.com"
   },
   "dorohedoro": {
     "routes": {
@@ -35162,12 +35230,14 @@
           "category": "分类，可在对应分类页 URL 中找到"
         },
         "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
-          "antiCrawler": false,
-          "supportBT": false,
-          "supportPodcast": false,
-          "supportScihub": false
+          "requireConfig": [
+            {
+              "name": "MOX_COOKIE",
+              "optional": true,
+              "description": "注册用户登录后的 Cookie, 可以从浏览器开发者工具Network面板中的mox页面请求获取，Cookie内容形如VOLSKEY=xxxxxx; VLIBSID=xxxxxx; VOLSESS=xxxxxx"
+            }
+          ],
+          "antiCrawler": true
         },
         "radar": [
           {
@@ -35181,7 +35251,7 @@
         "maintainers": [
           "nczitzk"
         ],
-        "description": ":::tip\n  在首页将分类参数选择确定后跳转到的分类页面 URL 中，`/l/` 后的字段即为分类参数。\n\n  如 [科幻 + 日語 + 日本 + 長篇 + 完結 + 最近更新](https://mox.moe/l/CAT%2A科幻,日本,完結,lastupdate,jpn,l,BL) 的 URL 为 [https://mox.moe/l/CAT%2A 科幻，日本，完結，lastupdate,jpn,l,BL](https://mox.moe/l/CAT%2A科幻,日本,完結,lastupdate,jpn,l,BL)，此时 `/l/` 后的字段为 `CAT%2A科幻,日本,完結,lastupdate,jpn,l,BL`。最终获得路由为 [`/mox/CAT%2A科幻,日本,完結,lastupdate,jpn,l,BL`](https://rsshub.app/mox/CAT%2A科幻,日本,完結,lastupdate,jpn,l,BL)\n  :::",
+        "description": ":::tip\n  在首页将分类参数选择确定后跳转到的分类页面 URL 中，`/l/` 后的字段即为分类参数。\n\n  如 [科幻 + 日語 + 日本 + 長篇 + 完結 + 最近更新](https://mox.moe/l/CAT%2A科幻,日本,完結,lastupdate,jpn,l,BL) 的 URL 为 [https://mox.moe/l/CAT%2A 科幻，日本，完結，lastupdate,jpn,l,BL](https://mox.moe/l/CAT%2A科幻,日本,完結,lastupdate,jpn,l,BL)，此时 `/l/` 后的字段为 `CAT%2A科幻,日本,完結,lastupdate,jpn,l,BL`。最终获得路由为 [`/mox/CAT%2A科幻,日本,完結,lastupdate,jpn,l,BL`](https://rsshub.app/mox/CAT%2A科幻,日本,完結,lastupdate,jpn,l,BL)\n  :::\n\n  :::warning\n  由于 mox.moe 对非登录用户屏蔽了部分漫画详情内容的获取，且极易触发反爬机制，导致访问ip被重定向至google.com，因此在未配置`MOX_COOKIE`参数的情况下路由只会返回漫画标题和封面，不会对详情内容进行抓取。\n  :::",
         "location": "index.ts"
       }
     },
@@ -59603,6 +59673,21 @@
   },
   "xiaoheihe": {
     "routes": {
+      "/add2cart/:platform": {
+        "path": "/add2cart/:platform",
+        "categories": [
+          "game"
+        ],
+        "example": "/xiaoheihe/add2cart/epic",
+        "parameters": {
+          "platform": "平台名：epic、steam或gog"
+        },
+        "name": "喜加一",
+        "maintainers": [
+          "ladeng07"
+        ],
+        "location": "add2cart.ts"
+      },
       "/discount/:platform": {
         "path": "/discount/:platform",
         "categories": [
@@ -60659,6 +60744,35 @@
         ],
         "description": "| 公告         | 新闻 | 研报     |\n  | ------------ | ---- | -------- |\n  | announcement | news | research |",
         "location": "stock-info.ts"
+      },
+      "/timeline/:usergroup_id?": {
+        "path": "/timeline/:usergroup_id?",
+        "categories": [
+          "finance"
+        ],
+        "example": "/xueqiu/timeline/",
+        "parameters": {
+          "usergroup_id": "用户组 ID，-1 为全部关注用户"
+        },
+        "features": {
+          "requireConfig": [
+            {
+              "name": "XUEQIU_COOKIES",
+              "description": ""
+            }
+          ],
+          "requirePuppeteer": false,
+          "antiCrawler": true,
+          "supportBT": false,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "name": "用户关注时间线",
+        "maintainers": [
+          "ErnestDong"
+        ],
+        "description": ":::warning\n  用户关注动态需要登录后的 Cookie 值，所以只能自建，详情见部署页面的配置模块。\n  :::\n\n  | -1   | -2       | 1             |\n  | ---- | -------- | ------------- |\n  | 全部 | 关注精选 | 自定义第 1 组 |",
+        "location": "timeline.ts"
       },
       "/today": {
         "path": "/today",

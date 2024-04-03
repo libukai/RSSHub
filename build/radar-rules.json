@@ -987,6 +987,19 @@
       }
     ]
   },
+  "aqicn.org": {
+    "_name": "空气质量",
+    ".": [
+      {
+        "title": "实时 AQI",
+        "docs": "https://docs.rsshub.app/routes/other",
+        "source": [
+          "/"
+        ],
+        "target": "/aqicn/:city/:pollution?"
+      }
+    ]
+  },
   "arcteryx.com": {
     "_name": "Arcteryx",
     ".": [
@@ -3704,6 +3717,19 @@
           "/home/:id"
         ],
         "target": "/dongqiudi/top_news/:id"
+      }
+    ]
+  },
+  "dora-world.com": {
+    "_name": "Doraemon Channel",
+    "www": [
+      {
+        "title": "Article",
+        "docs": "https://docs.rsshub.app/routes/anime",
+        "source": [
+          "/:topic"
+        ],
+        "target": "/dora-world/article/:topic/:topicId?"
       }
     ]
   },
