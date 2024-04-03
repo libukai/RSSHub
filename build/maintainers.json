@@ -2827,8 +2827,10 @@
   "/icbc/whpj/:format?": [
     "leoleoasd"
   ],
-  "/idaily/today/:language?": [],
-  "/idaily/:language?": [],
+  "/idaily/:language?": [
+    "zphw",
+    "nczitzk"
+  ],
   "/idolypride/news": [
     "Mingxia1"
   ],
@@ -4012,6 +4014,9 @@
   "/nyaa/sukebei/user/:username/search/:query?": [
     "Lava-Swimmer",
     "noname1776"
+  ],
+  "/nymity/censorbib": [
+    "xtexChooser"
   ],
   "/nytimes/book/:category?": [
     "melvinto"
