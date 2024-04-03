@@ -191,6 +191,9 @@ export type Config = {
         instance?: string;
         token?: string;
     };
+    mox: {
+        cookie: string;
+    };
     ncm: {
         cookies?: string;
     };
@@ -272,6 +275,9 @@ export type Config = {
     };
     ximalaya: {
         token?: string;
+    };
+    xueqiu: {
+        cookies?: string;
     };
     youtube: {
         key?: string;
@@ -527,6 +533,9 @@ const calculateValue = () => {
             instance: envs.MINIFLUX_INSTANCE || 'https://reader.miniflux.app',
             token: envs.MINIFLUX_TOKEN || '',
         },
+        mox: {
+            cookie: envs.MOX_COOKIE,
+        },
         ncm: {
             cookies: envs.NCM_COOKIES || '',
         },
@@ -612,6 +621,9 @@ const calculateValue = () => {
         },
         ximalaya: {
             token: envs.XIMALAYA_TOKEN,
+        },
+        xueqiu: {
+            cookies: envs.XUEQIU_COOKIES,
         },
         youtube: {
             key: envs.YOUTUBE_KEY,
