@@ -64,6 +64,9 @@
   "/12306/zxdt/:id?": [
     "LogicJake"
   ],
+  "/12371/:category?": [
+    "zvrr"
+  ],
   "/005/:category?": [
     "nczitzk"
   ],
@@ -702,6 +705,9 @@
   ],
   "/bilibili/weekly/:disableEmbed?": [
     "ttttmr"
+  ],
+  "/binance/launchpool": [
+    "zhenlohuang"
   ],
   "/bing/": [
     "FHYunCai"
@@ -3180,6 +3186,9 @@
     "nczitzk"
   ],
   "/kantarworldpanel/:region?/:category{.+}?": [],
+  "/kanxue/topic/:category?/:type?": [
+    "renzhexigua"
+  ],
   "/kaopu/news/:language?": [
     "fashioncj"
   ],
@@ -3511,6 +3520,12 @@
   "/mindmeister/:category?/:language?": [
     "TonyRL"
   ],
+  "/minecraft/blockedservers": [
+    "xtexChooser"
+  ],
+  "/minecraft/java-runtime/:arch?/:javaType?": [
+    "xtexChooser"
+  ],
   "/minecraft/version/:versionType?/:linkType?": [
     "TheresaQWQ",
     "xtexChooser"
@@ -3673,6 +3688,9 @@
   "/ncc-cma/cmdp/image/:id{.+}?": [],
   "/ncepu/master/:type": [
     "nilleo"
+  ],
+  "/ncpssd/newlist": [
+    "LyleLee"
   ],
   "/ncu/jwc": [
     "ywh555hhh"
@@ -4880,6 +4898,12 @@
   "/shopback/:store": [
     "nczitzk"
   ],
+  "/shopify/apps/:handle/reviews/:page?": [
+    "PrintNow"
+  ],
+  "/shopify/apps/search/:q": [
+    "PrintNow"
+  ],
   "/shoppingdesign/posts": [
     "miles170"
   ],
@@ -5825,6 +5849,9 @@
   ],
   "/warthunder/news": [
     "axojhf"
+  ],
+  "/watasuke/blog": [
+    "honahuku"
   ],
   "/wdc/download/:id?": [],
   "/web/articles": [
