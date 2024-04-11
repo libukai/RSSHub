@@ -1614,51 +1614,11 @@
         "parameters": {
           "id": "部落 ID"
         },
-        "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
-          "antiCrawler": false,
-          "supportBT": false,
-          "supportPodcast": false,
-          "supportScihub": false
-        },
         "name": "部落影集",
         "maintainers": [
           "TonyRL"
         ],
         "location": "tribe-set.ts"
-      },
-      "/user/works/:id": {
-        "path": "/user/works/:id",
-        "categories": [
-          "picture"
-        ],
-        "example": "/500px/user/works/hujunli",
-        "parameters": {
-          "id": "摄影师 ID"
-        },
-        "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
-          "antiCrawler": false,
-          "supportBT": false,
-          "supportPodcast": false,
-          "supportScihub": false
-        },
-        "radar": [
-          {
-            "source": [
-              "500px.com.cn/:id",
-              "500px.com.cn/community/user-details/:id",
-              "500px.com.cn/community/user-details/:id/*"
-            ]
-          }
-        ],
-        "name": "摄影师作品",
-        "maintainers": [
-          "TonyRL"
-        ],
-        "location": "user.ts"
       }
     },
     "name": "500px 摄影社区",
@@ -25834,6 +25794,38 @@
     "url": "jwc.hit.edu.cn",
     "description": ":::warning\n哈工大网站疑似禁止了`rsshub.app`的访问，使用路由需要自行 [部署](https://docs.rsshub.app/deploy/)。\n:::"
   },
+  "hitcon": {
+    "routes": {
+      "/zeroday/vulnerability/:status?": {
+        "name": "漏洞",
+        "categories": [
+          "programming"
+        ],
+        "path": "/zeroday/vulnerability/:status?",
+        "example": "/hitcon/zeroday/vulnerability",
+        "parameters": {
+          "status": "漏洞状态，见下表"
+        },
+        "maintainers": [
+          "KarasuShin"
+        ],
+        "radar": [
+          {
+            "source": [
+              "zeroday.hitcon.org/vulnerability/:status?"
+            ]
+          }
+        ],
+        "features": {
+          "requirePuppeteer": true
+        },
+        "description": "| 缺省   | all  | closed | disclosed | patching |\n  | ------ | ---- | ------ | --------- | -------- |\n  | 活動中 | 全部 | 關閉   | 公開      | 修補中   |",
+        "location": "zeroday.ts"
+      }
+    },
+    "name": "HITCON",
+    "url": "hitcon.org"
+  },
   "hitsz": {
     "routes": {
       "/article/:category?": {
@@ -37562,14 +37554,6 @@
           "category": "Category, see table below",
           "article_type": "Only includes free articles, set `free` to enable, disabled by default"
         },
-        "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
-          "antiCrawler": false,
-          "supportBT": false,
-          "supportPodcast": false,
-          "supportScihub": false
-        },
         "radar": [
           {
             "source": [
@@ -37581,7 +37565,8 @@
         ],
         "name": "News",
         "maintainers": [
-          "Arracc"
+          "Arracc",
+          "ladeng07"
         ],
         "description": "| 総合 | オピニオン | 経済    | 政治     | 金融      | マーケット | ビジネス | マネーのまなび | テック     | 国際          | スポーツ | 社会・調査 | 地域  | 文化    | ライフスタイル |\n  | ---- | ---------- | ------- | -------- | --------- | ---------- | -------- | -------------- | ---------- | ------------- | -------- | ---------- | ----- | ------- | -------------- |\n  | news | opinion    | economy | politics | financial | business   | 不支持   | 不支持         | technology | international | sports   | society    | local | culture | lifestyle      |",
         "location": "news.ts"
@@ -42177,14 +42162,30 @@
     "routes": {
       "/user/:id": {
         "path": "/user/:id",
+        "categories": [
+          "social-media"
+        ],
+        "example": "/picnob/user/xlisa_olivex",
+        "parameters": {
+          "id": "Instagram id"
+        },
+        "features": {
+          "requireConfig": false,
+          "requirePuppeteer": true,
+          "antiCrawler": true,
+          "supportBT": false,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
         "radar": [
           {
             "source": [
               "picnob.com/profile/:id/*"
-            ]
+            ],
+            "target": "/user/:id"
           }
         ],
-        "name": "Unknown",
+        "name": "User Profile - Picnob",
         "maintainers": [
           "TonyRL",
           "micheal-death"
@@ -47472,12 +47473,7 @@
           "category": "Category, see below, `news` by default"
         },
         "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
-          "antiCrawler": false,
-          "supportBT": false,
-          "supportPodcast": false,
-          "supportScihub": false
+          "antiCrawler": true
         },
         "radar": [
           {
@@ -59598,6 +59594,50 @@
     },
     "name": "紳士漫畫",
     "url": "wnacg.org"
+  },
+  "wordpress": {
+    "routes": {
+      "/:url?/:filter{.+}?": {
+        "path": "/:url?/:filter{.+}?",
+        "name": "WordPress",
+        "url": "wordpress.org",
+        "maintainers": [
+          "nczitzk"
+        ],
+        "example": "/wordpress/https%3A%2F%2Fwordpress.org%2Fnews/category/Podcast",
+        "parameters": {
+          "url": "URL, <https://wordpress.org/news> by default",
+          "filter": "Filter, see below"
+        },
+        "description": "If you subscribe to [WordPress News](https://wordpress.org/news/)，where the URL is `https://wordpress.org/news/`, Encode the URL using `encodeURIComponent()` and then use it as the parameter. Therefore, the route will be [`/wordpress/https%3A%2F%2Fwordpress.org%2Fnews`](https://rsshub.app/wordpress/https%3A%2F%2Fwordpress.org%2Fnews).\n\n  :::tip\n  If you wish to subscribe to specific categories or tags, you can fill in the \"filter\" parameter in the route. `/category/Podcast` to subscribe to the Podcast category. In this case, the route would be [`/wordpress/https%3A%2F%2Fwordpress.org%2Fnews/category/Podcast`](https://rsshub.app/wordpress/https%3A%2F%2Fwordpress.org%2Fnews/category/Podcast).\n\n  You can also subscribe to multiple categories. `/category/Podcast,Community` to subscribe to both the Podcast and Community categories. In this case, the route would be [`/wordpress/https%3A%2F%2Fwordpress.org%2Fnews/category/Podcast,Community`](https://rsshub.app/wordpress/https%3A%2F%2Fwordpress.org%2Fnews/category/Podcast,Community).\n\n  Categories and tags can be combined as well. `/category/Releases/tag/tagging` to subscribe to the Releases category and the tagging tag. In this case, the route would be [`/wordpress/https%3A%2F%2Fwordpress.org%2Fnews/category/Releases/tag/tagging`](https://rsshub.app/wordpress/https%3A%2F%2Fwordpress.org%2Fnews/category/Releases/tag/tagging).\n  \n  You can also search for keywords. `/search/Blog` to search for the keyword \"Blog\". In this case, the route would be [`/wordpress/https%3A%2F%2Fwordpress.org%2Fnews/search/Blog`](https://rsshub.app/wordpress/https%3A%2F%2Fwordpress.org%2Fnews/search/Blog).\n  :::",
+        "categories": [
+          "blog"
+        ],
+        "features": {
+          "requireConfig": [
+            {
+              "name": "ALLOW_USER_SUPPLY_UNSAFE_DOMAIN",
+              "description": "This RSS is disabled unless 'ALLOW_USER_SUPPLY_UNSAFE_DOMAIN' is set to 'true'.",
+              "optional": false
+            }
+          ],
+          "requirePuppeteer": false,
+          "antiCrawler": false,
+          "supportRadar": false,
+          "supportBT": false,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "radar": [],
+        "location": "index.ts"
+      }
+    },
+    "name": "WordPress",
+    "url": "wordpress.org",
+    "categories": [
+      "blog"
+    ],
+    "description": ""
   },
   "worldjournal": {
     "routes": {
