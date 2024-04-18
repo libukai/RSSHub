@@ -1441,6 +1441,9 @@
     "nczitzk",
     "TonyRL"
   ],
+  "/dehenglaw/:language?/:category?": [
+    "nczitzk"
+  ],
   "/deltaio/blog": [
     "RengarLee"
   ],
@@ -5402,7 +5405,7 @@
   "/tesla/price": [
     "xiaokyo"
   ],
-  "/test/:id": [
+  "/test/:id/:params?": [
     "DIYgod",
     "NeverBehave"
   ],
