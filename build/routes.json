@@ -18558,6 +18558,36 @@
     "name": "ファミ通",
     "url": "famitsu.com"
   },
+  "fanbox": {
+    "routes": {
+      "/:creator": {
+        "path": "/:creator",
+        "categories": [
+          "social-media"
+        ],
+        "example": "/fanbox/official",
+        "parameters": {
+          "creator": "fanbox user name"
+        },
+        "maintainers": [
+          "KarasuShin"
+        ],
+        "name": "Creator",
+        "features": {
+          "requireConfig": [
+            {
+              "name": "FANBOX_SESSION_ID",
+              "description": "Required for private posts. Can be found in browser DevTools -> Application -> Cookies -> https://www.fanbox.cc -> FANBOXSESSID",
+              "optional": true
+            }
+          ]
+        },
+        "location": "index.ts"
+      }
+    },
+    "name": "fanbox",
+    "url": "https://www.fanbox.cc"
+  },
   "fansly": {
     "routes": {
       "/user/:username": {
@@ -25753,8 +25783,8 @@
         "radar": [
           {
             "source": [
-              "ycombinator.com/:section",
-              "ycombinator.com/"
+              "news.ycombinator.com/:section",
+              "news.ycombinator.com/"
             ]
           }
         ],
@@ -33872,16 +33902,17 @@
   },
   "linkedin": {
     "routes": {
-      "/jobs/:job_types/:exp_levels/:keywords?": {
-        "path": "/jobs/:job_types/:exp_levels/:keywords?",
+      "/jobs/:job_types/:exp_levels/:keywords?/:routeParams?": {
+        "path": "/jobs/:job_types/:exp_levels/:keywords?/:routeParams?",
         "categories": [
-          "other"
+          "social-media"
         ],
         "example": "/linkedin/jobs/C-P/1/software engineer",
         "parameters": {
           "job_types": "See the following table for details, use '-' as delimiter",
           "exp_levels": "See the following table for details, use '-' as delimiter",
-          "keywords": "keywords"
+          "keywords": "keywords",
+          "routeParams": "additional query parameters, see the table below"
         },
         "features": {
           "requireConfig": false,
@@ -33891,9 +33922,19 @@
           "supportPodcast": false,
           "supportScihub": false
         },
+        "radar": [
+          {
+            "source": [
+              "www.linkedin.com/jobs/search"
+            ]
+          }
+        ],
         "name": "Jobs",
-        "maintainers": [],
-        "description": "#### `job_types` list\n\n  | Full Time | Part Time | Contractor | All |\n  | --------- | --------- | ---------- | --- |\n  | F         | P         | C          | all |\n\n  #### `exp_levels` list\n\n  | Intership | Entry Level | Associate | Mid-Senior Level | Director | All |\n  | --------- | ----------- | --------- | ---------------- | -------- | --- |\n  | 1         | 2           | 3         | 4                | 5        | all |\n\n  For example:\n\n  1.  If we want to search software engineer jobs of all levels and all job types, use `/linkedin/jobs/all/all/software engineer`\n  2.  If we want to search all entry level contractor/part time software engineer jobs, use `/linkedin/jobs/P-C/2/software engineer`\n\n  **To make it easier, the recommended way is to start a search on [LinkedIn](https://www.linkedin.com/jobs/search) and use [RSSHub Radar](https://github.com/DIYgod/RSSHub-Radar) to load the specific feed.**",
+        "maintainers": [
+          "BrandNewLifeJackie26",
+          "zhoukuncheng"
+        ],
+        "description": "#### `job_types` list\n\n  | Full Time | Part Time | Contractor | All |\n  | --------- | --------- | ---------- | --- |\n  | F         | P         | C          | all |\n\n  #### `exp_levels` list\n\n  | Intership | Entry Level | Associate | Mid-Senior Level | Director | All |\n  | --------- | ----------- | --------- | ---------------- | -------- | --- |\n  | 1         | 2           | 3         | 4                | 5        | all |\n\n  #### `routeParams` additional query parameters\n\n  ##### `f_WT` list\n\n  | Onsite | Remote | Hybrid |\n  | ------ | ------- | ------ |\n  |    1   |    2    |   3    |\n\n  ##### `geoId`\n\n  Geographic location ID. You can find this ID in the URL of a LinkedIn job search page that is filtered by location.\n\n  For example:\n  91000012 is the ID of East Asia.\n\n  ##### `f_TPR`\n\n  Time posted range. Here are some possible values:\n\n  *   `r86400`: Past 24 hours\n  *   `r604800`: Past week\n  *   `r2592000`: Past month\n\n  For example:\n\n  1.  If we want to search software engineer jobs of all levels and all job types, use `/linkedin/jobs/all/all/software engineer`\n  2.  If we want to search all entry level contractor/part time software engineer jobs, use `/linkedin/jobs/P-C/2/software engineer`\n  3.  If we want to search remote mid-senior level software engineer jobs in APAC posted within the last month, use `/linkedin/jobs/F/4/software%20engineer/f_WT=2&geoId=91000003&f_TPR=r2592000`\n\n  **To make it easier, the recommended way is to start a search on [LinkedIn](https://www.linkedin.com/jobs/search) and use [RSSHub Radar](https://github.com/DIYgod/RSSHub-Radar) to load the specific feed.**",
         "location": "jobs.ts"
       },
       "/cn/jobs/:keywords?": {
@@ -33921,7 +33962,7 @@
         "location": "cn/index.ts"
       }
     },
-    "name": "LinkedIn 领英中国",
+    "name": "LinkedIn 领英",
     "url": "linkedin.com"
   },
   "linkresearcher": {
@@ -54933,45 +54974,6 @@
     "name": "律动",
     "url": "rszhaopin.theblockbeats.info"
   },
-  "thecatcity": {
-    "routes": {
-      "/:term?": {
-        "path": "/:term?",
-        "categories": [
-          "new-media"
-        ],
-        "example": "/thecatcity",
-        "parameters": {
-          "term": "見下表，留空為全部文章"
-        },
-        "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
-          "antiCrawler": false,
-          "supportBT": false,
-          "supportPodcast": false,
-          "supportScihub": false
-        },
-        "radar": [
-          {
-            "source": [
-              "thecatcity.com/"
-            ],
-            "target": ""
-          }
-        ],
-        "name": "分類",
-        "maintainers": [
-          "TonyRL"
-        ],
-        "url": "thecatcity.com/",
-        "description": "| 貓物分享 | 貓咪新聞 | 養貓大全 | 貓奴景點 | 新手養貓教學 |\n  | -------- | -------- | -------- | -------- | ------------ |\n  | 1        | 2        | 3        | 4        | 5            |",
-        "location": "index.ts"
-      }
-    },
-    "name": "貓奴日常",
-    "url": "thecatcity.com"
-  },
   "thecover": {
     "routes": {
       "/channel/:id?": {
@@ -55355,6 +55357,79 @@
     "name": "澎湃新闻",
     "url": "thepaper.cn",
     "description": "以下所有路由可使用参数`old`以采取旧全文获取方法。该方法会另外获取网页中的图片与视频资源。在原始 url 追加`?old=yes`以启用."
+  },
+  "thepetcity": {
+    "routes": {
+      "/:term?": {
+        "path": "/:term?",
+        "categories": [
+          "new-media"
+        ],
+        "example": "/thepetcity",
+        "parameters": {
+          "term": "見下表，留空為全部文章"
+        },
+        "radar": [
+          {
+            "title": "Pet Staff 毛孩好物",
+            "source": [
+              "thepetcity.co/category/cute-item",
+              "thepetcity.co/"
+            ],
+            "target": "/1"
+          },
+          {
+            "title": "Funny News毛孩趣聞",
+            "source": [
+              "thepetcity.co/category/funny-news",
+              "thepetcity.co/"
+            ],
+            "target": "/2"
+          },
+          {
+            "title": "Knowledge飼養大全",
+            "source": [
+              "thepetcity.co/category/knowledge",
+              "thepetcity.co/"
+            ],
+            "target": "/3"
+          },
+          {
+            "title": "Hot Spot 毛孩打卡點",
+            "source": [
+              "thepetcity.co/category/hot-spot",
+              "thepetcity.co/"
+            ],
+            "target": "/4"
+          },
+          {
+            "title": "Raise Pets 養寵物新手",
+            "source": [
+              "thepetcity.co/category/raise-cats",
+              "thepetcity.co/"
+            ],
+            "target": "/5"
+          },
+          {
+            "title": "PetCity 毛孩日常 | 飼養竉物、竉物用品、萌寵趣聞",
+            "source": [
+              "thepetcity.co/"
+            ],
+            "target": ""
+          }
+        ],
+        "name": "分類",
+        "maintainers": [
+          "TonyRL",
+          "bigfei"
+        ],
+        "url": "thepetcity.co/",
+        "description": "| Column Name       | TermID |\n    | -------------------- | ------ |\n    | Knowledge飼養大全     | 3      |\n    | Funny News毛孩趣聞    | 2      |\n    | Raise Pets 養寵物新手  | 5      |\n    | Hot Spot 毛孩打卡點    | 4      |\n    | Pet Staff 毛孩好物    | 1      |",
+        "location": "index.ts"
+      }
+    },
+    "name": "PetCity 毛孩日常",
+    "url": "thepetcity.com"
   },
   "theverge": {
     "routes": {
@@ -59943,15 +60018,15 @@
     "routes": {
       "/": {
         "path": "/",
+        "example": "/weekendhk",
         "radar": [
           {
             "source": [
               "weekendhk.com/"
-            ],
-            "target": ""
+            ]
           }
         ],
-        "name": "Unknown",
+        "name": "最新文章",
         "maintainers": [
           "TonyRL"
         ],
@@ -60236,6 +60311,47 @@
     "name": "微博绿洲",
     "url": "weibo.com",
     "description": ":::warning\n微博会针对请求的来源地区返回不同的结果。一个已知的例子为：部分视频因未知原因仅限中国大陆境内访问 (CDN 域名为 `locallimit.us.sinaimg.cn` 而非 `f.video.weibocdn.com`)。若一条微博含有这种视频且 RSSHub 实例部署在境外，抓取到的微博可能不含视频。将 RSSHub 部署在境内有助于抓取这种视频，但阅读器也必须处于境内网络环境以加载视频。\n:::\n\n对于微博内容，在 `routeParams` 参数中以 query string 格式指定选项，可以控制输出的样式\n\n| 键                         | 含义                                                               | 接受的值       | 默认值                              |\n| -------------------------- | ------------------------------------------------------------------ | -------------- | ----------------------------------- |\n| readable                   | 是否开启细节排版可读性优化                                         | 0/1/true/false | false                               |\n| authorNameBold             | 是否加粗作者名字                                                   | 0/1/true/false | false                               |\n| showAuthorInTitle          | 是否在标题处显示作者                                               | 0/1/true/false | false（`/weibo/keyword/`中为 true） |\n| showAuthorInDesc           | 是否在正文处显示作者                                               | 0/1/true/false | false（`/weibo/keyword/`中为 true） |\n| showAuthorAvatarInDesc     | 是否在正文处显示作者头像（若阅读器会提取正文图片，不建议开启）     | 0/1/true/false | false                               |\n| showEmojiForRetweet        | 显示 “🔁” 取代 “转发” 两个字                                       | 0/1/true/false | false                               |\n| showRetweetTextInTitle     | 在标题出显示转发评论（置为 false 则在标题只显示被转发微博）        | 0/1/true/false | true                                |\n| addLinkForPics             | 为图片添加可点击的链接                                             | 0/1/true/false | false                               |\n| showTimestampInDescription | 在正文处显示被转发微博的时间戳                                     | 0/1/true/false | false                               |\n| widthOfPics                | 微博配图宽（生效取决于阅读器）                                     | 不指定 / 数字  | 不指定                              |\n| heightOfPics               | 微博配图高（生效取决于阅读器）                                     | 不指定 / 数字  | 不指定                              |\n| sizeOfAuthorAvatar         | 作者头像大小                                                       | 数字           | 48                                  |\n| displayVideo               | 是否直接显示微博视频和 Live Photo，只在博主或个人时间线 RSS 中有效 | 0/1/true/false | true                                |\n| displayArticle             | 是否直接显示微博文章，只在博主或个人时间线 RSS 中有效              | 0/1/true/false | false                               |\n| displayComments            | 是否直接显示热门评论，只在博主或个人时间线 RSS 中有效              | 0/1/true/false | false                               |\n| showEmojiInDescription     | 是否展示正文中的微博表情，关闭则替换为 `[表情名]`                  | 0/1/true/false | true                                |\n| showLinkIconInDescription  | 是否展示正文中的链接图标                                           | 0/1/true/false | true                                |\n| preferMobileLink           | 是否使用移动版链接（默认使用 PC 版）                               | 0/1/true/false | false                               |\n\n指定更多与默认值不同的参数选项可以改善 RSS 的可读性，如\n\n[https://rsshub.app/weibo/user/1642909335/readable=1&authorNameBold=1&showAuthorInTitle=1&showAuthorInDesc=1&showAuthorAvatarInDesc=1&showEmojiForRetweet=1&showRetweetTextInTitle=0&addLinkForPics=1&showTimestampInDescription=1&showTimestampInDescription=1&heightOfPics=150](https://rsshub.app/weibo/user/1642909335/readable=1&authorNameBold=1&showAuthorInTitle=1&showAuthorInDesc=1&showAuthorAvatarInDesc=1&showEmojiForRetweet=1&showRetweetTextInTitle=0&addLinkForPics=1&showTimestampInDescription=1&showTimestampInDescription=1&heightOfPics=150)\n\n的效果为\n\n<img loading=\"lazy\" src=\"/img/readable-weibo.png\" alt=\"微博小秘书的可读微博 RSS\" />"
+  },
+  "wellcee": {
+    "routes": {
+      "/rent/:city/:district?": {
+        "path": "/rent/:city/:district?",
+        "example": "/wellcee/rent/北京",
+        "parameters": {
+          "city": "城市",
+          "district": "地区"
+        },
+        "name": "租房信息",
+        "maintainers": [
+          "TonyRL"
+        ],
+        "url": "www.wellcee.com",
+        "description": "支持的城市可以通过 [/wellcee/support-city](https://rsshub.app/wellcee/support-city) 获取",
+        "location": "rent.ts"
+      },
+      "/support-city": {
+        "path": "/support-city",
+        "example": "/wellcee/support-city",
+        "name": "支持的城市",
+        "maintainers": [
+          "TonyRL"
+        ],
+        "radar": [
+          {
+            "source": [
+              "www.wellcee.com"
+            ]
+          }
+        ],
+        "url": "www.wellcee.com",
+        "location": "support-city.ts"
+      }
+    },
+    "name": "Wellcee 唯心所寓",
+    "url": "wellcee.com",
+    "categories": [
+      "other"
+    ]
   },
   "wenku8": {
     "routes": {
