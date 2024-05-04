@@ -14892,12 +14892,14 @@
         "maintainers": [
           "tensor-tech"
         ],
-        "radar": {
-          "source": [
-            "bbs.deepin.org/user/:user_id"
-          ],
-          "target": "/homepage/:user_id"
-        },
+        "radar": [
+          {
+            "source": [
+              "bbs.deepin.org/user/:user_id"
+            ],
+            "target": "/homepage/:user_id"
+          }
+        ],
         "location": "homepage.ts"
       }
     },
@@ -15324,6 +15326,40 @@
     },
     "name": "二柄 APP",
     "url": "diershoubing.com"
+  },
+  "digitalcameraworld": {
+    "routes": {
+      "/news": {
+        "path": "/news",
+        "categories": [
+          "new-media"
+        ],
+        "example": "/digitalcameraworld/news",
+        "parameters": {},
+        "features": {
+          "requireConfig": false,
+          "requirePuppeteer": false,
+          "antiCrawler": false,
+          "supportBT": false,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "radar": [
+          {
+            "source": [
+              "digitalcameraworld.com/"
+            ]
+          }
+        ],
+        "name": "News",
+        "maintainers": [
+          "EthanWng97"
+        ],
+        "location": "news.ts"
+      }
+    },
+    "name": "Digital Camera World",
+    "url": "digitalcameraworld.com"
   },
   "discord": {
     "routes": {
