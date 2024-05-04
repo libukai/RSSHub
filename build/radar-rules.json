@@ -366,6 +366,19 @@
       }
     ]
   },
+  "69shu.top": {
+    "_name": "69书吧",
+    "www": [
+      {
+        "title": "章节",
+        "docs": "https://docs.rsshub.app/routes/reading",
+        "source": [
+          "/book/:id.htm"
+        ],
+        "target": "/69shu/article/:id"
+      }
+    ]
+  },
   "6parkbbs.com": {
     "_name": "留园网",
     "club": [
@@ -8613,6 +8626,19 @@
           "/replay/index"
         ],
         "target": "/kepu/live"
+      }
+    ]
+  },
+  "keylol.com": {
+    "_name": "其乐",
+    ".": [
+      {
+        "title": "论坛",
+        "docs": "https://docs.rsshub.app/routes/game",
+        "source": [
+          "/:path"
+        ],
+        "target": "/keylol(params,url)=>url.replaceAll(\"forum.php?\",\"\")"
       }
     ]
   },
