@@ -19696,15 +19696,6 @@
           "finance"
         ],
         "example": "/finology/bullets",
-        "parameters": {},
-        "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
-          "antiCrawler": false,
-          "supportBT": false,
-          "supportPodcast": false,
-          "supportScihub": false
-        },
         "radar": [
           {
             "source": [
@@ -19719,6 +19710,29 @@
         "url": "insider.finology.in/bullets",
         "location": "bullets.ts"
       },
+      "/:category": {
+        "path": "/:category",
+        "categories": [
+          "finance"
+        ],
+        "example": "/finology/success-stories",
+        "parameters": {
+          "category": "Refer Table below or find in URL"
+        },
+        "radar": [
+          {
+            "source": [
+              "insider.finology.in/:category"
+            ]
+          }
+        ],
+        "name": "Category",
+        "maintainers": [
+          "Rjnishant530"
+        ],
+        "description": ":::note Category\n  | Category              | Link               |\n  | --------------------- | ------------------ |\n  | **Business**          | business           |\n  | Big Shots             | entrepreneurship   |\n  | Startups              | startups-india     |\n  | Brand Games           | success-stories    |\n  | Juicy Scams           | juicy-scams        |\n  | **Finance**           | finance            |\n  | Macro Moves           | economy            |\n  | News Platter          | market-news        |\n  | Tax Club              | tax                |\n  | Your Money            | your-money         |\n  | **Invest**            | investing          |\n  | Stock Market          | stock-market       |\n  | Financial Ratios      | stock-ratios       |\n  | Investor's Psychology | behavioral-finance |\n  | Mutual Funds          | mutual-fund        |\n  :::",
+        "location": "category.ts"
+      },
       "/most-viewed/:time": {
         "path": "/most-viewed/:time",
         "categories": [
@@ -19726,22 +19740,14 @@
         ],
         "example": "/finology/most-viewed/monthly",
         "parameters": {
-          "time": "N"
-        },
-        "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
-          "antiCrawler": false,
-          "supportBT": false,
-          "supportPodcast": false,
-          "supportScihub": false
+          "time": "`alltime` or `monthly` only"
         },
         "radar": [
           {
             "source": [
-              "insider.finology.in/:category"
+              "insider.finology.in/most-viewed"
             ],
-            "target": "/:category"
+            "target": "/most-viewed/monthly"
           }
         ],
         "name": "Most Viewed",
@@ -19750,72 +19756,27 @@
         ],
         "location": "most-viewed.ts"
       },
-      "/:category": {
-        "path": [
-          "/:category",
-          "/tag/:topic"
-        ],
-        "categories": [
-          "finance"
-        ],
-        "example": "/finology/success-stories",
-        "parameters": {
-          "category": "N"
-        },
-        "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
-          "antiCrawler": false,
-          "supportBT": false,
-          "supportPodcast": false,
-          "supportScihub": false
-        },
-        "radar": [
-          {
-            "source": [
-              "insider.finology.in/:category"
-            ]
-          }
-        ],
-        "name": "Category",
-        "maintainers": [
-          "Rjnishant530"
-        ],
-        "description": ":::note Category\n  | Category              | Link               |\n  | --------------------- | ------------------ |\n  | **Business**          | business           |\n  | Big Shots             | entrepreneurship   |\n  | Startups              | startups-india     |\n  | Brand Games           | success-stories    |\n  | Juicy Scams           | juicy-scams        |\n  | **Finance**           | finance            |\n  | Macro Moves           | economy            |\n  | News Platter          | market-news        |\n  | Tax Club              | tax                |\n  | Your Money            | your-money         |\n  | **Invest**            | investing          |\n  | Stock Market          | stock-market       |\n  | Financial Ratios      | stock-ratios       |\n  | Investor's Psychology | behavioral-finance |\n  | Mutual Funds          | mutual-fund        |\n  :::",
-        "location": "tag.ts"
-      },
       "/tag/:topic": {
-        "path": [
-          "/:category",
-          "/tag/:topic"
-        ],
+        "path": "/tag/:topic",
         "categories": [
           "finance"
         ],
-        "example": "/finology/success-stories",
+        "example": "/finology/tag/startups",
         "parameters": {
-          "category": "N"
-        },
-        "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
-          "antiCrawler": false,
-          "supportBT": false,
-          "supportPodcast": false,
-          "supportScihub": false
+          "category": "Refer Table below or find in URL"
         },
         "radar": [
           {
             "source": [
-              "insider.finology.in/:category"
+              "insider.finology.in/tag/:topic"
             ]
           }
         ],
-        "name": "Category",
+        "name": "Trending Topic",
         "maintainers": [
           "Rjnishant530"
         ],
-        "description": ":::note Category\n  | Category              | Link               |\n  | --------------------- | ------------------ |\n  | **Business**          | business           |\n  | Big Shots             | entrepreneurship   |\n  | Startups              | startups-india     |\n  | Brand Games           | success-stories    |\n  | Juicy Scams           | juicy-scams        |\n  | **Finance**           | finance            |\n  | Macro Moves           | economy            |\n  | News Platter          | market-news        |\n  | Tax Club              | tax                |\n  | Your Money            | your-money         |\n  | **Invest**            | investing          |\n  | Stock Market          | stock-market       |\n  | Financial Ratios      | stock-ratios       |\n  | Investor's Psychology | behavioral-finance |\n  | Mutual Funds          | mutual-fund        |\n  :::",
+        "description": ":::note Topic\n  | Topic                    | Link                     |\n  | ------------------------ | ------------------------ |\n  | Investment Decisions     | investment-decisions     |\n  | Investing 101            | investing-101            |\n  | Stock Markets            | stock-markets            |\n  | business news india      | business-news-india      |\n  | Company Analysis         | company-analysis         |\n  | Business and brand tales | business-and-brand-tales |\n  | Featured                 | featured                 |\n  | Fundamental Analysis     | fundamental-analysis     |\n  | Business Story           | business-story           |\n  | All Biz                  | all-biz                  |\n  | Stock Analysis           | stock-analysis           |\n  | Automobile Industry      | automobile-industry      |\n  | Indian Economy           | indian-economy           |\n  | Govt's Words             | govt%27s-words           |\n  | Behavioral Finance       | behavioral-finance       |\n  | Global Economy           | global-economy           |\n  | Startups                 | startups                 |\n  | GST                      | gst                      |\n  | Product Review           | product-review           |\n  | My Pocket                | my-pocket                |\n  | Business Games           | business-games           |\n  | Business Models          | business-models          |\n  | Indian Indices           | indian-indices           |\n  | Banking System           | banking-system           |\n  | Debt                     | debt                     |\n  | World News               | world-news               |\n  | Technology               | technology               |\n  | Regulatory Bodies        | regulatory-bodies        |\n:::",
         "location": "tag.ts"
       }
     },
@@ -20755,32 +20716,6 @@
   },
   "ft": {
     "routes": {
-      "/:language/:channel?": {
-        "path": "/:language/:channel?",
-        "categories": [
-          "traditional-media"
-        ],
-        "example": "/ft/chinese/hotstoryby7day",
-        "parameters": {
-          "language": "语言，简体`chinese`，繁体`traditional`",
-          "channel": "频道，缺省为每日更新"
-        },
-        "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
-          "antiCrawler": false,
-          "supportBT": false,
-          "supportPodcast": false,
-          "supportScihub": false
-        },
-        "name": "FT 中文网",
-        "maintainers": [
-          "HenryQW",
-          "xyqfer"
-        ],
-        "description": ":::tip\n  -   不支持付费文章。\n  :::\n\n  通过提取文章全文，以提供比官方源更佳的阅读体验。\n\n  支持所有频道，频道名称见 [官方频道 RSS](http://www.ftchinese.com/channel/rss.html).\n\n  -   频道为单一路径，如 `http://www.ftchinese.com/rss/news` 则为 `/ft/chinese/news`.\n  -   频道包含多重路径，如 `http://www.ftchinese.com/rss/column/007000002` 则替换 `/` 为 `-` `/ft/chinese/column-007000002`.",
-        "location": "channel.ts"
-      },
       "/myft/:key": {
         "path": "/myft/:key",
         "categories": [
@@ -20807,6 +20742,38 @@
       }
     },
     "name": "Financial Times",
+    "url": "ft.com"
+  },
+  "ftchinese": {
+    "routes": {
+      "/:language/:channel?": {
+        "path": "/:language/:channel?",
+        "categories": [
+          "traditional-media"
+        ],
+        "example": "/ft/simplified/hotstoryby7day",
+        "parameters": {
+          "language": "语言，简体 `simplified`，繁体 `traditional`",
+          "channel": "频道，缺省为每日更新"
+        },
+        "features": {
+          "requireConfig": false,
+          "requirePuppeteer": false,
+          "antiCrawler": false,
+          "supportBT": false,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "name": "FT 中文网",
+        "maintainers": [
+          "HenryQW",
+          "xyqfer"
+        ],
+        "description": ":::tip\n  -   不支持付费文章。\n  :::\n\n  通过提取文章全文，以提供比官方源更佳的阅读体验。\n\n  支持所有频道，频道名称见 [官方频道 RSS](http://www.ftchinese.com/channel/rss.html).\n\n  -   频道为单一路径，如 `http://www.ftchinese.com/rss/news` 则为 `/ft/simplified/news`.\n  -   频道包含多重路径，如 `http://www.ftchinese.com/rss/column/007000002` 则替换 `/` 为 `-` `/ft/simplified/column-007000002`.",
+        "location": "channel.ts"
+      }
+    },
+    "name": "FT 中文网",
     "url": "ftchinese.com"
   },
   "fuliba": {
@@ -50821,14 +50788,38 @@
   },
   "shisu": {
     "routes": {
-      "/news/:category": {
-        "path": "/news/:category",
+      "/en/:section": {
+        "path": "/en/:section",
         "categories": [
           "university"
         ],
-        "example": "/shisu/news/notice",
+        "example": "/shisu/en/news",
         "parameters": {
-          "category": "新闻的分类可根据自己的需要选择，首页为全部新闻"
+          "section": "The name of resources"
+        },
+        "radar": [
+          {
+            "source": [
+              "en.shisu.edu.cn/resources/:section/"
+            ],
+            "target": "/en/:section"
+          }
+        ],
+        "name": "SISU TODAY | FEATURED STORIES",
+        "maintainers": [
+          "Duuckjing"
+        ],
+        "description": "- features: Read a series of in-depth stories about SISU faculty, students, alumni and beyond campus.\n  - news: SISU TODAY English site.",
+        "location": "en.ts"
+      },
+      "/news/:section": {
+        "path": "/news/:section",
+        "categories": [
+          "university"
+        ],
+        "example": "/shisu/news/news",
+        "parameters": {
+          "section": "主站的新闻类别"
         },
         "features": {
           "requireConfig": false,
@@ -50841,8 +50832,9 @@
         "radar": [
           {
             "source": [
-              "news.shisu.edu.cn/:category/index.html"
-            ]
+              "news.shisu.edu.cn/:section/index.html"
+            ],
+            "target": "/news/:section"
           }
         ],
         "name": "上外新闻",
@@ -50854,7 +50846,7 @@
       }
     },
     "name": "上海外国语大学",
-    "url": "news.shisu.edu.cn"
+    "url": "shisu.edu.cn"
   },
   "shmeea": {
     "routes": {
