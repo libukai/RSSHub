@@ -3742,6 +3742,37 @@
     "name": "阿基米德 FM",
     "url": "m.ajmide.com"
   },
+  "alipan": {
+    "routes": {
+      "/files/:share_id/:parent_file_id?": {
+        "path": "/files/:share_id/:parent_file_id?",
+        "example": "/alipan/files/jjtKEgXJAtC/64a957744876479ab17941b29d1289c6ebdd71ef",
+        "parameters": {
+          "share_id": "分享 id，可以从分享页面 URL 中找到",
+          "parent_file_id": "文件夹 id，可以从文件夹页面 URL 中找到"
+        },
+        "radar": [
+          {
+            "source": [
+              "www.alipan.com/s/:share_id/folder/:parent_file_id",
+              "www.alipan.com/s/:share_id"
+            ]
+          }
+        ],
+        "name": "文件列表",
+        "maintainers": [
+          "DIYgod"
+        ],
+        "url": "www.alipan.com/s",
+        "location": "files.ts"
+      }
+    },
+    "name": "阿里云盘",
+    "url": "www.alipan.com",
+    "categories": [
+      "multimedia"
+    ]
+  },
   "aliresearch": {
     "routes": {
       "/information/:type?": {
@@ -4823,96 +4854,6 @@
     },
     "name": "Arcteryx",
     "url": "arcteryx.com"
-  },
-  "arknights": {
-    "routes": {
-      "/announce/:platform?/:group?": {
-        "path": "/announce/:platform?/:group?",
-        "categories": [
-          "game"
-        ],
-        "example": "/arknights/announce",
-        "parameters": {
-          "platform": "平台，默认为 Android",
-          "group": "分组，默认为 ALL"
-        },
-        "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
-          "antiCrawler": false,
-          "supportBT": false,
-          "supportPodcast": false,
-          "supportScihub": false
-        },
-        "name": "游戏内公告",
-        "maintainers": [
-          "swwind"
-        ],
-        "description": "平台\n\n  |  安卓服 | iOS 服 |   B 服   |\n  | :-----: | :----: | :------: |\n  | Android |   IOS  | Bilibili |\n\n  分组\n\n  | 全部 | 系统公告 | 活动公告 |\n  | :--: | :------: | :------: |\n  |  ALL |  SYSTEM  | ACTIVITY |",
-        "location": "announce.ts"
-      },
-      "/japan": {
-        "path": "/japan",
-        "categories": [
-          "game"
-        ],
-        "example": "/arknights/japan",
-        "parameters": {},
-        "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
-          "antiCrawler": false,
-          "supportBT": false,
-          "supportPodcast": false,
-          "supportScihub": false
-        },
-        "radar": [
-          {
-            "source": [
-              "ak.arknights.jp/news",
-              "ak.arknights.jp/"
-            ]
-          }
-        ],
-        "name": "アークナイツ (日服新闻)",
-        "maintainers": [
-          "ofyark"
-        ],
-        "url": "ak.arknights.jp/news",
-        "location": "japan.ts"
-      },
-      "/news": {
-        "path": "/news",
-        "categories": [
-          "game"
-        ],
-        "example": "/arknights/news",
-        "parameters": {},
-        "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
-          "antiCrawler": false,
-          "supportBT": false,
-          "supportPodcast": false,
-          "supportScihub": false
-        },
-        "radar": [
-          {
-            "source": [
-              "ak-conf.hypergryph.com/*"
-            ]
-          }
-        ],
-        "name": "游戏公告与新闻",
-        "maintainers": [
-          "Astrian"
-        ],
-        "url": "ak-conf.hypergryph.com/*",
-        "location": "news.ts"
-      }
-    },
-    "name": "明日方舟",
-    "url": "ak.arknights.jp"
   },
   "artstation": {
     "routes": {
@@ -16342,6 +16283,36 @@
         "description": ":::tip\n由于大部分详情页是 `/html/xxx.html`，还有部分是 `/detail/123.html`，所以此处做了兼容，id 取 `xxx` 或者 `123` 都可以。\n\n新增 `second` 参数，用于选择下载地址二（地址二不可用或者不填都默认地址一），用法: `/domp4/detail/LBTANI22222I?second=1`。\n:::",
         "location": "detail.ts"
       },
+      "/latest_movie_bt": {
+        "path": "/latest_movie_bt",
+        "categories": [
+          "multimedia"
+        ],
+        "example": "/domp4/latest_movie_bt",
+        "parameters": {},
+        "features": {
+          "requireConfig": false,
+          "requirePuppeteer": false,
+          "antiCrawler": false,
+          "supportBT": true,
+          "supportPodcast": false,
+          "supportScihub": false
+        },
+        "radar": [
+          {
+            "source": [
+              "domp4.cc/",
+              "domp4.cc/custom/update.html"
+            ]
+          }
+        ],
+        "name": "最近更新的电源BT列表",
+        "maintainers": [
+          "xianghuawe"
+        ],
+        "url": "domp4.cc/",
+        "location": "latest-movie-bt.ts"
+      },
       "/latest/:type?": {
         "path": "/latest/:type?",
         "categories": [
@@ -22235,19 +22206,13 @@
           "programming"
         ],
         "example": "/github/notifications",
-        "parameters": {},
         "features": {
           "requireConfig": [
             {
               "name": "GITHUB_ACCESS_TOKEN",
               "description": ""
             }
-          ],
-          "requirePuppeteer": false,
-          "antiCrawler": false,
-          "supportBT": false,
-          "supportPodcast": false,
-          "supportScihub": false
+          ]
         },
         "radar": [
           {
@@ -29410,6 +29375,77 @@
     },
     "name": "虎嗅",
     "url": "huxiu.com"
+  },
+  "hypergryph": {
+    "routes": {
+      "/arknights/announce/:platform?/:group?": {
+        "path": "/arknights/announce/:platform?/:group?",
+        "categories": [
+          "game"
+        ],
+        "example": "/hypergryph/arknights/announce",
+        "parameters": {
+          "platform": "平台，默认为 Android",
+          "group": "分组，默认为 ALL"
+        },
+        "name": "明日方舟 - 游戏内公告",
+        "maintainers": [
+          "swwind"
+        ],
+        "description": "平台\n\n  |  安卓服 | iOS 服 |   B 服   |\n  | :-----: | :----: | :------: |\n  | Android |   IOS  | Bilibili |\n\n  分组\n\n  | 全部 | 系统公告 | 活动公告 |\n  | :--: | :------: | :------: |\n  |  ALL |  SYSTEM  | ACTIVITY |",
+        "location": "announce.ts"
+      },
+      "/arknights/japan": {
+        "path": "/arknights/japan",
+        "categories": [
+          "game"
+        ],
+        "example": "/hypergryph/arknights/japan",
+        "radar": [
+          {
+            "source": [
+              "ak.arknights.jp/news",
+              "ak.arknights.jp/"
+            ]
+          }
+        ],
+        "name": "アークナイツ (日服新闻)",
+        "maintainers": [
+          "ofyark"
+        ],
+        "url": "ak.arknights.jp/news",
+        "location": "japan.ts"
+      },
+      "/arknights/news/:group?": {
+        "path": "/arknights/news/:group?",
+        "categories": [
+          "game"
+        ],
+        "example": "/hypergryph/arknights/news",
+        "parameters": {
+          "group": "分组，默认为 `ALL`"
+        },
+        "radar": [
+          {
+            "source": [
+              "ak-conf.hypergryph.com/news"
+            ]
+          }
+        ],
+        "name": "明日方舟 - 游戏公告与新闻",
+        "maintainers": [
+          "Astrian"
+        ],
+        "url": "ak-conf.hypergryph.com/news",
+        "description": "\n  | 全部 | 最新   | 公告         | 活动     | 新闻 |\n  | ---- | ------ | ------------ | -------- | ---- |\n  | ALL  | LATEST | ANNOUNCEMENT | ACTIVITY | NEWS |",
+        "location": "news.ts"
+      }
+    },
+    "name": "鹰角网络",
+    "url": "www.hypergryph.com",
+    "categories": [
+      "game"
+    ]
   },
   "ianspriggs": {
     "routes": {
@@ -39243,31 +39279,24 @@
   },
   "nhentai": {
     "routes": {
-      "/:key/:keyword/:mode?": {
-        "path": "/:key/:keyword/:mode?",
-        "categories": [
-          "anime"
-        ],
-        "example": "/nhentai/language/chinese",
+      "/index/:key/:keyword/:mode?": {
+        "path": "/index/:key/:keyword/:mode?",
+        "example": "/nhentai/index/language/chinese",
         "parameters": {
           "key": "Filter term, can be: `parody`, `character`, `tag`, `artist`, `group`, `language` or `category`",
           "keyword": "Filter value",
           "mode": "mode, `simple` to only show cover, `detail` to show all pages, `torrent` to include Magnet URI, need login, refer to [Route-specific Configurations](https://docs.rsshub.app/deploy/config#route-specific-configurations), default to `simple`"
         },
         "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
           "antiCrawler": true,
-          "supportBT": true,
-          "supportPodcast": false,
-          "supportScihub": false
+          "supportBT": true
         },
         "radar": [
           {
             "source": [
               "nhentai.net/:key/:keyword"
             ],
-            "target": "/:key/:keyword"
+            "target": "/index/:key/:keyword"
           }
         ],
         "name": "Filter",
@@ -39275,25 +39304,18 @@
           "MegrezZhu",
           "hoilc"
         ],
-        "location": "other.ts"
+        "location": "index.ts"
       },
       "/search/:keyword/:mode?": {
         "path": "/search/:keyword/:mode?",
-        "categories": [
-          "anime"
-        ],
         "example": "/nhentai/search/language%3Ajapanese+-scat+-yaoi+-guro+-\"mosaic+censorship\"",
         "parameters": {
           "keyword": "Keywords for search. You can copy the content after `q=` after searching on the original website, or you can enter it directly. See the [official website](https://nhentai.net/info/) for details",
           "mode": "mode, `simple` to only show cover, `detail` to show all pages, `torrent` to include Magnet URI, need login, refer to [Route-specific Configurations](https://docs.rsshub.app/deploy/config#route-specific-configurations), default to `simple`"
         },
         "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
           "antiCrawler": true,
-          "supportBT": true,
-          "supportPodcast": false,
-          "supportScihub": false
+          "supportBT": true
         },
         "radar": [
           {
@@ -39312,7 +39334,10 @@
       }
     },
     "name": "nhentai",
-    "url": "nhentai.net"
+    "url": "nhentai.net",
+    "categories": [
+      "anime"
+    ]
   },
   "nhk": {
     "routes": {

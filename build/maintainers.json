@@ -356,6 +356,9 @@
   "/ajmide/:id": [
     "Fatpandac"
   ],
+  "/alipan/files/:share_id/:parent_file_id?": [
+    "DIYgod"
+  ],
   "/aliresearch/information/:type?": [
     "nczitzk"
   ],
@@ -465,15 +468,6 @@
   ],
   "/arcteryx/regear/new-arrivals": [
     "EthanWng97"
-  ],
-  "/arknights/announce/:platform?/:group?": [
-    "swwind"
-  ],
-  "/arknights/japan": [
-    "ofyark"
-  ],
-  "/arknights/news": [
-    "Astrian"
   ],
   "/artstation/:handle": [
     "TonyRL"
@@ -1575,6 +1569,9 @@
   ],
   "/domp4/detail/:id": [
     "savokiss"
+  ],
+  "/domp4/latest_movie_bt": [
+    "xianghuawe"
   ],
   "/domp4/latest/:type?": [
     "savokiss"
@@ -2926,6 +2923,15 @@
     "HenryQW",
     "nczitzk"
   ],
+  "/hypergryph/arknights/announce/:platform?/:group?": [
+    "swwind"
+  ],
+  "/hypergryph/arknights/japan": [
+    "ofyark"
+  ],
+  "/hypergryph/arknights/news/:group?": [
+    "Astrian"
+  ],
   "/ianspriggs/:category?": [
     "nczitzk"
   ],
@@ -3892,7 +3898,7 @@
   "/ngocn2/:category?": [
     "nczitzk"
   ],
-  "/nhentai/:key/:keyword/:mode?": [
+  "/nhentai/index/:key/:keyword/:mode?": [
     "MegrezZhu",
     "hoilc"
   ],
