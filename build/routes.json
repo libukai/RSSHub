@@ -10812,6 +10812,40 @@
     "name": "中国期货市场监控中心",
     "url": "cfmmc.com"
   },
+  "cfr": {
+    "routes": {
+      "/:category/:subCategory?": {
+        "path": "/:category/:subCategory?",
+        "categories": [
+          "traditional-media"
+        ],
+        "parameters": {
+          "category": "category, find it in the URL",
+          "subCategory": "sub-category, find it in the URL"
+        },
+        "example": "/cfr/asia",
+        "name": "News",
+        "maintainers": [
+          "KarasuShin"
+        ],
+        "radar": [
+          {
+            "source": [
+              "www.cfr.org/:category",
+              "www.cfr.org/:category/:subCategory"
+            ],
+            "target": "/:category/:subCategory?"
+          }
+        ],
+        "features": {
+          "antiCrawler": true
+        },
+        "location": "index.ts"
+      }
+    },
+    "name": "Council on Foreign Relations",
+    "url": "www.cfr.org"
+  },
   "cgtn": {
     "routes": {
       "/podcast/:category/:id": {
@@ -35957,6 +35991,76 @@
     "url": "mastodon.social",
     "description": ":::tip\nOfficial user RSS:\n\n-   RSS: `https://**:instance**/users/**:username**.rss` ([Example](https://pawoo.net/users/pawoo_support.rss))\n-   Atom: ~~`https://**:instance**/users/**:username**.atom`~~ (Only for pawoo.net, [example](https://pawoo.net/users/pawoo_support.atom))\n\nThese feed do not include boosts (a.k.a. reblogs). RSSHub provides a feed for user timeline based on the Mastodon API, but to use that, you may need to create application on a Mastodon instance, and configure your RSSHub instance. Check the [Deploy Guide](https://docs.rsshub.app/deploy/config#route-specific-configurations) for route-specific configurations.\n:::"
   },
+  "matters": {
+    "routes": {
+      "/author/:uid": {
+        "path": "/author/:uid",
+        "name": "Author",
+        "example": "/matters/author/robertu",
+        "parameters": {
+          "uid": "Author id, can be found at author's homepage url"
+        },
+        "maintainers": [
+          "Cerebrater",
+          "xosdy"
+        ],
+        "radar": [
+          {
+            "source": [
+              "matters.town/:uid"
+            ]
+          }
+        ],
+        "location": "author.ts"
+      },
+      "/latest/:type?": {
+        "path": "/latest/:type?",
+        "name": "Latest, heat, essence",
+        "example": "/matters/latest/heat",
+        "parameters": {
+          "uid": "Defaults to latest, see table below"
+        },
+        "maintainers": [
+          "xyqfer",
+          "Cerebrater",
+          "xosdy"
+        ],
+        "radar": [
+          {
+            "source": [
+              "matters.town"
+            ]
+          }
+        ],
+        "description": "| 最新   | 热门 | 精华    |\n  | ------ | ---- | ------- |\n  | latest | heat | essence |",
+        "location": "latest.ts"
+      },
+      "/tags/:tid": {
+        "path": "/tags/:tid",
+        "name": "Tags",
+        "example": "/matters/tags/972-哲學",
+        "parameters": {
+          "tid": "Tag id, can be found in the url of the tag page"
+        },
+        "maintainers": [
+          "Cerebrater"
+        ],
+        "radar": [
+          {
+            "source": [
+              "matters.town/tags/:tid"
+            ]
+          }
+        ],
+        "location": "tags.ts"
+      }
+    },
+    "name": "Matters",
+    "url": "matters.town",
+    "categories": [
+      "new-media"
+    ]
+  },
   "mckinsey": {
     "routes": {
       "/cn/:category?": {
@@ -39579,32 +39683,22 @@
   },
   "nikkei": {
     "routes": {
-      "/": {
-        "path": [
-          "/",
-          "/index"
-        ],
-        "name": "Unknown",
-        "maintainers": [],
-        "url": "www.nikkei.com/",
-        "location": "index.ts"
-      },
       "/index": {
-        "path": [
-          "/",
-          "/index"
+        "path": "/index",
+        "name": "Home",
+        "example": "/nikkei/index",
+        "maintainers": [
+          "zjysdhr"
         ],
-        "name": "Unknown",
-        "maintainers": [],
-        "url": "www.nikkei.com/",
+        "url": "www.nikkei.com",
         "location": "index.ts"
       },
-      "/:category/:article_type?": {
-        "path": "/:category/:article_type?",
+      "/news/:category/:article_type?": {
+        "path": "/news/:category/:article_type?",
         "categories": [
           "traditional-media"
         ],
-        "example": "/nikkei/news",
+        "example": "/nikkei/news/news",
         "parameters": {
           "category": "Category, see table below",
           "article_type": "Only includes free articles, set `free` to enable, disabled by default"
@@ -39632,15 +39726,6 @@
           "traditional-media"
         ],
         "example": "/nikkei/asia",
-        "parameters": {},
-        "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
-          "antiCrawler": false,
-          "supportBT": false,
-          "supportPodcast": false,
-          "supportScihub": false
-        },
         "radar": [
           {
             "source": [
@@ -39652,18 +39737,40 @@
         "maintainers": [
           "rainrdx"
         ],
-        "url": "asia.nikkei.com/",
+        "url": "asia.nikkei.com",
         "location": "asia/index.ts"
       },
       "/cn/*": {
         "path": "/cn/*",
-        "name": "Unknown",
-        "maintainers": [],
+        "name": "中文版新闻",
+        "example": "/nikkei/cn",
+        "maintainers": [
+          "nczitzk"
+        ],
+        "description": "::: tip\n  如 [中国 经济 日经中文网](https://cn.nikkei.com/china/ceconomy.html) 的 URL 为 `https://cn.nikkei.com/china/ceconomy.html` 对应路由为 [`/nikkei/cn/cn/china/ceconomy`](https://rsshub.app/nikkei/cn/cn/china/ceconomy)\n\n  如 [中國 經濟 日經中文網](https://zh.cn.nikkei.com/china/ceconomy.html) 的 URL 为 `https://zh.cn.nikkei.com/china/ceconomy.html` 对应路由为 [`/nikkei/cn/zh/china/ceconomy`](https://rsshub.app/nikkei/cn/zh/china/ceconomy)\n\n  特别地，当 `path` 填入 `rss` 后（如路由为 [`/nikkei/cn/cn/rss`](https://rsshub.app/nikkei/cn/cn/rss)），此时返回的是 [官方 RSS 的内容](https://cn.nikkei.com/rss.html)\n:::",
+        "radar": [
+          {
+            "title": "中文版新闻",
+            "source": [
+              "cn.nikkei.com/:category/:type",
+              "cn.nikkei.com/:category",
+              "cn.nikkei.com/"
+            ]
+          },
+          {
+            "title": "中文版新聞",
+            "source": [
+              "zh.cn.nikkei.com/:category/:type",
+              "zh.cn.nikkei.com/:category",
+              "zh.cn.nikkei.com/"
+            ]
+          }
+        ],
         "location": "cn/index.ts"
       }
     },
     "name": "The Nikkei 日本経済新聞",
-    "url": "asia.nikkei.com"
+    "url": "nikkei.com"
   },
   "nintendo": {
     "routes": {
@@ -65767,51 +65874,34 @@
   },
   "zaobao": {
     "routes": {
-      "/:type?/:section?": {
-        "path": "/:type?/:section?",
-        "categories": [
-          "traditional-media"
-        ],
-        "example": "/zaobao/lifestyle/health",
-        "parameters": {
-          "type": "https://www.zaobao.com/**lifestyle**/health 中的 **lifestyle**",
-          "section": "https://www.zaobao.com/lifestyle/**health** 中的 **health**"
-        },
-        "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
-          "antiCrawler": false,
-          "supportBT": false,
-          "supportPodcast": false,
-          "supportScihub": false
-        },
-        "name": "其他栏目",
-        "maintainers": [
-          "shunf4"
-        ],
-        "description": "除了上面两个兼容规则之外，联合早报网站里所有页面形如 [https://www.zaobao.com/lifestyle/health](https://www.zaobao.com/lifestyle/health) 这样的栏目都能被这个规则解析到，早报的大部分栏目都是这个样式的。你可以测试之后再订阅。",
-        "location": "index.ts"
-      },
       "/interactive-graphics": {
         "path": "/interactive-graphics",
         "categories": [
           "traditional-media"
         ],
         "example": "/zaobao/interactive-graphics",
-        "parameters": {},
-        "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
-          "antiCrawler": false,
-          "supportBT": false,
-          "supportPodcast": false,
-          "supportScihub": false
-        },
         "name": "互动新闻",
         "maintainers": [
           "shunf4"
         ],
         "location": "interactive.ts"
+      },
+      "/other/:type?/:section?": {
+        "path": "/other/:type?/:section?",
+        "categories": [
+          "traditional-media"
+        ],
+        "example": "/zaobao/other/lifestyle/health",
+        "parameters": {
+          "type": "https://www.zaobao.com/**lifestyle**/health 中的 **lifestyle**",
+          "section": "https://www.zaobao.com/lifestyle/**health** 中的 **health**"
+        },
+        "name": "其他栏目",
+        "maintainers": [
+          "shunf4"
+        ],
+        "description": "除了上面两个兼容规则之外，联合早报网站里所有页面形如 [https://www.zaobao.com/lifestyle/health](https://www.zaobao.com/lifestyle/health) 这样的栏目都能被这个规则解析到，早报的大部分栏目都是这个样式的。你可以测试之后再订阅。",
+        "location": "other.ts"
       },
       "/realtime/:section?": {
         "path": "/realtime/:section?",
@@ -65821,14 +65911,6 @@
         "example": "/zaobao/realtime/china",
         "parameters": {
           "section": "分类，缺省为 china"
-        },
-        "features": {
-          "requireConfig": false,
-          "requirePuppeteer": false,
-          "antiCrawler": false,
-          "supportBT": false,
-          "supportPodcast": false,
-          "supportScihub": false
         },
         "name": "即时新闻",
         "maintainers": [
