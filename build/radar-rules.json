@@ -555,7 +555,7 @@
       }
     ]
   },
-  "69shu.top": {
+  "69shuba.pro": {
     "_name": "69书吧",
     "www": [
       {
@@ -8730,6 +8730,19 @@
           "/topic/:id"
         ],
         "target": "/jin10/topic/:id"
+      }
+    ]
+  },
+  "jingzhengu.com": {
+    "_name": "精真估",
+    "www": [
+      {
+        "title": "资讯",
+        "docs": "https://docs.rsshub.app/routes/other",
+        "source": [
+          "/"
+        ],
+        "target": "/jingzhengu/news"
       }
     ]
   },
