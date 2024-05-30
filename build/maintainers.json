@@ -3246,6 +3246,9 @@
   "/jlu/jwc": [
     "mayouxi"
   ],
+  "/jlu/ccst/xwzx/:category": [
+    "mayouxi"
+  ],
   "/jornada/:date?/:category?": [
     "Thealf154"
   ],
@@ -6166,6 +6169,9 @@
     "zytomorrow",
     "DIYgod",
     "Rongronggg9"
+  ],
+  "/weibo/user_bookmarks/:uid/:routeParams?": [
+    "cztchoice"
   ],
   "/weibo/user/:uid/:routeParams?": [
     "DIYgod",
