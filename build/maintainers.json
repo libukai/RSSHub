@@ -1431,6 +1431,9 @@
     "zoenglinghou",
     "nczitzk"
   ],
+  "/dataguidance/news": [
+    "harveyqiu"
+  ],
   "/dayanzai/:category/:fulltext?": [],
   "/dbaplus/": [
     "cnkmmk"
@@ -3164,6 +3167,9 @@
   "/javdb/tags/:query?/:category?": [
     "nczitzk"
   ],
+  "/javdb/video_codes/:code/:filter?": [
+    "sgpublic"
+  ],
   "/javlibrary/videos/bestrated/:language?/:mode?": [],
   "/javlibrary/bestrated/:language?/:mode?": [],
   "/javlibrary/bestreviews/:language?/:mode?": [
@@ -4142,7 +4148,9 @@
   "/nowcoder/schedule/:propertyId?/:typeId?": [
     "junfengP"
   ],
-  "/npm/package/:name{(@[a-z0-9-~][a-z0-9-._~]*/)?[a-z0-9-~][a-z0-9-._~]*}": [],
+  "/npm/package/:name{(@[a-z0-9-~][a-z0-9-._~]*/)?[a-z0-9-~][a-z0-9-._~]*}": [
+    "Fatpandac"
+  ],
   "/npr/:endpoint?": [
     "bennyyip"
   ],

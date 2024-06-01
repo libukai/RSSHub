@@ -4091,6 +4091,19 @@
       }
     ]
   },
+  "dataguidance.com": {
+    "_name": "DataGuidance",
+    ".": [
+      {
+        "title": "News",
+        "docs": "https://docs.rsshub.app/routes/other",
+        "source": [
+          "/search/news"
+        ],
+        "target": "/dataguidance/news"
+      }
+    ]
+  },
   "dayanzai.me": {
     "_name": "大眼仔旭",
     ".": [
@@ -8723,6 +8736,14 @@
           "/"
         ],
         "target": "/javdb/tags/:query?/:category?"
+      },
+      {
+        "title": "番号",
+        "docs": "https://docs.rsshub.app/routes/multimedia",
+        "source": [
+          "/"
+        ],
+        "target": "/javdb/video_codes/:code/:filter?"
       }
     ]
   },
@@ -11574,6 +11595,19 @@
           "/"
         ],
         "target": "/nowcoder/schedule"
+      }
+    ]
+  },
+  "npmjs.com": {
+    "_name": "NPM",
+    "www": [
+      {
+        "title": "Package",
+        "docs": "https://docs.rsshub.app/routes/program-update",
+        "source": [
+          "/package/:name"
+        ],
+        "target": "/npm/package/:name{(@[a-z0-9-~][a-z0-9-._~]*/)?[a-z0-9-~][a-z0-9-._~]*}"
       }
     ]
   },
