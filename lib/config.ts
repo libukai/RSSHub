@@ -259,12 +259,11 @@ export type Config = {
         cookie?: string;
     };
     twitter: {
-        oauthTokens?: string[];
-        oauthTokenSecrets?: string[];
-        username?: string;
-        password?: string;
-        authenticationSecret?: string;
+        username?: string[];
+        password?: string[];
+        authenticationSecret?: string[];
         cookie?: string;
+        authToken?: string[];
     };
     weibo: {
         app_key?: string;
@@ -621,12 +620,11 @@ const calculateValue = () => {
             cookie: envs.TOPHUB_COOKIE,
         },
         twitter: {
-            oauthTokens: envs.TWITTER_OAUTH_TOKEN?.split(','),
-            oauthTokenSecrets: envs.TWITTER_OAUTH_TOKEN_SECRET?.split(','),
-            username: envs.TWITTER_USERNAME,
-            password: envs.TWITTER_PASSWORD,
-            authenticationSecret: envs.TWITTER_AUTHENTICATION_SECRET,
+            username: envs.TWITTER_USERNAME?.split(','),
+            password: envs.TWITTER_PASSWORD?.split(','),
+            authenticationSecret: envs.TWITTER_AUTHENTICATION_SECRET?.split(','),
             cookie: envs.TWITTER_COOKIE,
+            authToken: envs.TWITTER_AUTH_TOKEN?.split(','),
         },
         weibo: {
             app_key: envs.WEIBO_APP_KEY,
