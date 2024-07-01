@@ -258,6 +258,9 @@ export type Config = {
     tophub: {
         cookie?: string;
     };
+    tsdm39: {
+        cookie: string;
+    };
     twitter: {
         username?: string[];
         password?: string[];
@@ -283,6 +286,9 @@ export type Config = {
     };
     ximalaya: {
         token?: string;
+    };
+    xsijishe: {
+        cookie?: string;
     };
     xueqiu: {
         cookies?: string;
@@ -619,6 +625,9 @@ const calculateValue = () => {
         tophub: {
             cookie: envs.TOPHUB_COOKIE,
         },
+        tsdm39: {
+            cookie: envs.TSDM39_COOKIES,
+        },
         twitter: {
             username: envs.TWITTER_USERNAME?.split(','),
             password: envs.TWITTER_PASSWORD?.split(','),
@@ -644,6 +653,9 @@ const calculateValue = () => {
         },
         ximalaya: {
             token: envs.XIMALAYA_TOKEN,
+        },
+        xsijishe: {
+            cookie: envs.XSIJISHE_COOKIE,
         },
         xueqiu: {
             cookies: envs.XUEQIU_COOKIES,
