@@ -1,4 +1,4 @@
-import { Route, ViewType, Data } from '@/types';
+import { Route, ViewType, Data, Language } from '@/types';
 import got from '@/utils/got';
 import { load } from 'cheerio';
 import { isValidHost } from '@/utils/valid-host';
@@ -44,7 +44,7 @@ async function handler(ctx): Promise<Data> {
         description: $('section.aboutMeSection').text().trim(),
         link,
         image: $('#getAvatar').attr('src'),
-        language: $('html').attr('lang'),
+        language: $('html').attr('lang') as Language | 'en',
         item: items,
     };
 }

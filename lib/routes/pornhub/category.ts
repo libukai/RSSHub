@@ -1,9 +1,9 @@
+import { config } from '@/config';
 import { Route, ViewType } from '@/types';
 import cache from '@/utils/cache';
 import got from '@/utils/got';
 import { parseDate } from '@/utils/parse-date';
 import { defaultDomain, renderDescription } from './utils';
-import { config } from '@/config';
 
 export const route: Route = {
     path: '/category/:caty',
@@ -32,8 +32,8 @@ async function handler(ctx) {
         return data.categories;
     });
 
-    const categoryId = Number.isNaN(category) ? categories.find((item) => item.category === category)?.id : category;
-    const categoryName = Number.isNaN(category) ? category : categories.find((item) => item.id === Number.parseInt(category)).category;
+    const categoryId = Number.isFinite(Number(category)) ? category : categories.find((item) => item.category === category)?.id;
+    const categoryName = Number.isFinite(Number(category)) ? categories.find((item) => item.id === Number.parseInt(category)).category : category;
 
     const response = await cache.tryGet(
         `pornhub:category:${categoryName}`,
