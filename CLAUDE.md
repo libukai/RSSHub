@@ -2,6 +2,21 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 📑 Table of Contents
+
+- [Project Overview](#project-overview)
+- [Essential Commands](#essential-commands)
+- [Architecture & Code Structure](#architecture--code-structure)
+- [Creating a New Route - Complete Guide](#-creating-a-new-route---complete-guide)
+- [Three Data Fetching Methods](#-three-data-fetching-methods)
+- [Additional Utilities & Best Practices](#️-additional-utilities--best-practices)
+- [Development Guidelines & Best Practices](#-development-guidelines--best-practices)
+- [Route Maintenance & Debugging](#-route-maintenance--debugging-best-practices)
+- [ESLint & Prettier Best Practices](#-eslint--prettier-best-practices)
+- [Common Patterns & Solutions](#-common-patterns--solutions)
+- [Common Pitfalls & How to Avoid Them](#️-common-pitfalls--how-to-avoid-them)
+- [Quick Reference Commands](#-quick-reference-commands)
+
 ## Project Overview
 
 **RSSHub** is the world's largest RSS network that aggregates content from thousands of sources. The codebase contains over 5,000 route handlers that transform various web content into standardized RSS feeds.
@@ -1506,12 +1521,246 @@ Middleware runs in order (see `lib/app-bootstrap.tsx`):
 9. **parameter**: Parameter validation
 10. **cache**: Response caching
 
-## ESLint & Prettier
+## 🔍 ESLint & Prettier Best Practices
 
-- Configuration: `eslint.config.mjs`
-- Auto-fix on commit via husky pre-commit hook
-- Runs on: `*.ts`, `*.tsx`, `*.js`, `*.yml`
-- Extends: `recommended`, `plugin:@typescript-eslint/recommended`, `plugin:unicorn/recommended`
+### Configuration Overview
+
+- **Configuration**: `eslint.config.mjs`
+- **Auto-fix**: Husky pre-commit hook runs `lint-staged`
+- **Targets**: `*.ts`, `*.tsx`, `*.js`, `*.yml`
+- **Extends**: `recommended`, `@typescript-eslint/recommended`, `unicorn/recommended`
+
+### Common ESLint Errors & Solutions
+
+This section covers real errors encountered during route development and their fixes.
+
+#### 1. **Unnecessary Escape Characters in Markdown Tables**
+
+**Error:**
+```
+warning  Unnecessary escape character: \_  no-useless-escape
+```
+
+**Problem:**
+```typescript
+// ❌ Bad: Unnecessary escapes in JSDoc/comments
+/**
+ * | category\_guoji | russia\_china\_relations |
+ */
+```
+
+**Solution:**
+```typescript
+// ✅ Good: Remove unnecessary backslashes
+/**
+ * | category_guoji | russia_china_relations |
+ */
+```
+
+**Why:** Markdown tables in comments don't need escaped underscores. ESLint detects unnecessary escapes that could be confusing.
+
+#### 2. **Must Use .toArray() Instead of Direct Iteration**
+
+**Error:**
+```
+error  Please use .toArray() instead  no-restricted-syntax
+```
+
+**Problem:**
+```typescript
+// ❌ Bad: Using Cheerio's .map() directly with index parameter
+list &&
+list
+    .map((index, item) => {
+        const $item = $(item);
+        return { ... };
+    })
+    .get()
+```
+
+**Solution:**
+```typescript
+// ✅ Good: Use .toArray() first, then native .map()
+list.toArray().map((item) => {
+    const $item = $(item);
+    return { ... };
+})
+```
+
+**Why this matters:**
+- **Cheerio's `.map()`** uses jQuery-style signature: `(index, element)`
+- **Native `.map()`** uses standard signature: `(element, index)`
+- Using `.toArray()` converts to standard JavaScript array
+- Prevents confusion between jQuery and JavaScript conventions
+- Eliminates need for `.get()` at the end
+
+**Complete pattern:**
+```typescript
+// ❌ Bad: Multiple anti-patterns
+item:
+    list &&
+    list
+        .map((index, item) => {        // Wrong: jQuery-style parameters
+            item = $(item);             // Wrong: Reassigning parameter
+            return { ... };
+        })
+        .get()                          // Wrong: Unnecessary .get()
+
+// ✅ Good: Clean and standard
+item: list.toArray().map((item) => {   // Standard JS map
+    const $item = $(item);             // New variable with $ prefix
+    return { ... };
+})
+```
+
+#### 3. **Prefer got Over ofetch (Codebase Convention)**
+
+**Note:** While both work (got internally uses ofetch), prefer `got` for consistency:
+
+```typescript
+// ✅ Preferred in RSSHub codebase
+import got from '@/utils/got';
+const { data: response } = await got(url);
+
+// ⚠️ Works but less common
+import ofetch from '@/utils/ofetch';
+const response = await ofetch(url);
+```
+
+### Pre-Commit Hook Workflow
+
+When you run `git commit`, the following happens automatically:
+
+```bash
+1. Husky pre-commit hook triggers
+2. lint-staged runs on staged files:
+   - prettier --write (formats code)
+   - eslint --fix (fixes auto-fixable issues)
+3. If errors remain:
+   - Commit is blocked
+   - Git stash saves your changes
+   - You must fix errors manually
+4. After fixing:
+   - Stage the fixed files
+   - Commit again
+```
+
+**Debugging failed pre-commit:**
+
+```bash
+# See what lint-staged is checking
+git diff --cached --name-only
+
+# Run ESLint manually to see errors
+pnpm lint
+
+# Fix auto-fixable issues
+pnpm format
+
+# Check specific file
+npx eslint lib/routes/yourroute/index.ts
+```
+
+### ESLint Rules to Remember
+
+#### Cheerio/jQuery Patterns
+
+```typescript
+// ❌ Wrong: Don't use .map() directly on Cheerio objects
+$('.item').map((index, element) => { ... })
+
+// ✅ Right: Convert to array first
+$('.item').toArray().map((element) => { ... })
+
+// ❌ Wrong: Don't reassign parameters
+.map((item) => {
+    item = $(item);  // Type confusion
+})
+
+// ✅ Right: Use new variable with $ prefix
+.map((item) => {
+    const $item = $(item);
+})
+```
+
+#### Import Statements
+
+```typescript
+// ✅ Always use path aliases
+import cache from '@/utils/cache';
+import got from '@/utils/got';
+import { parseDate } from '@/utils/parse-date';
+
+// ❌ Never use relative imports
+import cache from '../../utils/cache';
+```
+
+#### Type Safety
+
+```typescript
+// ✅ Always define interfaces for complex data
+interface ArticleItem {
+    title: string;
+    link: string;
+    pubDate?: Date;
+    description?: string;
+}
+
+const items: ArticleItem[] = fetchData();
+
+// ❌ Don't use 'any' or implicit types
+const items = fetchData();  // Type is 'any'
+```
+
+### Quick Fix Checklist
+
+Before committing, ensure:
+
+- [ ] No `.map((index, item) => ...)` patterns (use `.toArray().map((item) => ...)`)
+- [ ] No unnecessary escape characters in strings/comments
+- [ ] All imports use `@/` path aliases
+- [ ] Cheerio objects use `$` prefix (`$item`, `$detail`, etc.)
+- [ ] No `item = $(item)` parameter reassignments
+- [ ] Run `pnpm format` to auto-fix formatting issues
+- [ ] Run `pnpm lint` to check for remaining errors
+
+### Common ESLint Error Patterns from Real Fixes
+
+From recent route optimization work:
+
+```typescript
+// Pattern 1: Markdown table escapes
+// Before: | category\_name | value\_here |
+// After:  | category_name | value_here |
+
+// Pattern 2: Cheerio iteration
+// Before: list && list.map((index, item) => {...}).get()
+// After:  list.toArray().map((item) => {...})
+
+// Pattern 3: Variable naming
+// Before: .map((item) => { item = $(item); })
+// After:  .map((item) => { const $item = $(item); })
+```
+
+### Testing ESLint Rules Locally
+
+```bash
+# Check all files
+pnpm lint
+
+# Check specific file
+npx eslint lib/routes/namespace/route.ts
+
+# Auto-fix what's possible
+npx eslint lib/routes/namespace/route.ts --fix
+
+# Check what lint-staged would do
+npx lint-staged --debug
+
+# Run the full pre-commit sequence manually
+git add . && git commit -m "test" --no-verify  # Skip hook
+pnpm format && pnpm lint                        # Run manually
+```
 
 ## 🎯 Common Patterns & Solutions
 
