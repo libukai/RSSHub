@@ -1,6 +1,9 @@
+import { getCurrentPath } from '@/utils/helpers';
+const __dirname = getCurrentPath(import.meta.url);
+
 import cache from '@/utils/cache';
 import { load } from 'cheerio';
-import { parseDate, parseRelativeDate } from '@/utils/parse-date';
+import { parseDate } from '@/utils/parse-date';
 import got from '@/utils/got';
 import { art } from '@/utils/render';
 import path from 'node:path';
@@ -24,10 +27,10 @@ export default {
             // external link
             return defaultRssItem(item);
         }
-        const itemUrl = `https://m.thepaper.cn/${item.cornerLabelDesc && item.cornerLabelDesc === '短剧' ? 'series' : 'detail'}/${item.contId}`;
+        const itemUrl = `https://m.thepaper.cn/detail/${item.contId}`;
         return cache.tryGet(`${itemUrl}${useOldMode ? ':old' : ''}`, async () => {
             const res = await got(itemUrl);
-            const data = JSON.parse(load(res.data)('#__NEXT_DATA__').html());
+            const data = JSON.parse(load(res.data)('#__NEXT_DATA__').html() || '{}');
             const detailData = data.props.pageProps.detailData;
             const contentDetail = detailData.contentDetail || detailData.liveDetail || detailData.specialDetail?.specialInfo;
             if (!contentDetail) {
@@ -55,17 +58,12 @@ export default {
                 }
             }
 
-            let pubDate = parseDate(item.pubTimeLong || contentDetail.publishTime);
-            if (Number.isNaN(pubDate)) {
-                pubDate = parseRelativeDate(contentDetail.pubTime);
-            }
-
             const rss_item = {
                 title: contentDetail.name || contentDetail.shareName,
                 link: itemUrl,
                 description,
                 category: [...(contentDetail.tagList?.map((t) => t.tag) ?? []), contentDetail?.nodeInfo?.name ?? []],
-                pubDate,
+                pubDate: parseDate(item.pubTimeLong || contentDetail.pubTime || contentDetail.publishTime),
                 author: contentDetail.author || '',
                 media: {
                     content: {
@@ -76,15 +74,18 @@ export default {
                     },
                 },
             };
-            if (contentDetail.voiceInfo?.isHaveVoice) {
-                rss_item.enclosure_type = 'audio/mpeg';
-                rss_item.enclosure_url = contentDetail.voiceInfo.voiceSrc;
-                rss_item.itunes_item_image = item.pic || contentDetail.videos?.coverUrl;
-            }
+            // if (contentDetail.voiceInfo?.isHaveVoice) {
+            //     rss_item.enclosure_type = 'audio/mpeg';
+            //     rss_item.enclosure_url = contentDetail.voiceInfo.voiceSrc;
+            //     rss_item.itunes_item_image = item.pic || contentDetail.videos?.coverUrl;
+            // }
             return rss_item;
         });
     },
     ChannelIdToName: (nodeId, next_data) => next_data.props.appProps.menu.channelList.find((c) => c.nodeId.toString() === nodeId.toString()).name,
     ListIdToName: (listId, next_data) => next_data.props.appProps.menu.channelList.flatMap((c) => c.childNodeList || []).find((l) => l.nodeId.toString() === listId.toString())?.name,
-    ExtractLogo: (response) => 'https://m.thepaper.cn' + load(response.data)('img.imageCover').attr('src'),
+    ExtractLogo: (response) => {
+        const src = load(response.data)('img.imageCover').attr('src');
+        return src ? 'https://m.thepaper.cn' + src : '';
+    },
 };

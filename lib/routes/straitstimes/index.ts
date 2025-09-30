@@ -2,8 +2,20 @@ import { Route } from '@/types';
 import cache from '@/utils/cache';
 import got from '@/utils/got';
 import { parseDate } from '@/utils/parse-date';
+import { getCurrentPath } from '@/utils/helpers';
 import path from 'node:path';
 import { art } from '@/utils/render';
+import { load } from 'cheerio';
+
+interface ArticleItem {
+    title: string;
+    link: string;
+    pubDate: Date;
+    updated?: Date;
+    description?: string;
+    author?: string;
+    category?: string[];
+}
 
 export const route: Route = {
     path: '/:category?/:section?',
@@ -61,6 +73,7 @@ async function handler(ctx) {
     const section = ctx.req.param('section') ? ctx.req.param('section').toLowerCase() : undefined;
     const apiKey = 'T9XUJM9rAZoLOd2CAx2wCBSTrm3xoyPw';
     const platform = 'iosflex';
+    const __dirname = getCurrentPath(import.meta.url);
     let feed;
     const response = await got({
         method: 'get',
@@ -91,7 +104,7 @@ async function handler(ctx) {
         feed = response.data.data;
     }
     const articles = feed.filter((item) => item.items[0].itemType === 'Article');
-    const items = await Promise.all(
+    const items: ArticleItem[] = await Promise.all(
         articles.map((item) =>
             cache.tryGet(item.items[0].articleData.url, async () => {
                 const article = item.items[0].articleData;
@@ -114,7 +127,9 @@ async function handler(ctx) {
                             'x-api-key': apiKey,
                         },
                     });
-                    content = response.data.data.body;
+                    const $content = load(response.data.data.body);
+                    $content('div.paragraph--type--more-on-this-topic').remove();
+                    content = $content.html() || '';
                 }
                 item.description = art(path.join(__dirname, 'templates/description.art'), {
                     images: article.images ?? [],

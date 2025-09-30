@@ -4,6 +4,14 @@ import got from '@/utils/got';
 import { load } from 'cheerio';
 import { parseDate } from '@/utils/parse-date';
 
+interface ArticleItem {
+    title: string;
+    link: string;
+    pubDate?: Date;
+    description?: string;
+    category?: string[];
+}
+
 const languages = {
     english: 'https://sputniknews.com',
     spanish: 'https://mundo.sputniknews.com',
@@ -33,7 +41,7 @@ const languages = {
     tajik: 'https://sputnik-tj.com',
     vietnamese: 'https://vn.sputniknews.com',
     japanese: 'https://jp.sputniknews.com',
-    chinese: 'http://sputniknews.cn',
+    chinese: 'https://sputniknews.cn',
     portuguese: 'https://br.sputniknews.com',
 };
 
@@ -55,50 +63,50 @@ export const route: Route = {
     handler,
     description: `Categories for International site:
 
-| WORLD | COVID-19 | BUSINESS | SPORT | TECH | OPINION |
-| ----- | -------- | -------- | ----- | ---- | ------- |
-| world | covid-19 | business | sport | tech | opinion |
+  | WORLD | COVID-19 | BUSINESS | SPORT | TECH | OPINION |
+  | ----- | -------- | -------- | ----- | ---- | ------- |
+  | world | covid-19 | business | sport | tech | opinion |
 
   Categories for Chinese site:
 
-| 新闻 | 中国  | 俄罗斯 | 国际            | 俄中关系                 | 评论    |
-| ---- | ----- | ------ | --------------- | ------------------------ | ------- |
-| news | china | russia | category\_guoji | russia\_china\_relations | opinion |
+  | 新闻 | 中国  | 俄罗斯 | 国际            | 俄中关系                 | 评论    |
+  | ---- | ----- | ------ | --------------- | ------------------------ | ------- |
+  | news | china | russia | category_guoji | russia_china_relations | opinion |
 
   Language
 
-| Language    | Id          |
-| ----------- | ----------- |
-| English     | english     |
-| Spanish     | spanish     |
-| German      | german      |
-| French      | french      |
-| Greek       | greek       |
-| Italian     | italian     |
-| Czech       | czech       |
-| Polish      | polish      |
-| Serbian     | serbian     |
-| Latvian     | latvian     |
-| Lithuanian  | lithuanian  |
-| Moldavian   | moldavian   |
-| Belarusian  | belarusian  |
-| Armenian    | armenian    |
-| Abkhaz      | abkhaz      |
-| Ssetian     | ssetian     |
-| Georgian    | georgian    |
-| Azerbaijani | azerbaijani |
-| Arabic      | arabic      |
-| Turkish     | turkish     |
-| Persian     | persian     |
-| Dari        | dari        |
-| Kazakh      | kazakh      |
-| Kyrgyz      | kyrgyz      |
-| Uzbek       | uzbek       |
-| Tajik       | tajik       |
-| Vietnamese  | vietnamese  |
-| Japanese    | japanese    |
-| Chinese     | chinese     |
-| Portuguese  | portuguese  |`,
+  | Language    | Id          |
+  | ----------- | ----------- |
+  | English     | english     |
+  | Spanish     | spanish     |
+  | German      | german      |
+  | French      | french      |
+  | Greek       | greek       |
+  | Italian     | italian     |
+  | Czech       | czech       |
+  | Polish      | polish      |
+  | Serbian     | serbian     |
+  | Latvian     | latvian     |
+  | Lithuanian  | lithuanian  |
+  | Moldavian   | moldavian   |
+  | Belarusian  | belarusian  |
+  | Armenian    | armenian    |
+  | Abkhaz      | abkhaz      |
+  | Ssetian     | ssetian     |
+  | Georgian    | georgian    |
+  | Azerbaijani | azerbaijani |
+  | Arabic      | arabic      |
+  | Turkish     | turkish     |
+  | Persian     | persian     |
+  | Dari        | dari        |
+  | Kazakh      | kazakh      |
+  | Kyrgyz      | kyrgyz      |
+  | Uzbek       | uzbek       |
+  | Tajik       | tajik       |
+  | Vietnamese  | vietnamese  |
+  | Japanese    | japanese    |
+  | Chinese     | chinese     |
+  | Portuguese  | portuguese  |`,
 };
 
 async function handler(ctx) {
@@ -115,14 +123,14 @@ async function handler(ctx) {
 
     const $ = load(response.data);
 
-    let items = $('.list__title')
+    let items: ArticleItem[] = $('.list__title')
         .toArray()
-        .map((item) => {
-            item = $(item);
+        .map((element) => {
+            const $item = $(element);
 
             return {
-                title: item.text(),
-                link: `${rootUrl}${item.attr('href')}`,
+                title: $item.text(),
+                link: `${rootUrl}${$item.attr('href')}`,
             };
         });
 
@@ -134,18 +142,20 @@ async function handler(ctx) {
                     url: item.link,
                 });
 
-                const content = load(detailResponse.data);
+                const $content = load(detailResponse.data);
 
-                item.pubDate = parseDate(content('a[data-unixtime]').attr('data-unixtime') * 1000);
+                const unixtime = $content('a[data-unixtime]').attr('data-unixtime');
+                item.pubDate = unixtime ? parseDate(Number(unixtime) * 1000) : undefined;
 
-                item.category = content('.tag__text')
+                item.category = $content('.tag__text')
                     .toArray()
-                    .map((tag) => content(tag).text());
+                    .map((tag) => $content(tag).text());
 
-                content('.article__meta, .article__title, .article__info, .article__quote-bg, .article__google-news, .article__footer, .m-buy, .photoview__ext-link').remove();
-                content('div[data-type="article"]').remove();
+                $content('.article__meta, .article__title, .article__info, .article__quote-bg, .article__google-news, .article__footer, .m-buy, .photoview__ext-link').remove();
+                $content('div[data-type="article"]').remove();
+                $content('.article__news-services-subscribe').remove();
 
-                item.description = content('.article').html();
+                item.description = $content('.article').html() || '';
 
                 return item;
             })

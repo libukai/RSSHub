@@ -1,16 +1,27 @@
 import { Route, ViewType } from '@/types';
+import { getCurrentPath } from '@/utils/helpers';
+const __dirname = getCurrentPath(import.meta.url);
 
 import cache from '@/utils/cache';
 import got from '@/utils/got';
 import { parseDate } from '@/utils/parse-date';
 import { art } from '@/utils/render';
 import path from 'node:path';
-const baseUrl = 'https://www3.nhk.or.jp';
+const baseUrl = 'https://www.nhk.or.jp';
 const apiUrl = 'https://nwapi.nhk.jp';
+
+interface ArticleItem {
+    title: string;
+    description: string;
+    link: string;
+    pubDate: Date;
+    id?: string;
+    category?: string[];
+}
 
 export const route: Route = {
     path: '/news/:lang?',
-    categories: ['traditional-media'],
+    categories: ['traditional-media', 'popular'],
     view: ViewType.Articles,
     example: '/nhk/news/en',
     parameters: {
@@ -56,7 +67,7 @@ export const route: Route = {
         },
     ],
     name: 'WORLD-JAPAN - Top Stories',
-    maintainers: ['TonyRL', 'pseudoyu', 'cscnk52'],
+    maintainers: ['TonyRL', 'pseudoyu'],
     handler,
 };
 
@@ -65,7 +76,7 @@ async function handler(ctx) {
     const { data } = await got(`${apiUrl}/nhkworld/rdnewsweb/v7b/${lang}/outline/list.json`);
     const meta = await got(`${baseUrl}/nhkworld/common/assets/news/config/${lang}.json`);
 
-    let items = data.data.map((item) => ({
+    let items: ArticleItem[] = data.data.map((item: any) => ({
         title: item.title,
         description: item.description,
         link: `${baseUrl}${item.page_url}`,
@@ -80,7 +91,7 @@ async function handler(ctx) {
                 item.category = Object.values(data.data.categories);
                 item.description = art(path.join(__dirname, 'templates/news.art'), {
                     img: data.data.thumbnails,
-                    description: data.data.detail.replaceAll('\n\n', '<br><br>'),
+                    description: data.data.detail.replace('\n\n', '<br><br>'),
                 });
                 delete item.id;
                 return item;

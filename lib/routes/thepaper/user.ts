@@ -1,12 +1,12 @@
 import { Route } from '@/types';
 import * as cheerio from 'cheerio';
-import ofetch from '@/utils/ofetch';
+import got from '@/utils/got';
 import cache from '@/utils/cache';
 import { parseDate } from '@/utils/parse-date';
 
 export const route: Route = {
     path: '/user/:pphId',
-    categories: ['new-media'],
+    categories: ['new-media', 'popular'],
     example: '/thepaper/user/4221423',
     parameters: { pphId: '澎湃号 id，可在澎湃号页 URL 中找到' },
     name: '澎湃号',
@@ -108,26 +108,25 @@ async function handler(ctx) {
     const { pphId } = ctx.req.param();
 
     const mobileBuildId = (await cache.tryGet('thepaper:m:buildId', async () => {
-        const response = await ofetch('https://m.thepaper.cn');
+        const { data: response } = await got('https://m.thepaper.cn');
         const $ = cheerio.load(response);
         const nextData = JSON.parse($('script#__NEXT_DATA__').text());
         return nextData.buildId;
     })) as string;
 
     const userInfo = (await cache.tryGet(`thepaper:user:${pphId}`, async () => {
-        const response = await ofetch(`https://api.thepaper.cn/userservice/user/homePage/${pphId}`, {
+        const response = await got(`https://api.thepaper.cn/userservice/user/homePage/${pphId}`, {
             headers: {
                 'Client-Type': '2',
                 Origin: 'https://m.thepaper.cn',
                 Referer: 'https://m.thepaper.cn/',
             },
         });
-        return response.userInfo;
+        return response.data.userInfo;
     })) as AuthorInfo;
 
-    const response = await ofetch<PPHContentResponse>('https://api.thepaper.cn/contentapi/cont/pph/user', {
-        method: 'POST',
-        body: {
+    const response = await got.post<PPHContentResponse>('https://api.thepaper.cn/contentapi/cont/pph/user', {
+        json: {
             pageSize: 10,
             pageNum: 1,
             contType: 0,
@@ -137,7 +136,7 @@ async function handler(ctx) {
         },
     });
 
-    const list = response.data.list.map((item) => ({
+    const list = response.data.data.list.map((item) => ({
         title: item.name,
         link: `https://www.thepaper.cn/newsDetail_forward_${item.contId}`,
         pubDate: parseDate(item.pubTimeLong),
@@ -149,14 +148,14 @@ async function handler(ctx) {
     const items = await Promise.all(
         list.map((item) =>
             cache.tryGet(item.link, async () => {
-                const response = await ofetch(`https://m.thepaper.cn/_next/data/${mobileBuildId}/detail/${item.contId}.json`, {
-                    query: {
+                const response = await got(`https://m.thepaper.cn/_next/data/${mobileBuildId}/detail/${item.contId}.json`, {
+                    searchParams: {
                         id: item.contId,
                     },
                 });
 
-                item.description = response.pageProps.detailData.contentDetail.content;
-                item.updated = parseDate(response.pageProps.detailData.contentDetail.updateTime);
+                item.description = response.data.pageProps.detailData.contentDetail.content;
+                item.updated = parseDate(response.data.pageProps.detailData.contentDetail.updateTime);
 
                 return item;
             })
