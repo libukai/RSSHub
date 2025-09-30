@@ -489,7 +489,7 @@
   "/aliyun/developer/group/:type": [
     "umm233"
   ],
-  "/aljazeera*": [
+  "/aljazeera/:language?": [
     "nczitzk"
   ],
   "/ally/rail/:category?/:topic?": [
@@ -1569,6 +1569,9 @@
   "/chongdiantou/": [
     "Geraldxm"
   ],
+  "/chosun/": [
+    "Libukai"
+  ],
   "/chsi/hotnews": [
     "yanbot-team"
   ],
@@ -1651,9 +1654,6 @@
   ],
   "/cna/:id?": [
     "nczitzk"
-  ],
-  "/cna/web/:id?": [
-    "dzx-dzx"
   ],
   "/cnbc/rss/:id?": [
     "TonyRL"
@@ -1989,6 +1989,9 @@
   "/damai/activity/:city/:category/:subcategory/:keyword?": [
     "hoilc",
     "Konano"
+  ],
+  "/dangcongsan/:channel?": [
+    "Libukai"
   ],
   "/dangdang/notice/:type?": [
     "353325487"
@@ -5591,6 +5594,9 @@
   "/ngocn2/:category?": [
     "nczitzk"
   ],
+  "/nhandan/:channel?": [
+    "Libukai"
+  ],
   "/nhentai/index/:key/:keyword/:mode?": [
     "MegrezZhu",
     "hoilc"
@@ -5599,13 +5605,9 @@
     "MegrezZhu",
     "hoilc"
   ],
-  "/nhk/news_web_easy": [
-    "Andiedie"
-  ],
   "/nhk/news/:lang?": [
     "TonyRL",
-    "pseudoyu",
-    "cscnk52"
+    "pseudoyu"
   ],
   "/niaogebiji/cat/:cat": [
     "cKotoriKat"
@@ -7099,6 +7101,9 @@
   "/sfacg/novel/chapter/:id": [
     "keocheung"
   ],
+  "/sggp/:channel?": [
+    "Libukai"
+  ],
   "/shcstheatre/programs": [
     "fuzy112"
   ],
@@ -7808,6 +7813,9 @@
   "/tgbus/list/:category": [
     "Xzonn"
   ],
+  "/thanhnien/:channel?": [
+    "Libukai"
+  ],
   "/the/:filter{.+}?": [
     "nczitzk"
   ],
@@ -8086,6 +8094,9 @@
   ],
   "/tumblr/posts/:blog": [
     "Rakambda"
+  ],
+  "/tuoitre/:channel?": [
+    "Libukai"
   ],
   "/tvb/news/:category?/:language?": [
     "nczitzk"
@@ -8376,6 +8387,12 @@
   "/vice/topic/:topic/:language?": [
     "K33k0"
   ],
+  "/vietnamplus/:channel?": [
+    "Libukai"
+  ],
+  "/vietnamplus/summary/:type?": [
+    "Libukai"
+  ],
   "/vimeo/category/:category/:staffpicks?": [
     "MisteryMonster"
   ],
@@ -8399,6 +8416,12 @@
   ],
   "/visualstudio/code/blog": [
     "cscnk52"
+  ],
+  "/vnexpress/:channel?": [
+    "Libukai"
+  ],
+  "/voa/": [
+    "Libukai"
   ],
   "/vocus/publication/:id": [
     "Maecenas"
@@ -8426,6 +8449,9 @@
   ],
   "/voronoiapp/search/:keyword": [
     "Cesaryuan"
+  ],
+  "/vovworld/:channel?": [
+    "Libukai"
   ],
   "/wabei/hot-recommend": [
     "p3psi-boo"
