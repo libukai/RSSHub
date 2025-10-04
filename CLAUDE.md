@@ -50,11 +50,11 @@ lib/routes/<namespace>/
 import type { Namespace } from '@/types';
 
 export const namespace: Namespace = {
-    name: 'Site Name',              // 英文名
-    url: 'example.com',             // 域名 (不含协议)
+    name: 'Site Name', // 英文名
+    url: 'example.com', // 域名 (不含协议)
     description: 'Optional **markdown** description',
     categories: ['traditional-media'],
-    lang: 'en',                     // ISO 639-1 语言代码
+    lang: 'en', // ISO 639-1 语言代码
 
     // 可选: 中文翻译
     zh: {
@@ -86,13 +86,13 @@ interface ArticleItem {
 
 export const route: Route = {
     // === 必需字段 ===
-    path: '/category/:id',          // Hono 路由模式
-    name: 'Category Articles',      // 人类可读的名称
+    path: '/category/:id', // Hono 路由模式
+    name: 'Category Articles', // 人类可读的名称
     maintainers: ['your-github-username'],
-    handler,                        // 处理函数引用
+    handler, // 处理函数引用
 
     // === 强烈推荐 ===
-    categories: ['programming'],    // 路由分类
+    categories: ['programming'], // 路由分类
     example: '/site/category/tech', // 必须是可工作的示例!
 
     // === 参数文档 (如有参数) ===
@@ -101,7 +101,8 @@ export const route: Route = {
         state: {
             description: 'Filter state',
             default: 'all',
-            options: [              // 可选: 用于 UI 下拉菜单
+            options: [
+                // 可选: 用于 UI 下拉菜单
                 { value: 'all', label: 'All' },
                 { value: 'active', label: 'Active' },
             ],
@@ -110,9 +111,9 @@ export const route: Route = {
 
     // === 功能声明 ===
     features: {
-        requireConfig: false,       // 需要 API keys/配置?
-        requirePuppeteer: false,    // 需要浏览器自动化?
-        antiCrawler: false,         // 有反爬虫措施?
+        requireConfig: false, // 需要 API keys/配置?
+        requirePuppeteer: false, // 需要浏览器自动化?
+        antiCrawler: false, // 有反爬虫措施?
     },
 };
 
@@ -120,23 +121,21 @@ export const route: Route = {
 async function handler(ctx) {
     // 1. 获取路由参数
     const id = ctx.req.param('id');
-    const limit = ctx.req.query('limit')
-        ? Math.min(Number.parseInt(ctx.req.query('limit'), 10), 100)
-        : 20;
+    const limit = ctx.req.query('limit') ? Math.min(Number.parseInt(ctx.req.query('limit'), 10), 100) : 20;
 
     // 2. 获取列表页
     const { data: response } = await got({
         method: 'get',
         url: `https://example.com/category/${id}`,
         headers: {
-            'User-Agent': 'Mozilla/5.0...',  // 某些站点需要
+            'User-Agent': 'Mozilla/5.0...', // 某些站点需要
         },
     });
 
     // 3. 解析 HTML
     const $ = load(response);
     const list: ArticleItem[] = $('.article-item')
-        .toArray()  // 必须使用 .toArray()! (ESLint 规则)
+        .toArray() // 必须使用 .toArray()! (ESLint 规则)
         .slice(0, limit)
         .map((element) => {
             const $item = $(element);
@@ -161,7 +160,9 @@ async function handler(ctx) {
                 // 提取内容 (注意空值安全!)
                 item.description = $('.content').html() || '';
                 item.author = $('.author').text() || '';
-                item.category = $('.tag').toArray().map((e) => $(e).text());
+                item.category = $('.tag')
+                    .toArray()
+                    .map((e) => $(e).text());
 
                 return item;
             })
@@ -178,7 +179,7 @@ async function handler(ctx) {
         // 可选字段
         image: 'https://example.com/logo.png',
         language: 'en',
-        allowEmpty: true,   // 允许空 feed (不抛出错误)
+        allowEmpty: true, // 允许空 feed (不抛出错误)
     };
 }
 ```
@@ -186,25 +187,26 @@ async function handler(ctx) {
 ### 路由路径模式 (Hono)
 
 ```typescript
-path: '/user/:id'                    // 必需参数
-path: '/category/:id?'               // 可选参数
-path: '/docs/*'                      // 通配符
-path: '/post/:id{[0-9]+}'           // 正则表达式
+path: '/user/:id'; // 必需参数
+path: '/category/:id?'; // 可选参数
+path: '/docs/*'; // 通配符
+path: '/post/:id{[0-9]+}'; // 正则表达式
 
 // 访问参数
-const id = ctx.req.param('id');          // 路径参数
-const limit = ctx.req.query('limit');    // 查询参数 (?limit=10)
+const id = ctx.req.param('id'); // 路径参数
+const limit = ctx.req.query('limit'); // 查询参数 (?limit=10)
 ```
 
-## 🔄 三种数据获取方法
+## 🔄 四种数据获取方法 (按数据格式分类)
 
-### 方法 1: API 调用 (推荐 ⭐)
+数据获取优先级: **JSON > XML > HTML > 动态 HTML**
+
+### 方法 1: API 调用 - JSON 数据 (推荐 ⭐⭐⭐⭐⭐)
 
 **优先级最高**: 快速、可靠、结构化数据
 
 ```typescript
-import got from '@/utils/got';        // 推荐 (内部使用 ofetch)
-import ofetch from '@/utils/ofetch';  // 也可用
+import got from '@/utils/got'; // 推荐 (got 内部使用 ofetch)
 
 // GET 请求
 const { data } = await got({
@@ -221,9 +223,123 @@ const { data } = await got({
 });
 ```
 
-### 方法 2: HTML 解析 (常用)
+### 方法 2: RSS XML 处理 - XML 数据 (推荐 ⭐⭐⭐⭐)
 
-**无 API 时使用**: Cheerio 解析 HTML
+**处理第三方 RSS 源**: 解析 RSS XML 并可选清理内容
+
+当处理已有的 RSS feed (如第三方源、RSS 代理) 时使用:
+
+```typescript
+import { load } from 'cheerio';
+import got from '@/utils/got';
+import { parseDate } from '@/utils/parse-date';
+
+async function handler(ctx) {
+    const limit = ctx.req.query('limit') ? Number.parseInt(ctx.req.query('limit'), 10) : 20;
+
+    // 1. 获取 RSS XML
+    const { data: response } = await got({ url: rssUrl });
+
+    // 2. ⚠️ 必须使用 xmlMode: true 解析 RSS
+    const $ = load(response, { xmlMode: true });
+
+    // 3. 提取 Feed 元数据
+    const feedTitle = $('channel > title').text();
+    const feedLink = $('channel > link').text();
+
+    // 4. 遍历 RSS items
+    const items: DataItem[] = [];
+    for (const item of $('item').toArray().slice(0, limit)) {
+        const $item = $(item);
+        const title = $item.find('title').text();
+        const link = $item.find('link').text();
+        const pubDate = $item.find('pubDate').text();
+
+        // ⚠️ description 通常包含 CDATA,使用 .text() 处理
+        let descriptionHtml = $item.find('description').text();
+
+        // 5. 可选: 清理 HTML 内容
+        if (descriptionHtml) {
+            const $desc = load(descriptionHtml); // 不需要 xmlMode
+            $desc('.ads').remove(); // 清理广告
+            descriptionHtml = $desc('body').html() || '';
+        }
+
+        items.push({
+            title,
+            link,
+            description: descriptionHtml,
+            pubDate: pubDate ? parseDate(pubDate) : undefined,
+        });
+    }
+
+    return { title: feedTitle, link: feedLink, item: items };
+}
+```
+
+#### 关键要点
+
+| 步骤              | 工具      | 参数                | 说明                           |
+| ----------------- | --------- | ------------------- | ------------------------------ |
+| **解析 RSS XML**  | `load()`  | `{ xmlMode: true }` | 必须!否则自闭合标签会出错      |
+| **提取 CDATA**    | `.text()` | -                   | `<description>` 通常包含 CDATA |
+| **清理 HTML**     | `load()`  | 默认 (无 xmlMode)   | 二次加载为 HTML DOM            |
+| **输出最终 HTML** | `.html()` | -                   | 从 `body` 提取                 |
+
+#### CDATA 详解
+
+**CDATA (Character Data)** 是 XML 中用于包裹不需要解析的文本内容的特殊标记。
+
+RSS 的 `<description>` 通常包含 HTML 内容:
+
+```xml
+<!-- ❌ 不用 CDATA - XML 会混淆 HTML 标签 -->
+<description>
+    <p>内容</p>
+    <img src="test.jpg" />
+</description>
+<!-- XML 解析器会把 <p> <img> 当成 XML 子节点! -->
+
+<!-- ✅ 使用 CDATA - 告诉解析器"这只是文本" -->
+<description><![CDATA[
+    <p>内容</p>
+    <img src="test.jpg" />
+]]></description>
+<!-- XML 解析器把 CDATA 内的所有内容当作纯文本 -->
+```
+
+**处理方法对比**:
+
+```typescript
+// ❌ 错误: .html() 会包含 CDATA 标记
+const desc = $item.find('description').html();
+// 返回: "<![CDATA[<p>内容</p>]]>"
+
+// ✅ 正确: .text() 自动提取 CDATA 内容
+const desc = $item.find('description').text();
+// 返回: "<p>内容</p>"
+```
+
+**完整处理流程**:
+
+```typescript
+// 1. xmlMode 解析 RSS
+const $ = load(rssXml, { xmlMode: true });
+
+// 2. .text() 提取 CDATA
+const html = $item.find('description').text();
+
+// 3. 普通模式清理 HTML
+const $desc = load(html); // 不用 xmlMode
+$desc('.ads').remove();
+
+// 4. 输出清理后的内容
+const clean = $desc('body').html() || '';
+```
+
+### 方法 3: HTML 解析 - HTML 数据 (常用 ⭐⭐⭐)
+
+**无 API 时使用**: Cheerio 解析网页 HTML
 
 ```typescript
 import { load } from 'cheerio';
@@ -232,29 +348,32 @@ const { data } = await got('https://example.com');
 const $ = load(data);
 
 // 选择器
-$('.class')                     // class
-$('#id')                        // id
-$('div > p')                    // CSS 选择器
-$('[data-id="123"]')            // 属性
+$('.class'); // class
+$('#id'); // id
+$('div > p'); // CSS 选择器
+$('[data-id="123"]'); // 属性
 
 // 获取内容 (注意空值安全!)
 const text = $('.content').text();
-const html = $('.content').html() || '';         // 提供默认值!
-const href = $('a').attr('href') || '';          // 提供默认值!
+const html = $('.content').html() || ''; // 提供默认值!
+const href = $('a').attr('href') || ''; // 提供默认值!
 
 // 迭代
-$('.item').toArray().map((element) => {          // 必须用 .toArray()!
-    const $item = $(element);                    // $ 前缀表示 Cheerio 对象
-    return {
-        title: $item.find('.title').text(),
-        link: $item.find('a').attr('href') || '',
-    };
-});
+$('.item')
+    .toArray()
+    .map((element) => {
+        // 必须用 .toArray()!
+        const $item = $(element); // $ 前缀表示 Cheerio 对象
+        return {
+            title: $item.find('.title').text(),
+            link: $item.find('a').attr('href') || '',
+        };
+    });
 ```
 
-### 方法 3: Puppeteer (最后手段 ⚠️)
+### 方法 4: Puppeteer - 动态渲染 HTML (最后手段 ⭐)
 
-**仅当必要时使用**: 慢、资源密集、复杂
+**仅当必要时使用**: 慢、资源密集、复杂、需要浏览器执行 JavaScript
 
 **必须在 features 中设置 `requirePuppeteer: true`!**
 
@@ -278,9 +397,7 @@ async function handler(ctx) {
         // 可选: 屏蔽不必要的资源
         await page.setRequestInterception(true);
         page.on('request', (request) => {
-            request.resourceType() === 'image'
-                ? request.abort()
-                : request.continue();
+            request.resourceType() === 'image' ? request.abort() : request.continue();
         });
 
         await page.goto(url, { waitUntil: 'domcontentloaded' });
@@ -295,7 +412,7 @@ async function handler(ctx) {
 
         return { title: 'Feed', item: data };
     } finally {
-        await browser.close();  // 必须关闭!
+        await browser.close(); // 必须关闭!
     }
 }
 ```
@@ -304,8 +421,7 @@ async function handler(ctx) {
 
 ```typescript
 // HTTP 客户端
-import got from '@/utils/got';          // 推荐
-import ofetch from '@/utils/ofetch';    // 也可用
+import got from '@/utils/got'; // 推荐
 
 // 缓存
 import cache from '@/utils/cache';
@@ -315,14 +431,14 @@ const data = await cache.tryGet(key, async () => fetchData());
 import { parseDate } from '@/utils/parse-date';
 import timezone from '@/utils/timezone';
 
-parseDate('2024-01-01T12:00:00Z')           // ISO 8601
-parseDate('1704110400', 'X')                // Unix 秒
-parseDate('1704110400000', 'x')             // Unix 毫秒
-timezone(parseDate('2024-01-01 12:00'), +8) // 应用时区 (源时区!)
+parseDate('2024-01-01T12:00:00Z'); // ISO 8601
+parseDate('1704110400', 'X'); // Unix 秒
+parseDate('1704110400000', 'x'); // Unix 毫秒
+timezone(parseDate('2024-01-01 12:00'), +8); // 应用时区 (源时区!)
 
 // 路径别名 (必须使用!)
-import cache from '@/utils/cache';          // ✅ 正确
-import cache from '../../utils/cache';      // ❌ 错误
+import cache from '@/utils/cache'; // ✅ 正确
+import cache from '../../utils/cache'; // ❌ 错误
 
 // 相对 URL → 绝对 URL
 const link = new URL(relativePath, 'https://example.com').href;
@@ -333,29 +449,28 @@ const link = new URL(relativePath, 'https://example.com').href;
 ### 设计原则 (KISS)
 
 1. **简单至上**: 不要过度设计
-   - 90% 用户只用默认设置
-   - 3 个 if-else > "灵活配置系统"
-   - 删除代码 > 添加代码
+    - 90% 用户只用默认设置
+    - 3 个 if-else > "灵活配置系统"
+    - 删除代码 > 添加代码
 
-2. **优先级**: API > HTML 解析 > Puppeteer
+2. **优先级**: API > RSS XML > HTML 解析 > Puppeteer
 
 3. **缓存一切**: 详情页必须使用 `cache.tryGet()`
 
 4. **时区处理**: `timezone(date, offset)` 的 offset 是**源时区**，不是目标时区
-   ```typescript
-   // ✅ 正确: 韩国时间 (UTC+9)
-   timezone(parseDate('2025-01-15 14:30'), +9)
 
-   // ❌ 错误: 不要转换成你的本地时区
-   timezone(parseDate(koreanTime), +8)  // 错误! 源是 +9
-   ```
+    ```typescript
+    // ✅ 正确: 韩国时间 (UTC+9)
+    timezone(parseDate('2025-01-15 14:30'), +9);
+
+    // ❌ 错误: 不要转换成你的本地时区
+    timezone(parseDate(koreanTime), +8); // 错误! 源是 +9
+    ```
 
 5. **支持 limit 参数**: 默认 20-50 项
-   ```typescript
-   const limit = ctx.req.query('limit')
-       ? Math.min(Number.parseInt(ctx.req.query('limit'), 10), 100)
-       : 20;
-   ```
+    ```typescript
+    const limit = ctx.req.query('limit') ? Math.min(Number.parseInt(ctx.req.query('limit'), 10), 100) : 20;
+    ```
 
 ### 类型安全
 
@@ -368,10 +483,12 @@ interface ArticleItem {
     description?: string;
 }
 
-let items: ArticleItem[] = $('.item').toArray().map((el) => ({
-    title: $(el).find('.title').text(),
-    link: $(el).find('a').attr('href') || '',  // 提供默认值!
-}));
+let items: ArticleItem[] = $('.item')
+    .toArray()
+    .map((el) => ({
+        title: $(el).find('.title').text(),
+        link: $(el).find('a').attr('href') || '', // 提供默认值!
+    }));
 ```
 
 ### 空值安全
@@ -471,20 +588,22 @@ curl -s "http://localhost:1200/namespace/route?limit=2" | \
 
 ### 常见网站变更
 
-| 变更类型 | 示例 | 检测方法 | 修复策略 |
-|---------|------|---------|---------|
-| **Class 重命名** | `.rank-1` → `.abf-cate` | 旧选择器返回 0 项 | 搜索新 class 名 |
-| **结构变更** | `.list` → `.table-row` | 空 feed 或错误 | 检查当前 HTML |
-| **API 移除** | JSON → 404 | FetchError 404 | 切换到 HTML 解析 |
+| 变更类型         | 示例                    | 检测方法          | 修复策略         |
+| ---------------- | ----------------------- | ----------------- | ---------------- |
+| **Class 重命名** | `.rank-1` → `.abf-cate` | 旧选择器返回 0 项 | 搜索新 class 名  |
+| **结构变更**     | `.list` → `.table-row`  | 空 feed 或错误    | 检查当前 HTML    |
+| **API 移除**     | JSON → 404              | FetchError 404    | 切换到 HTML 解析 |
 
 ## 📋 开发检查清单
 
 **开始前:**
+
 - [ ] 检查网站是否已有 RSS feed
 - [ ] 搜索现有类似路由 (`lib/routes/`)
 - [ ] 手动测试网站的 API/HTML 结构
 
 **开发中:**
+
 - [ ] 创建 `namespace.ts`
 - [ ] 定义 `ArticleItem` interface
 - [ ] 选择合适的数据获取方法
@@ -493,6 +612,7 @@ curl -s "http://localhost:1200/namespace/route?limit=2" | \
 - [ ] 支持 `limit` 参数
 
 **提交前:**
+
 - [ ] 运行 `pnpm format`
 - [ ] 运行 `pnpm lint`
 - [ ] 确保 `example` 字段可用
@@ -537,6 +657,7 @@ pubDate: parseDate('2024-01-01')
 ## 📊 Route 分类
 
 必须使用以下值之一 (见 `lib/types.ts`):
+
 - `popular`, `social-media`, `new-media`, `traditional-media`
 - `bbs`, `blog`, `programming`, `design`, `live`
 - `multimedia`, `picture`, `anime`, `program-update`
@@ -587,6 +708,219 @@ return {
     updated: Date,              // 最后更新时间
 }
 ```
+
+## 🧹 实战案例: 今天看啥微信公众号 RSS 清理
+
+**基于方法 2 (RSS XML 处理) 的完整解决方案**
+
+### 背景
+
+**今天看啥** (`rss.jintiankansha.me`) 是一个微信公众号 RSS 聚合服务,但其 RSS feed 包含大量推广内容、招聘信息、追踪像素等垃圾元素。
+
+### 通用清理逻辑 (两步法)
+
+处理 Jintiankansha RSS 的**标准模式**:
+
+```typescript
+// === 步骤 1: 解析原始 RSS ===
+const { data: response } = await got({ url: rssUrl });
+const $ = load(response, { xmlMode: true });
+
+// === 步骤 2: 处理每个 item ===
+for (const item of $('item').toArray().slice(0, limit)) {
+    const $item = $(item);
+    let descriptionHtml = $item.find('description').text();
+
+    if (descriptionHtml) {
+        const $desc = load(descriptionHtml);
+
+        // 🎯 清理步骤 1: 删除 js_content 的兄弟节点
+        const jsContent = $desc('#js_content');
+        if (jsContent.length > 0) {
+            jsContent.siblings().remove();
+        }
+
+        // 🎯 清理步骤 2: 在 js_content 内找标志元素,删除它及后续兄弟节点
+        const markerElement = $desc('MARKER_SELECTOR');
+        if (markerElement.length > 0) {
+            markerElement.nextAll().remove();
+            markerElement.remove();
+        }
+
+        descriptionHtml = $desc('body').html() || '';
+    }
+
+    items.push({ title, link, description: descriptionHtml, ... });
+}
+```
+
+### 实战案例
+
+| 公众号                     | 标志元素选择器                                    | 说明                           |
+| -------------------------- | ------------------------------------------------- | ------------------------------ |
+| **新智元** (wx-xinzhiyuan) | `section:contains("参考资料")`                    | 删除"参考资料"section          |
+| **虎嗅** (wx-huxiu)        | `span[leaf]` 父节点 (文本="本内容为作者独立观点") | 使用 `.filter()` + `.parent()` |
+| **爱范儿** (wx-ifanr)      | `section[class^="js_darkmode__"]`                 | 属性选择器,删除招聘信息        |
+
+### 示例代码模板
+
+```typescript
+// lib/routes/wx-{name}/index.ts
+import { DataItem, Route } from '@/types';
+import got from '@/utils/got';
+import { parseDate } from '@/utils/parse-date';
+import { load } from 'cheerio';
+
+export const route: Route = {
+    path: '/',
+    categories: ['new-media'],
+    example: '/wx-{name}',
+    name: '{公众号名称}',
+    maintainers: ['your-name'],
+    handler,
+};
+
+async function handler(ctx) {
+    const rssUrl = 'https://rss.jintiankansha.me/rss/{RSS_ID}';
+    const limit = ctx.req.query('limit') ? Number.parseInt(ctx.req.query('limit'), 10) : 20;
+
+    // 1. 获取并解析 RSS XML
+    const { data: response } = await got({ url: rssUrl });
+    const $ = load(response, { xmlMode: true });
+
+    const feedTitle = $('channel > title').text();
+    const feedLink = $('channel > link').text();
+    const items: DataItem[] = [];
+
+    // 2. 处理每个 item
+    for (const item of $('item').toArray().slice(0, limit)) {
+        const $item = $(item);
+        const title = $item.find('title').text();
+        const link = $item.find('link').text();
+        const pubDate = $item.find('pubDate').text();
+
+        let descriptionHtml = $item.find('description').text();
+
+        // 3. 清理 HTML
+        if (descriptionHtml) {
+            const $desc = load(descriptionHtml);
+
+            // 清理步骤 1: 只保留 js_content
+            const jsContent = $desc('#js_content');
+            if (jsContent.length > 0) {
+                jsContent.siblings().remove();
+            }
+
+            // 清理步骤 2: 删除标志元素及之后内容 (根据具体公众号调整)
+            // 示例 1: 文本匹配
+            const marker = $desc('section:contains("参考资料")');
+
+            // 示例 2: 属性 + filter
+            const marker = $desc('span[leaf]')
+                .filter((_, elem) => {
+                    return $desc(elem).text().trim().startsWith('本内容为作者独立观点');
+                })
+                .parent();
+
+            // 示例 3: 属性选择器
+            const marker = $desc('section[class^="js_darkmode__"]').first();
+
+            if (marker.length > 0) {
+                marker.nextAll().remove();
+                marker.remove();
+            }
+
+            descriptionHtml = $desc('body').html() || '';
+        }
+
+        items.push({
+            title,
+            link,
+            description: descriptionHtml,
+            pubDate: pubDate ? parseDate(pubDate) : undefined,
+            author: feedTitle.replace(/\s*-\s*今天看啥\s*$/, ''),
+        });
+    }
+
+    return {
+        title: feedTitle.replace(/\s*-\s*今天看啥\s*$/, ''),
+        link: feedLink,
+        item: items,
+    };
+}
+```
+
+### namespace.ts 模板
+
+```typescript
+import type { Namespace } from '@/types';
+
+export const namespace: Namespace = {
+    name: '{公众号名称}微信公众号',
+    url: 'rss.jintiankansha.me',
+    description: '{描述} (cleaned version)',
+    categories: ['new-media'],
+    lang: 'zh-CN',
+    zh: {
+        name: '{公众号名称}微信公众号',
+    },
+};
+```
+
+### 调试技巧
+
+```bash
+# 1. 检查原始 RSS 结构
+curl -s "{RSS_URL}" | grep -A 100 'js_content' | head -200
+
+# 2. 测试清理效果
+curl -s "http://localhost:1200/wx-{name}?limit=1&format=json" | \
+  jq -r '.items[0].content_html' | grep -c '<标志文本>'
+
+# 3. 查看内容结尾
+curl -s "http://localhost:1200/wx-{name}?limit=1&format=json" | \
+  jq -r '.items[0].content_html' | tail -c 500
+```
+
+### 最佳实践
+
+1. **标志元素选择优先级**:
+    - **文本匹配** (`:contains()`) > 属性选择器 > 位置选择器 (`:nth-child()`)
+    - 文本更稳定,不易受 DOM 结构变化影响
+
+2. **组合选择器**:
+
+    ```typescript
+    // 父节点的 text 内容匹配
+    $desc('span[leaf]')
+        .filter((_, elem) => {
+            return $desc(elem).text().trim().startsWith('关键词');
+        })
+        .parent();
+
+    // 属性前缀匹配
+    $desc('section[class^="prefix_"]').first();
+    ```
+
+3. **测试不同文章**:
+    - 至少测试 3-5 篇不同文章
+    - 检查标志元素位置是否稳定
+    - 验证正文不被误删
+
+4. **容错处理**:
+
+    ```typescript
+    // 使用 .first() 避免多个匹配
+    const marker = $desc('section:contains("关键词")').first();
+
+    // 检查元素存在性
+    if (marker.length > 0) {
+        marker.nextAll().remove();
+        marker.remove();
+    }
+    ```
+
+---
 
 ## 📚 资源
 
