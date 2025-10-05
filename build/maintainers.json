@@ -81,6 +81,9 @@
   "/0x80/blog": [
     "xnum"
   ],
+  "/0xxx/:filter?": [
+    "nczitzk"
+  ],
   "/10000link/info/:category?/:id?": [
     "nczitzk"
   ],
@@ -489,7 +492,7 @@
   "/aliyun/developer/group/:type": [
     "umm233"
   ],
-  "/aljazeera/:language?": [
+  "/aljazeera*": [
     "nczitzk"
   ],
   "/ally/rail/:category?/:topic?": [
@@ -503,6 +506,9 @@
   ],
   "/alternativeto/software/:name/:routeParams?": [
     "JimenezLi"
+  ],
+  "/altotrain/:language?": [
+    "elibroftw"
   ],
   "/amazfitwatchfaces/:device/:sort/:searchParams?": [
     "nczitzk"
@@ -538,7 +544,8 @@
     "TonyRL"
   ],
   "/anthropic/news": [
-    "etShaw-zh"
+    "etShaw-zh",
+    "goestav"
   ],
   "/anthropic/research": [
     "ttttmr"
@@ -1569,9 +1576,6 @@
   "/chongdiantou/": [
     "Geraldxm"
   ],
-  "/chosun/": [
-    "Libukai"
-  ],
   "/chsi/hotnews": [
     "yanbot-team"
   ],
@@ -1654,6 +1658,9 @@
   ],
   "/cna/:id?": [
     "nczitzk"
+  ],
+  "/cna/web/:id?": [
+    "dzx-dzx"
   ],
   "/cnbc/rss/:id?": [
     "TonyRL"
@@ -1989,9 +1996,6 @@
   "/damai/activity/:city/:category/:subcategory/:keyword?": [
     "hoilc",
     "Konano"
-  ],
-  "/dangcongsan/:channel?": [
-    "Libukai"
   ],
   "/dangdang/notice/:type?": [
     "353325487"
@@ -2941,6 +2945,9 @@
   "/gaoyu/blog": [
     "nczitzk"
   ],
+  "/gc.ca/pm/:language?": [
+    "elibroftw"
+  ],
   "/gcores/articles": [
     "nczitzk"
   ],
@@ -3772,6 +3779,12 @@
   "/hitsz/article/:category?": [
     "xandery-geek"
   ],
+  "/hitsz/due/tzgg": [
+    "guohuiyuan"
+  ],
+  "/hitsz/due/general/:type?": [
+    "guohuiyuan"
+  ],
   "/hitwh/today": [
     "raptazure"
   ],
@@ -4169,6 +4182,9 @@
   ],
   "/imop/tianshu": [
     "zhkgo"
+  ],
+  "/indianexpress/section/:id{.+}?": [
+    "nczitzk"
   ],
   "/indiansinkuwait/latest": [
     "TonyRL"
@@ -5156,6 +5172,9 @@
   "/mercari/:sort/:order/:status/:keyword": [
     "yana9i"
   ],
+  "/mercari/search/:query": [
+    "yana9i, Tsuyumi25"
+  ],
   "/meta/ai/blog": [
     "TonyRL"
   ],
@@ -5594,9 +5613,6 @@
   "/ngocn2/:category?": [
     "nczitzk"
   ],
-  "/nhandan/:channel?": [
-    "Libukai"
-  ],
   "/nhentai/index/:key/:keyword/:mode?": [
     "MegrezZhu",
     "hoilc"
@@ -5605,9 +5621,13 @@
     "MegrezZhu",
     "hoilc"
   ],
+  "/nhk/news_web_easy": [
+    "Andiedie"
+  ],
   "/nhk/news/:lang?": [
     "TonyRL",
-    "pseudoyu"
+    "pseudoyu",
+    "cscnk52"
   ],
   "/niaogebiji/cat/:cat": [
     "cKotoriKat"
@@ -5926,6 +5946,18 @@
     "Lava-Swimmer",
     "noname1776",
     "camera-2018"
+  ],
+  "/nycu/aa/:id?": [
+    "simbafs"
+  ],
+  "/nycu/announcement/:type": [
+    "simbafs"
+  ],
+  "/nycu/cs/:category?": [
+    "simbafs"
+  ],
+  "/nycu/osa/:id?": [
+    "simbafs"
   ],
   "/nymity/censorbib": [
     "xtexChooser"
@@ -7101,9 +7133,6 @@
   "/sfacg/novel/chapter/:id": [
     "keocheung"
   ],
-  "/sggp/:channel?": [
-    "Libukai"
-  ],
   "/shcstheatre/programs": [
     "fuzy112"
   ],
@@ -7813,9 +7842,6 @@
   "/tgbus/list/:category": [
     "Xzonn"
   ],
-  "/thanhnien/:channel?": [
-    "Libukai"
-  ],
   "/the/:filter{.+}?": [
     "nczitzk"
   ],
@@ -8094,9 +8120,6 @@
   ],
   "/tumblr/posts/:blog": [
     "Rakambda"
-  ],
-  "/tuoitre/:channel?": [
-    "Libukai"
   ],
   "/tvb/news/:category?/:language?": [
     "nczitzk"
@@ -8387,12 +8410,6 @@
   "/vice/topic/:topic/:language?": [
     "K33k0"
   ],
-  "/vietnamplus/:channel?": [
-    "Libukai"
-  ],
-  "/vietnamplus/summary/:type?": [
-    "Libukai"
-  ],
   "/vimeo/category/:category/:staffpicks?": [
     "MisteryMonster"
   ],
@@ -8416,12 +8433,6 @@
   ],
   "/visualstudio/code/blog": [
     "cscnk52"
-  ],
-  "/vnexpress/:channel?": [
-    "Libukai"
-  ],
-  "/voa/": [
-    "Libukai"
   ],
   "/vocus/publication/:id": [
     "Maecenas"
@@ -8449,9 +8460,6 @@
   ],
   "/voronoiapp/search/:keyword": [
     "Cesaryuan"
-  ],
-  "/vovworld/:channel?": [
-    "Libukai"
   ],
   "/wabei/hot-recommend": [
     "p3psi-boo"
@@ -8717,15 +8725,6 @@
   "/wufazhuce/one": [
     "sicheng1806"
   ],
-  "/wx-huxiu/": [
-    "likai"
-  ],
-  "/wx-ifanr/": [
-    "likai"
-  ],
-  "/wx-xinzhiyuan/": [
-    "likai"
-  ],
   "/wyzxwk/article/:id?": [
     "nczitzk"
   ],
@@ -8930,6 +8929,12 @@
   ],
   "/xys/new": [
     "wenzhenl"
+  ],
+  "/xyu/library": [
+    "JinMokai"
+  ],
+  "/xyu/index/tzgg": [
+    "JinMokai"
   ],
   "/xyzrank/:category?": [],
   "/yahoo/news/:region/:category?": [

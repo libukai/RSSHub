@@ -153,6 +153,19 @@
       }
     ]
   },
+  "0xxx.ws": {
+    "_name": "0xxx.ws",
+    ".": [
+      {
+        "title": "Source",
+        "docs": "https://docs.rsshub.app/routes/multimedia",
+        "source": [
+          "/"
+        ],
+        "target": "/0xxx(_,url)=>{const urlObj=new URL(url);const params=urlObj.searchParams;params.delete(\"next\");const filter=urlObj.searchParams.toString();return`/0xxx${filter?`/${filter}`:\"\"}`}"
+      }
+    ]
+  },
   "10000link.com": {
     "_name": "10000万联网",
     "info": [
@@ -5081,21 +5094,6 @@
       }
     ]
   },
-  "aljazeera.net": {
-    "_name": "Al Jazeera",
-    ".": [
-      {
-        "title": "News",
-        "docs": "https://docs.rsshub.app/routes/traditional-media",
-        "source": [
-          "/*",
-          "/*",
-          "/*"
-        ],
-        "target": "/aljazeera/:language"
-      }
-    ]
-  },
   "ally.net.cn": {
     "_name": "艾莱资讯",
     "rail": [
@@ -5128,6 +5126,21 @@
           "/software/:name"
         ],
         "target": "/alternativeto/software/:name"
+      }
+    ]
+  },
+  "altotrain.ca": {
+    "_name": "Alto - Toronto-Québec City High-Speed Rail Network",
+    ".": [
+      {
+        "title": "Alto News",
+        "docs": "https://docs.rsshub.app/routes/travel",
+        "source": [
+          "/:language",
+          "/:language/news",
+          "/:language/nouvelles"
+        ],
+        "target": "/altotrain/:language"
       }
     ]
   },
@@ -10924,19 +10937,6 @@
       }
     ]
   },
-  "chosun.com": {
-    "_name": "chosun",
-    "cnnews": [
-      {
-        "title": "朝鲜日报中文网",
-        "docs": "https://docs.rsshub.app/routes/traditional-media",
-        "source": [
-          "/"
-        ],
-        "target": "/chosun/chosun"
-      }
-    ]
-  },
   "chsi.com.cn": {
     "_name": "中国研究生招生信息网",
     "yz": [
@@ -12614,19 +12614,6 @@
           "/:userId"
         ],
         "target": "/daily/user/:userId/:innerSharedContent?"
-      }
-    ]
-  },
-  "dangcongsan.vn": {
-    "_name": "dangcongsan",
-    "cn": [
-      {
-        "title": "越南共产党电子报",
-        "docs": "https://docs.rsshub.app/routes/traditional-media",
-        "source": [
-          "/:channel"
-        ],
-        "target": "/dangcongsan/dangcongsan/:channel"
       }
     ]
   },
@@ -15848,6 +15835,22 @@
           "/blog"
         ],
         "target": "/gaoyu/blog"
+      }
+    ]
+  },
+  "pm.gc.ca": {
+    "_name": "Prime Minister of Canada",
+    ".": [
+      {
+        "title": "News",
+        "docs": "https://docs.rsshub.app/routes/government",
+        "source": [
+          "/",
+          "/:language",
+          "/:language/news",
+          "/:language/nouvelles"
+        ],
+        "target": "/gc.ca/pm/:language"
       }
     ]
   },
@@ -20112,6 +20115,36 @@
       }
     ]
   },
+  "hitsz.edu.cn": {
+    "_name": "哈尔滨工业大学（深圳）",
+    "due": [
+      {
+        "title": "教务部",
+        "docs": "https://docs.rsshub.app/routes/university",
+        "source": [
+          "/",
+          "/index/:id/list.htm"
+        ],
+        "target": "/hitsz/hitsz/due/:id"
+      },
+      {
+        "title": "通知公告",
+        "docs": "https://docs.rsshub.app/routes/university",
+        "source": [
+          "/index/tzggqb.htm"
+        ],
+        "target": "/hitsz/hitsz/due/tzgg"
+      },
+      {
+        "title": "教务部教务学务与学位管理所有栏目",
+        "docs": "https://docs.rsshub.app/routes/university",
+        "source": [
+          "/jwxw/jwgl.htm"
+        ],
+        "target": "/hitsz/hitsz/due/general"
+      }
+    ]
+  },
   "hitwh.edu.cn": {
     "_name": "哈尔滨工业大学（威海）",
     ".": [
@@ -22324,6 +22357,19 @@
           "/"
         ],
         "target": "/imop/tianshu"
+      }
+    ]
+  },
+  "indianexpress.com": {
+    "_name": "The Indian Express",
+    ".": [
+      {
+        "title": "Section",
+        "docs": "https://docs.rsshub.app/routes/new-media",
+        "source": [
+          "/section/:id"
+        ],
+        "target": "/indianexpress/section/:id"
       }
     ]
   },
@@ -30096,19 +30142,6 @@
       }
     ]
   },
-  "nhandan.vn": {
-    "_name": "nhandan",
-    "cn": [
-      {
-        "title": "频道",
-        "docs": "https://docs.rsshub.app/routes/traditional-media",
-        "source": [
-          "/:channel"
-        ],
-        "target": "/nhandan/nhandan/:channel"
-      }
-    ]
-  },
   "nhentai.net": {
     "_name": "nhentai",
     ".": [
@@ -30133,6 +30166,15 @@
   "nhk.or.jp": {
     "_name": "NHK",
     "www3": [
+      {
+        "title": "News Web Easy",
+        "docs": "https://docs.rsshub.app/routes/traditional-media",
+        "source": [
+          "/news/easy/",
+          "/"
+        ],
+        "target": "/nhk/news_web_easy"
+      },
       {
         "title": "WORLD-JAPAN - Top Stories",
         "docs": "https://docs.rsshub.app/routes/traditional-media",
@@ -35554,19 +35596,6 @@
       }
     ]
   },
-  "sggp.org.vn": {
-    "_name": "sggp",
-    "cn": [
-      {
-        "title": "西贡解放日报",
-        "docs": "https://docs.rsshub.app/routes/traditional-media",
-        "source": [
-          "/:channel"
-        ],
-        "target": "/sggp/sggp/:channel"
-      }
-    ]
-  },
   "shcstheatre.com": {
     "_name": "上海文化广场",
     "www": [
@@ -39481,19 +39510,6 @@
       }
     ]
   },
-  "thanhnien.vn": {
-    "_name": "thanhnien",
-    ".": [
-      {
-        "title": "青年报",
-        "docs": "https://docs.rsshub.app/routes/traditional-media",
-        "source": [
-          "/:channel"
-        ],
-        "target": "/thanhnien/thanhnien/:channel"
-      }
-    ]
-  },
   "the.bi": {
     "_name": "The.bi",
     ".": [
@@ -40638,19 +40654,6 @@
       }
     ]
   },
-  "tuoitre.vn": {
-    "_name": "tuoitre",
-    ".": [
-      {
-        "title": "青年报",
-        "docs": "https://docs.rsshub.app/routes/traditional-media",
-        "source": [
-          "/:channel"
-        ],
-        "target": "/tuoitre/tuoitre/:channel"
-      }
-    ]
-  },
   "tvb.com": {
     "_name": "无线新闻",
     ".": [
@@ -40916,7 +40919,7 @@
         "title": "轉角國際 - 首頁",
         "docs": "https://docs.rsshub.app/routes/traditional-media",
         "source": [
-          "/global_vision/index/:category",
+          "/global_vision/index",
           "/"
         ],
         "target": "/udn/global/:category?"
@@ -41441,27 +41444,6 @@
       }
     ]
   },
-  "vietnamplus.vn": {
-    "_name": "vietnamplus",
-    "zh": [
-      {
-        "title": "越通社",
-        "docs": "https://docs.rsshub.app/routes/traditional-media",
-        "source": [
-          "/:channel"
-        ],
-        "target": "/vietnamplus/vietnamplus/:channel"
-      },
-      {
-        "title": "新闻汇总",
-        "docs": "https://docs.rsshub.app/routes/traditional-media",
-        "source": [
-          "/search"
-        ],
-        "target": "/vietnamplus/vietnamplus/summary/:type"
-      }
-    ]
-  },
   "vimeo.com": {
     "_name": "Vimeo",
     ".": [
@@ -41524,32 +41506,6 @@
           "/"
         ],
         "target": "/visualstudio/code/blog"
-      }
-    ]
-  },
-  "vnexpress.net": {
-    "_name": "vnexpress",
-    "e": [
-      {
-        "title": "VNExpress",
-        "docs": "https://docs.rsshub.app/routes/traditional-media",
-        "source": [
-          "/news/:channel"
-        ],
-        "target": "/vnexpress/vnexpress/:channel"
-      }
-    ]
-  },
-  "voachinese.com": {
-    "_name": "voa",
-    ".": [
-      {
-        "title": "美国之音",
-        "docs": "https://docs.rsshub.app/routes/traditional-media",
-        "source": [
-          "/z/1757"
-        ],
-        "target": "/voa/voa"
       }
     ]
   },
@@ -41648,19 +41604,6 @@
           "/explore"
         ],
         "target": "/voronoiapp(_,url)=>{const parsedURL=new URL(url);const keyword=parsedURL.searchParams.get(\"search\");return`/voronoiapp/search/${keyword}`}"
-      }
-    ]
-  },
-  "vovworld.vn": {
-    "_name": "vovworld",
-    ".": [
-      {
-        "title": "越南之声",
-        "docs": "https://docs.rsshub.app/routes/traditional-media",
-        "source": [
-          "/zh-CN/:channel"
-        ],
-        "target": "/vovworld/vovworld/:channel"
       }
     ]
   },
@@ -43114,6 +43057,29 @@
           "/new.html"
         ],
         "target": "/xys/new"
+      }
+    ]
+  },
+  "xyc.edu.cn": {
+    "_name": "新余学院",
+    "lib": [
+      {
+        "title": "图书馆通知公告",
+        "docs": "https://docs.rsshub.app/routes/university",
+        "source": [
+          "/index/tzgg.htm"
+        ],
+        "target": "/xyu/library"
+      }
+    ],
+    "www": [
+      {
+        "title": "官网通知公告",
+        "docs": "https://docs.rsshub.app/routes/university",
+        "source": [
+          "/index/tzgg.htm"
+        ],
+        "target": "/xyu/index/tzgg"
       }
     ]
   },
