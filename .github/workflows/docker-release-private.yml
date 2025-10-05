@@ -1,0 +1,71 @@
+name: 'Docker Release (Private Branch)'
+
+on:
+  push:
+    branches:
+      - private
+    paths:
+      - '.github/workflows/docker-release-private.yml'
+      - 'lib/**'
+      - '!lib/**/*.test.ts'
+      - 'Dockerfile'
+  workflow_dispatch: {}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      packages: write
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Install cosign
+        if: github.event_name != 'pull_request'
+        uses: sigstore/cosign-installer@d7543c93d881b35a8faa02e8e3605f69b7a1ce62 # v3.10.0
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3.6.0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata (private version)
+        id: meta-private
+        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5.8.0
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=raw,value=private-latest,enable=true
+            type=raw,value=private-{{date 'YYYY-MM-DD'}},enable=true
+            type=sha,format=long,prefix=private-,enable=true
+          flavor: latest=false
+
+      - name: Build and push Docker image (private version)
+        id: build-and-push
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        with:
+          context: .
+          # Skip Chromium - we use external browserless container
+          # PUPPETEER_SKIP_DOWNLOAD=1 is default in Dockerfile, no need to specify
+          push: true
+          tags: ${{ steps.meta-private.outputs.tags }}
+          labels: ${{ steps.meta-private.outputs.labels }}
+          platforms: linux/amd64,linux/arm64
+          cache-from: type=gha,scope=docker-release-private
+          cache-to: type=gha,mode=max,scope=docker-release-private
+
+      - name: Sign the published Docker image
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
+          COSIGN_EXPERIMENTAL: 'true'
+        run: echo "${{ steps.meta-private.outputs.tags }}" | xargs -I {} cosign sign --yes {}@${{ steps.build-and-push.outputs.digest }}
