@@ -2,13 +2,8 @@ name: 'Docker Release (Private Branch)'
 
 on:
   push:
-    branches:
-      - private
-    paths:
-      - '.github/workflows/docker-release-private.yml'
-      - 'lib/**'
-      - '!lib/**/*.test.ts'
-      - 'Dockerfile'
+    tags:
+      - 'v*'
   workflow_dispatch: {}
 
 jobs:
@@ -45,8 +40,9 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
+            type=ref,event=tag,prefix=
             type=raw,value=private-latest,enable=true
-            type=raw,value=private-{{date 'YYYY-MM-DD'}},enable=true
+            type=raw,value=private-{{date 'YYYY-MM-DD-HHmmss'}},enable=true
             type=sha,format=long,prefix=private-,enable=true
           flavor: latest=false
 
