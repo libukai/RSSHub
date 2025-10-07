@@ -711,146 +711,160 @@ return {
 
 ## 🧹 实战案例: 今天看啥微信公众号 RSS 清理
 
-**基于方法 2 (RSS XML 处理) 的完整解决方案**
+**基于方法 2 (RSS XML 处理) + 工具函数抽象的完整解决方案**
 
 ### 背景
 
 **今天看啥** (`rss.jintiankansha.me`) 是一个微信公众号 RSS 聚合服务,但其 RSS feed 包含大量推广内容、招聘信息、追踪像素等垃圾元素。
 
-### 通用清理逻辑 (两步法)
+### 核心特点
 
-处理 Jintiankansha RSS 的**标准模式**:
+所有今天看啥的微信公众号 RSS 具有以下共同特征:
 
-```typescript
-// === 步骤 1: 解析原始 RSS ===
-const { data: response } = await got({ url: rssUrl });
-const $ = load(response, { xmlMode: true });
+1. **RSS 格式固定**: 所有公众号的 RSS XML 结构完全相同
+2. **HTML 结构固定**: `<description>` 中的 HTML 都包含 `#js_content` 等固定元素
+3. **差异仅在清理规则**: 不同公众号需要删除不同的垃圾内容
 
-// === 步骤 2: 处理每个 item ===
-for (const item of $('item').toArray().slice(0, limit)) {
-    const $item = $(item);
-    let descriptionHtml = $item.find('description').text();
+**因此**: 可以将 RSS 解析和 HTML 清理逻辑抽象成通用工具函数,不同公众号只需配置清理规则。
 
-    if (descriptionHtml) {
-        const $desc = load(descriptionHtml);
+### 解决方案架构
 
-        // 🎯 清理步骤 1: 删除 js_content 的兄弟节点
-        const jsContent = $desc('#js_content');
-        if (jsContent.length > 0) {
-            jsContent.siblings().remove();
-        }
-
-        // 🎯 清理步骤 2: 在 js_content 内找标志元素,删除它及后续兄弟节点
-        const markerElement = $desc('MARKER_SELECTOR');
-        if (markerElement.length > 0) {
-            markerElement.nextAll().remove();
-            markerElement.remove();
-        }
-
-        descriptionHtml = $desc('body').html() || '';
-    }
-
-    items.push({ title, link, description: descriptionHtml, ... });
-}
+```
+lib/
+├── utils/
+│   └── jtks/                          # 今天看啥 (jintiankansha) 工具文件夹
+│       ├── types.ts                   # 类型定义
+│       ├── html-cleaner.ts            # 通用 HTML 清理引擎
+│       └── rss-parser.ts              # 通用 RSS 解析器
+└── routes/
+    └── wx-{name}/
+        └── index.ts                   # 配置 + handler (约 45 行)
 ```
 
-### 实战案例
+### 工具函数说明
 
-| 公众号                     | 标志元素选择器                                    | 说明                           |
-| -------------------------- | ------------------------------------------------- | ------------------------------ |
-| **新智元** (wx-xinzhiyuan) | `section:contains("参考资料")`                    | 删除"参考资料"section          |
-| **虎嗅** (wx-huxiu)        | `span[leaf]` 父节点 (文本="本内容为作者独立观点") | 使用 `.filter()` + `.parent()` |
-| **爱范儿** (wx-ifanr)      | `section[class^="js_darkmode__"]`                 | 属性选择器,删除招聘信息        |
+**`lib/utils/jtks/html-cleaner.ts`** - 把 Cheerio 操作抽象成 4 种通用操作:
 
-### 示例代码模板
+- `keep-only`: 只保留选中元素,删除兄弟节点
+- `remove`: 删除选中元素
+- `remove-after`: 删除选中元素及其之后的所有内容
+- `remove-parent-after`: 删除选中元素的父节点及其之后的所有内容
+
+**`lib/utils/jtks/rss-parser.ts`** - 统一处理今天看啥 RSS:
+
+1. 获取并解析 RSS XML (xmlMode: true)
+2. 提取 feed 元数据
+3. 处理每个 item (提取 CDATA, 应用清理规则)
+4. 返回标准 RSSHub 格式
+
+### 路由文件模板
 
 ```typescript
 // lib/routes/wx-{name}/index.ts
-import { DataItem, Route } from '@/types';
-import got from '@/utils/got';
-import { parseDate } from '@/utils/parse-date';
-import { load } from 'cheerio';
+import { Route } from '@/types';
+import { parseWechatRss } from '@/utils/jtks/rss-parser';
+import type { WechatSourceConfig } from '@/utils/jtks/types';
+
+// 配置部分 - 声明式定义清理规则
+const config: WechatSourceConfig = {
+    name: '{name}',
+    displayName: '{公众号名称}',
+    rssUrl: 'https://rss.jintiankansha.me/rss/{RSS_ID}',
+    cleanRules: [
+        {
+            description: '只保留正文内容区域 (#js_content)',
+            selector: '#js_content',
+            action: 'keep-only',
+        },
+        {
+            description: '删除推广内容',
+            selector: 'MARKER_SELECTOR',
+            action: 'remove-after',
+            textMatch: { type: 'contains', value: '关键词' },  // 可选
+            attrMatch: { name: 'class', pattern: '^prefix_' }, // 可选
+        },
+    ],
+};
 
 export const route: Route = {
     path: '/',
     categories: ['new-media'],
     example: '/wx-{name}',
-    name: '{公众号名称}',
-    maintainers: ['your-name'],
+    name: `${config.displayName}微信公众号`,
+    maintainers: ['likai'],
+    description: `
+处理由今天看啥抓取的${config.displayName}微信公众号 RSS。
+
+自动清理的内容:
+${config.cleanRules.map((rule) => `- ${rule.description}`).join('\n')}
+    `,
+    handler,
+};
+
+// Handler 部分 - 只需 3 行核心逻辑
+async function handler(ctx) {
+    const limit = ctx.req.query('limit')
+        ? Math.min(Number.parseInt(ctx.req.query('limit'), 10), 100)
+        : 20;
+    return await parseWechatRss(config, limit);
+}
+```
+
+### 实战案例
+
+| 公众号 | 清理规则 | 说明 |
+|--------|----------|------|
+| **虎嗅** (wx-huxiu) | `{ selector: 'span[leaf]', action: 'remove-parent-after', textMatch: { type: 'startsWith', value: '本内容为作者独立观点' } }` | 删除父节点及后续内容 |
+| **爱范儿** (wx-ifanr) | `{ selector: 'section', action: 'remove-after', attrMatch: { name: 'class', pattern: '^js_darkmode__' } }` | 属性前缀匹配 |
+| **新智元** (wx-xinzhiyuan) | `{ selector: 'section', action: 'remove-after', textMatch: { type: 'contains', value: '参考资料' } }` | 文本匹配 |
+
+### 添加新公众号步骤
+
+**步骤 1**: 创建路由文件 `lib/routes/wx-{name}/index.ts`
+
+```typescript
+import { Route } from '@/types';
+import { parseWechatRss } from '@/utils/jtks/rss-parser';
+import type { WechatSourceConfig } from '@/utils/jtks/types';
+
+const config: WechatSourceConfig = {
+    name: '{name}',
+    displayName: '{公众号名称}',
+    rssUrl: 'https://rss.jintiankansha.me/rss/{RSS_ID}',
+    cleanRules: [
+        {
+            description: '只保留正文内容区域 (#js_content)',
+            selector: '#js_content',
+            action: 'keep-only',
+        },
+        // 添加具体的清理规则...
+    ],
+};
+
+export const route: Route = {
+    path: '/',
+    categories: ['new-media'],
+    example: '/wx-{name}',
+    name: `${config.displayName}微信公众号`,
+    maintainers: ['likai'],
+    description: `
+处理由今天看啥抓取的${config.displayName}微信公众号 RSS。
+
+自动清理的内容:
+${config.cleanRules.map((rule) => `- ${rule.description}`).join('\n')}
+    `,
     handler,
 };
 
 async function handler(ctx) {
-    const rssUrl = 'https://rss.jintiankansha.me/rss/{RSS_ID}';
-    const limit = ctx.req.query('limit') ? Number.parseInt(ctx.req.query('limit'), 10) : 20;
-
-    // 1. 获取并解析 RSS XML
-    const { data: response } = await got({ url: rssUrl });
-    const $ = load(response, { xmlMode: true });
-
-    const feedTitle = $('channel > title').text();
-    const feedLink = $('channel > link').text();
-    const items: DataItem[] = [];
-
-    // 2. 处理每个 item
-    for (const item of $('item').toArray().slice(0, limit)) {
-        const $item = $(item);
-        const title = $item.find('title').text();
-        const link = $item.find('link').text();
-        const pubDate = $item.find('pubDate').text();
-
-        let descriptionHtml = $item.find('description').text();
-
-        // 3. 清理 HTML
-        if (descriptionHtml) {
-            const $desc = load(descriptionHtml);
-
-            // 清理步骤 1: 只保留 js_content
-            const jsContent = $desc('#js_content');
-            if (jsContent.length > 0) {
-                jsContent.siblings().remove();
-            }
-
-            // 清理步骤 2: 删除标志元素及之后内容 (根据具体公众号调整)
-            // 示例 1: 文本匹配
-            const marker = $desc('section:contains("参考资料")');
-
-            // 示例 2: 属性 + filter
-            const marker = $desc('span[leaf]')
-                .filter((_, elem) => {
-                    return $desc(elem).text().trim().startsWith('本内容为作者独立观点');
-                })
-                .parent();
-
-            // 示例 3: 属性选择器
-            const marker = $desc('section[class^="js_darkmode__"]').first();
-
-            if (marker.length > 0) {
-                marker.nextAll().remove();
-                marker.remove();
-            }
-
-            descriptionHtml = $desc('body').html() || '';
-        }
-
-        items.push({
-            title,
-            link,
-            description: descriptionHtml,
-            pubDate: pubDate ? parseDate(pubDate) : undefined,
-            author: feedTitle.replace(/\s*-\s*今天看啥\s*$/, ''),
-        });
-    }
-
-    return {
-        title: feedTitle.replace(/\s*-\s*今天看啥\s*$/, ''),
-        link: feedLink,
-        item: items,
-    };
+    const limit = ctx.req.query('limit')
+        ? Math.min(Number.parseInt(ctx.req.query('limit'), 10), 100)
+        : 20;
+    return await parseWechatRss(config, limit);
 }
 ```
 
-### namespace.ts 模板
+**步骤 2**: 创建 namespace.ts (标准模板)
 
 ```typescript
 import type { Namespace } from '@/types';
@@ -866,6 +880,17 @@ export const namespace: Namespace = {
     },
 };
 ```
+
+**完成！** 只需约 50 行代码，无需编写任何 RSS 解析或 HTML 清理逻辑。
+
+### 优势总结
+
+1. ✅ **代码复用**: RSS 解析和 HTML 清理逻辑完全复用
+2. ✅ **配置驱动**: 清理规则通过配置定义，而非硬编码
+3. ✅ **类型安全**: TypeScript 接口保证配置正确
+4. ✅ **易于维护**: 修改清理规则只需修改配置
+5. ✅ **易于扩展**: 添加新公众号只需约 50 行代码
+6. ✅ **符合 RSSHub 惯例**: 每个路由独立，配置在各自文件中
 
 ### 调试技巧
 
@@ -884,41 +909,25 @@ curl -s "http://localhost:1200/wx-{name}?limit=1&format=json" | \
 
 ### 最佳实践
 
-1. **标志元素选择优先级**:
-    - **文本匹配** (`:contains()`) > 属性选择器 > 位置选择器 (`:nth-child()`)
-    - 文本更稳定,不易受 DOM 结构变化影响
+1. **清理规则设计**:
+    - 第一条规则通常是 `keep-only` 保留 `#js_content`
+    - 后续规则删除特定的推广/垃圾内容
+    - 使用 `textMatch` 或 `attrMatch` 精确定位元素
 
-2. **组合选择器**:
+2. **选择器优先级**:
+    - **文本匹配** > 属性选择器 > 位置选择器
+    - 文本更稳定，不易受 DOM 结构变化影响
 
-    ```typescript
-    // 父节点的 text 内容匹配
-    $desc('span[leaf]')
-        .filter((_, elem) => {
-            return $desc(elem).text().trim().startsWith('关键词');
-        })
-        .parent();
-
-    // 属性前缀匹配
-    $desc('section[class^="prefix_"]').first();
-    ```
-
-3. **测试不同文章**:
+3. **测试方法**:
     - 至少测试 3-5 篇不同文章
     - 检查标志元素位置是否稳定
     - 验证正文不被误删
 
-4. **容错处理**:
-
-    ```typescript
-    // 使用 .first() 避免多个匹配
-    const marker = $desc('section:contains("关键词")').first();
-
-    // 检查元素存在性
-    if (marker.length > 0) {
-        marker.nextAll().remove();
-        marker.remove();
-    }
-    ```
+4. **4 种操作的使用场景**:
+    - `keep-only`: 只保留主内容区域 (如 `#js_content`)
+    - `remove`: 删除广告、追踪元素等
+    - `remove-after`: 删除"参考资料"等标志性内容及后续
+    - `remove-parent-after`: 删除免责声明的整个容器及后续
 
 ---
 
