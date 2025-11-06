@@ -7,17 +7,9 @@ import got from '@/utils/got';
 import { parseDate } from '@/utils/parse-date';
 import { art } from '@/utils/render';
 import path from 'node:path';
-const baseUrl = 'https://www.nhk.or.jp';
-const apiUrl = 'https://nwapi.nhk.jp';
-
-interface ArticleItem {
-    title: string;
-    description: string;
-    link: string;
-    pubDate: Date;
-    id?: string;
-    category?: string[];
-}
+import { ArticleItem } from '../linkresearcher/types';
+const baseUrl = 'https://www3.nhk.or.jp';
+const apiUrl = 'https://api.nhkworld.jp';
 
 export const route: Route = {
     path: '/news/:lang?',
@@ -73,7 +65,7 @@ export const route: Route = {
 
 async function handler(ctx) {
     const { lang = 'en' } = ctx.req.param();
-    const { data } = await got(`${apiUrl}/nhkworld/rdnewsweb/v7b/${lang}/outline/list.json`);
+    const { data } = await got(`${apiUrl}/nwapi/rdnewsweb/v7b/${lang}/outline/list.json`);
     const meta = await got(`${baseUrl}/nhkworld/common/assets/news/config/${lang}.json`);
 
     let items: ArticleItem[] = data.data.map((item: any) => ({
@@ -87,7 +79,7 @@ async function handler(ctx) {
     items = await Promise.all(
         items.map((item) =>
             cache.tryGet(item.link, async () => {
-                const { data } = await got(`${apiUrl}/nhkworld/rdnewsweb/v6b/${lang}/detail/${item.id}.json`);
+                const { data } = await got(`${apiUrl}/nwapi/rdnewsweb/v6b/${lang}/detail/${item.id}.json`);
                 item.category = Object.values(data.data.categories);
                 item.description = art(path.join(__dirname, 'templates/news.art'), {
                     img: data.data.thumbnails,
