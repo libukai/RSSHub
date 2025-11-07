@@ -1,945 +1,385 @@
-# RSSHub Route Development Guide
+# CLAUDE.md
 
-这是 RSSHub 项目的 Claude Code 开发指南，专注于 **Route 开发**。
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## 🎯 核心概念
+## Project Overview
 
-**RSSHub** 是全球最大的 RSS 聚合网络，包含 5000+ 路由处理器，将各种网页内容转换为标准化的 RSS feeds。
+**RSSHub** is the world's largest RSS aggregation network with 5000+ route handlers that convert web content into standardized RSS feeds. The architecture is built on Hono (lightweight web framework), TypeScript (ESNext strict mode), and Node.js ≥22.
 
-- **框架**: Hono (轻量级 Web 框架)
-- **语言**: TypeScript (ESNext strict mode)
-- **运行时**: Node.js ≥22
-- **包管理器**: pnpm (必须, 版本 10.17.1+)
-- **架构**: 基于中间件的请求管道 + 动态路由注册
+## 🚨 CRITICAL: Route Development Workflow
 
-## 🚀 常用命令
+**When the user requests to create, modify, or work with RSSHub routes, ALWAYS use the `rsshub-route-creator` skill.**
 
+**Trigger conditions:**
+- User mentions "create route", "new route", "add route"
+- User wants to convert a website to RSS
+- User asks about route implementation
+- User mentions specific websites to add to RSSHub
+- Any route development or modification task
+
+**How to invoke:**
+```
+Use Skill tool with: rsshub-route-creator
+```
+
+**Why this is critical:**
+- The skill contains comprehensive route development guidance
+- Includes all 4 data fetching methods (API, RSS XML, HTML, Puppeteer)
+- Provides complete templates and reference documentation
+- Ensures compliance with RSSHub's strict ESLint rules
+- Contains advanced patterns (utility abstractions, RSS cleaning)
+
+**DO NOT attempt to create routes without the skill** - it contains essential non-obvious patterns and project-specific requirements that are not in general knowledge.
+
+## Essential Commands
+
+### Development
 ```bash
-# 开发
-pnpm dev                    # 启动开发服务器 (热重载)
-pnpm dev:cache              # 生产缓存模式
+pnpm dev                    # Start development server with hot reload (port 1200)
+pnpm dev:cache              # Production cache mode for testing caching behavior
+```
 
-# 测试
-pnpm test                   # 运行所有测试 + 格式检查
-pnpm vitest:fullroutes      # 测试所有路由示例
+### Code Quality (CRITICAL before commits)
+```bash
+pnpm format                 # Auto-fix formatting + ESLint (MUST run before commit)
+pnpm lint                   # Run ESLint only
+pnpm format:check           # Verify formatting without changes
+```
 
-# 代码质量
-pnpm format                 # 格式化所有代码 (提交前必须运行!)
-pnpm lint                   # 运行 ESLint
+### Testing
+```bash
+pnpm test                   # Run all tests + format checks
+pnpm vitest                 # Run Vitest in development mode
+pnpm vitest:watch           # Run Vitest in watch mode
+pnpm vitest:coverage        # Run tests with coverage report
+pnpm vitest:fullroutes      # Test all route examples (comprehensive)
+```
 
-# 访问路由
+### Build & Production
+```bash
+pnpm build                  # Build for production
+pnpm start                  # Start production server (requires build first)
+```
+
+### Accessing Routes
+```
 http://localhost:1200/<namespace>/<path>
 http://localhost:1200/<namespace>/<path>?limit=10&format=json&debug=1
 ```
 
-## 📁 Route 文件结构
+## Architecture
+
+### Core Components
+
+**Hono Framework Pipeline:**
+```
+Request → Middleware Chain → Route Handler → RSS Generation → Response
+```
+
+**Middleware layers** (applied in order):
+- `lib/middleware/trace.ts` - OpenTelemetry tracing
+- `lib/middleware/logger.ts` - Request logging
+- `lib/middleware/access-control.ts` - API key validation
+- `lib/middleware/cache.ts` - Route-level caching (Redis/memory)
+- `lib/middleware/parameter.ts` - Query parameter processing
+- `lib/middleware/header.ts` - Response headers
+- `lib/middleware/anti-hotlink.ts` - Prevent image hotlinking
+- `lib/middleware/sentry.ts` - Error reporting
+- `lib/middleware/debug.ts` - Debug mode utilities
+
+### Route Structure
+
+Each route is a namespace under `lib/routes/<namespace>/`:
 
 ```
 lib/routes/<namespace>/
-├── namespace.ts          # 必需: 命名空间元数据
-├── index.ts             # 主路由处理器
-├── utils.ts             # 可选: 共享工具函数
-└── <feature>.ts         # 其他路由处理器
+├── namespace.ts          # Required: metadata (name, url, categories, lang)
+├── index.ts             # Main route handler (exports route object)
+├── utils.ts             # Optional: shared utilities for this namespace
+└── <feature>.ts         # Additional route handlers
 ```
 
-## 📝 创建 Route 完整流程
-
-### 步骤 1: 创建 namespace.ts
-
-```typescript
-import type { Namespace } from '@/types';
-
-export const namespace: Namespace = {
-    name: 'Site Name', // 英文名
-    url: 'example.com', // 域名 (不含协议)
-    description: 'Optional **markdown** description',
-    categories: ['traditional-media'],
-    lang: 'en', // ISO 639-1 语言代码
-
-    // 可选: 中文翻译
-    zh: {
-        name: '网站中文名',
-        description: '可选的中文描述',
-    },
-};
-```
-
-### 步骤 2: 创建路由处理器
-
+**Route Handler Pattern:**
 ```typescript
 import { Route } from '@/types';
 import cache from '@/utils/cache';
 import got from '@/utils/got';
-import { load } from 'cheerio';
-import { parseDate } from '@/utils/parse-date';
-import timezone from '@/utils/timezone';
-
-// 定义数据结构 (必需! 确保类型安全)
-interface ArticleItem {
-    title: string;
-    link: string;
-    pubDate?: Date;
-    description?: string;
-    author?: string;
-    category?: string[];
-}
 
 export const route: Route = {
-    // === 必需字段 ===
-    path: '/category/:id', // Hono 路由模式
-    name: 'Category Articles', // 人类可读的名称
-    maintainers: ['your-github-username'],
-    handler, // 处理函数引用
-
-    // === 强烈推荐 ===
-    categories: ['programming'], // 路由分类
-    example: '/site/category/tech', // 必须是可工作的示例!
-
-    // === 参数文档 (如有参数) ===
-    parameters: {
-        id: 'Category ID',
-        state: {
-            description: 'Filter state',
-            default: 'all',
-            options: [
-                // 可选: 用于 UI 下拉菜单
-                { value: 'all', label: 'All' },
-                { value: 'active', label: 'Active' },
-            ],
-        },
-    },
-
-    // === 功能声明 ===
+    path: '/path/:param',           // Hono route pattern
+    name: 'Human-readable Name',
+    maintainers: ['github-username'],
+    handler,
+    categories: ['category'],       // See lib/types.ts for valid categories
+    example: '/namespace/path/example',
+    parameters: { param: 'Description' },
     features: {
-        requireConfig: false, // 需要 API keys/配置?
-        requirePuppeteer: false, // 需要浏览器自动化?
-        antiCrawler: false, // 有反爬虫措施?
+        requireConfig: false,       // Needs environment variables?
+        requirePuppeteer: false,    // Needs browser automation?
+        antiCrawler: false,         // Has anti-crawler measures?
     },
 };
 
-// 处理器函数 - 必须是 async
 async function handler(ctx) {
-    // 1. 获取路由参数
-    const id = ctx.req.param('id');
-    const limit = ctx.req.query('limit') ? Math.min(Number.parseInt(ctx.req.query('limit'), 10), 100) : 20;
+    // ctx.req.param('param') - path parameters
+    // ctx.req.query('limit') - query parameters
 
-    // 2. 获取列表页
-    const { data: response } = await got({
-        method: 'get',
-        url: `https://example.com/category/${id}`,
-        headers: {
-            'User-Agent': 'Mozilla/5.0...', // 某些站点需要
-        },
-    });
-
-    // 3. 解析 HTML
-    const $ = load(response);
-    const list: ArticleItem[] = $('.article-item')
-        .toArray() // 必须使用 .toArray()! (ESLint 规则)
-        .slice(0, limit)
-        .map((element) => {
-            const $item = $(element);
-            return {
-                title: $item.find('.title').text(),
-                link: new URL($item.find('a').attr('href') || '', 'https://example.com').href,
-                pubDate: timezone(parseDate($item.find('.date').text()), +8),
-            };
-        });
-
-    // 4. 获取详情页 (使用缓存!)
-    const items = await Promise.all(
-        list.map((item) =>
-            cache.tryGet(item.link, async () => {
-                const { data } = await got(item.link);
-                const $ = load(data);
-
-                // 移除不需要的元素
-                $('.ads').remove();
-                $('.comments').remove();
-
-                // 提取内容 (注意空值安全!)
-                item.description = $('.content').html() || '';
-                item.author = $('.author').text() || '';
-                item.category = $('.tag')
-                    .toArray()
-                    .map((e) => $(e).text());
-
-                return item;
-            })
-        )
-    );
-
-    // 5. 返回 RSS feed 数据
     return {
-        title: `Example - Category ${id}`,
-        description: 'Category description',
-        link: `https://example.com/category/${id}`,
-        item: items,
-
-        // 可选字段
-        image: 'https://example.com/logo.png',
-        language: 'en',
-        allowEmpty: true, // 允许空 feed (不抛出错误)
+        title: 'Feed Title',
+        link: 'https://example.com',
+        item: [],  // Array of DataItem objects
     };
 }
 ```
 
-### 路由路径模式 (Hono)
+### Key Directories
 
+- **`lib/routes/`** - 5000+ route implementations (namespace-based organization)
+- **`lib/utils/`** - Shared utilities:
+  - `cache/` - Caching layer (Redis/memory)
+  - `got.ts` - HTTP client wrapper (based on ofetch)
+  - `parse-date.ts` - Date parsing utilities
+  - `puppeteer.ts` - Browser automation
+  - `jtks/` - WeChat RSS cleaning utilities (example of utility abstraction)
+- **`lib/middleware/`** - Request/response middleware
+- **`lib/types.ts` - Core TypeScript interfaces** (`Route`, `DataItem`, `Data`, `Category`)
+- **`lib/config.ts`** - Configuration management (environment variables)
+
+### Configuration
+
+Environment variables are loaded via `dotenv`. Key config areas:
+- **Cache:** Type (memory/redis), TTL settings
+- **Network:** Proxy configuration, request timeout/retry
+- **Cluster:** Multi-process support (cluster mode)
+- **Telemetry:** OpenTelemetry, Sentry integration
+- **Access Control:** API key validation
+
+## Critical ESLint Rules
+
+These rules are STRICTLY ENFORCED and will cause CI to fail:
+
+### 1. Cheerio Operations - MUST use .toArray()
 ```typescript
-path: '/user/:id'; // 必需参数
-path: '/category/:id?'; // 可选参数
-path: '/docs/*'; // 通配符
-path: '/post/:id{[0-9]+}'; // 正则表达式
-
-// 访问参数
-const id = ctx.req.param('id'); // 路径参数
-const limit = ctx.req.query('limit'); // 查询参数 (?limit=10)
-```
-
-## 🔄 四种数据获取方法 (按数据格式分类)
-
-数据获取优先级: **JSON > XML > HTML > 动态 HTML**
-
-### 方法 1: API 调用 - JSON 数据 (推荐 ⭐⭐⭐⭐⭐)
-
-**优先级最高**: 快速、可靠、结构化数据
-
-```typescript
-import got from '@/utils/got'; // 推荐 (got 内部使用 ofetch)
-
-// GET 请求
-const { data } = await got({
-    url: 'https://api.example.com/posts',
-    searchParams: { page: 1, limit: 20 },
-    headers: { authorization: `Bearer ${token}` },
-});
-
-// POST 请求
-const { data } = await got({
-    method: 'post',
-    url: 'https://api.example.com/data',
-    json: { key: 'value' },
-});
-```
-
-### 方法 2: RSS XML 处理 - XML 数据 (推荐 ⭐⭐⭐⭐)
-
-**处理第三方 RSS 源**: 解析 RSS XML 并可选清理内容
-
-当处理已有的 RSS feed (如第三方源、RSS 代理) 时使用:
-
-```typescript
-import { load } from 'cheerio';
-import got from '@/utils/got';
-import { parseDate } from '@/utils/parse-date';
-
-async function handler(ctx) {
-    const limit = ctx.req.query('limit') ? Number.parseInt(ctx.req.query('limit'), 10) : 20;
-
-    // 1. 获取 RSS XML
-    const { data: response } = await got({ url: rssUrl });
-
-    // 2. ⚠️ 必须使用 xmlMode: true 解析 RSS
-    const $ = load(response, { xmlMode: true });
-
-    // 3. 提取 Feed 元数据
-    const feedTitle = $('channel > title').text();
-    const feedLink = $('channel > link').text();
-
-    // 4. 遍历 RSS items
-    const items: DataItem[] = [];
-    for (const item of $('item').toArray().slice(0, limit)) {
-        const $item = $(item);
-        const title = $item.find('title').text();
-        const link = $item.find('link').text();
-        const pubDate = $item.find('pubDate').text();
-
-        // ⚠️ description 通常包含 CDATA,使用 .text() 处理
-        let descriptionHtml = $item.find('description').text();
-
-        // 5. 可选: 清理 HTML 内容
-        if (descriptionHtml) {
-            const $desc = load(descriptionHtml); // 不需要 xmlMode
-            $desc('.ads').remove(); // 清理广告
-            descriptionHtml = $desc('body').html() || '';
-        }
-
-        items.push({
-            title,
-            link,
-            description: descriptionHtml,
-            pubDate: pubDate ? parseDate(pubDate) : undefined,
-        });
-    }
-
-    return { title: feedTitle, link: feedLink, item: items };
-}
-```
-
-#### 关键要点
-
-| 步骤              | 工具      | 参数                | 说明                           |
-| ----------------- | --------- | ------------------- | ------------------------------ |
-| **解析 RSS XML**  | `load()`  | `{ xmlMode: true }` | 必须!否则自闭合标签会出错      |
-| **提取 CDATA**    | `.text()` | -                   | `<description>` 通常包含 CDATA |
-| **清理 HTML**     | `load()`  | 默认 (无 xmlMode)   | 二次加载为 HTML DOM            |
-| **输出最终 HTML** | `.html()` | -                   | 从 `body` 提取                 |
-
-#### CDATA 详解
-
-**CDATA (Character Data)** 是 XML 中用于包裹不需要解析的文本内容的特殊标记。
-
-RSS 的 `<description>` 通常包含 HTML 内容:
-
-```xml
-<!-- ❌ 不用 CDATA - XML 会混淆 HTML 标签 -->
-<description>
-    <p>内容</p>
-    <img src="test.jpg" />
-</description>
-<!-- XML 解析器会把 <p> <img> 当成 XML 子节点! -->
-
-<!-- ✅ 使用 CDATA - 告诉解析器"这只是文本" -->
-<description><![CDATA[
-    <p>内容</p>
-    <img src="test.jpg" />
-]]></description>
-<!-- XML 解析器把 CDATA 内的所有内容当作纯文本 -->
-```
-
-**处理方法对比**:
-
-```typescript
-// ❌ 错误: .html() 会包含 CDATA 标记
-const desc = $item.find('description').html();
-// 返回: "<![CDATA[<p>内容</p>]]>"
-
-// ✅ 正确: .text() 自动提取 CDATA 内容
-const desc = $item.find('description').text();
-// 返回: "<p>内容</p>"
-```
-
-**完整处理流程**:
-
-```typescript
-// 1. xmlMode 解析 RSS
-const $ = load(rssXml, { xmlMode: true });
-
-// 2. .text() 提取 CDATA
-const html = $item.find('description').text();
-
-// 3. 普通模式清理 HTML
-const $desc = load(html); // 不用 xmlMode
-$desc('.ads').remove();
-
-// 4. 输出清理后的内容
-const clean = $desc('body').html() || '';
-```
-
-### 方法 3: HTML 解析 - HTML 数据 (常用 ⭐⭐⭐)
-
-**无 API 时使用**: Cheerio 解析网页 HTML
-
-```typescript
-import { load } from 'cheerio';
-
-const { data } = await got('https://example.com');
-const $ = load(data);
-
-// 选择器
-$('.class'); // class
-$('#id'); // id
-$('div > p'); // CSS 选择器
-$('[data-id="123"]'); // 属性
-
-// 获取内容 (注意空值安全!)
-const text = $('.content').text();
-const html = $('.content').html() || ''; // 提供默认值!
-const href = $('a').attr('href') || ''; // 提供默认值!
-
-// 迭代
-$('.item')
-    .toArray()
-    .map((element) => {
-        // 必须用 .toArray()!
-        const $item = $(element); // $ 前缀表示 Cheerio 对象
-        return {
-            title: $item.find('.title').text(),
-            link: $item.find('a').attr('href') || '',
-        };
-    });
-```
-
-### 方法 4: Puppeteer - 动态渲染 HTML (最后手段 ⭐)
-
-**仅当必要时使用**: 慢、资源密集、复杂、需要浏览器执行 JavaScript
-
-**必须在 features 中设置 `requirePuppeteer: true`!**
-
-```typescript
-import puppeteer from '@/utils/puppeteer';
-
-export const route: Route = {
-    // ...
-    features: {
-        requirePuppeteer: true,
-        antiCrawler: true,
-    },
-};
-
-async function handler(ctx) {
-    const browser = await puppeteer();
-
-    try {
-        const page = await browser.newPage();
-
-        // 可选: 屏蔽不必要的资源
-        await page.setRequestInterception(true);
-        page.on('request', (request) => {
-            request.resourceType() === 'image' ? request.abort() : request.continue();
-        });
-
-        await page.goto(url, { waitUntil: 'domcontentloaded' });
-        await page.waitForSelector('.content');
-
-        const data = await page.evaluate(() => {
-            return Array.from(document.querySelectorAll('.item')).map((el) => ({
-                title: el.querySelector('.title')?.textContent || '',
-                link: el.querySelector('a')?.href || '',
-            }));
-        });
-
-        return { title: 'Feed', item: data };
-    } finally {
-        await browser.close(); // 必须关闭!
-    }
-}
-```
-
-## 🛠️ 核心工具
-
-```typescript
-// HTTP 客户端
-import got from '@/utils/got'; // 推荐
-
-// 缓存
-import cache from '@/utils/cache';
-const data = await cache.tryGet(key, async () => fetchData());
-
-// 日期解析
-import { parseDate } from '@/utils/parse-date';
-import timezone from '@/utils/timezone';
-
-parseDate('2024-01-01T12:00:00Z'); // ISO 8601
-parseDate('1704110400', 'X'); // Unix 秒
-parseDate('1704110400000', 'x'); // Unix 毫秒
-timezone(parseDate('2024-01-01 12:00'), +8); // 应用时区 (源时区!)
-
-// 路径别名 (必须使用!)
-import cache from '@/utils/cache'; // ✅ 正确
-import cache from '../../utils/cache'; // ❌ 错误
-
-// 相对 URL → 绝对 URL
-const link = new URL(relativePath, 'https://example.com').href;
-```
-
-## 🎯 最佳实践
-
-### 设计原则 (KISS)
-
-1. **简单至上**: 不要过度设计
-    - 90% 用户只用默认设置
-    - 3 个 if-else > "灵活配置系统"
-    - 删除代码 > 添加代码
-
-2. **优先级**: API > RSS XML > HTML 解析 > Puppeteer
-
-3. **缓存一切**: 详情页必须使用 `cache.tryGet()`
-
-4. **时区处理**: `timezone(date, offset)` 的 offset 是**源时区**，不是目标时区
-
-    ```typescript
-    // ✅ 正确: 韩国时间 (UTC+9)
-    timezone(parseDate('2025-01-15 14:30'), +9);
-
-    // ❌ 错误: 不要转换成你的本地时区
-    timezone(parseDate(koreanTime), +8); // 错误! 源是 +9
-    ```
-
-5. **支持 limit 参数**: 默认 20-50 项
-    ```typescript
-    const limit = ctx.req.query('limit') ? Math.min(Number.parseInt(ctx.req.query('limit'), 10), 100) : 20;
-    ```
-
-### 类型安全
-
-```typescript
-// ✅ 必需: 定义 interface
-interface ArticleItem {
-    title: string;
-    link: string;
-    pubDate?: Date;
-    description?: string;
-}
-
-let items: ArticleItem[] = $('.item')
-    .toArray()
-    .map((el) => ({
-        title: $(el).find('.title').text(),
-        link: $(el).find('a').attr('href') || '', // 提供默认值!
-    }));
-```
-
-### 空值安全
-
-```typescript
-// Cheerio 方法可能返回 null/undefined - 必须防护!
-
-// ❌ 危险
-item.description += $('.content').html();
-
-// ✅ 安全
-item.description += $('.content').html() || '';
-
-// ❌ 危险
-const link = $('a').attr('href');
-
-// ✅ 安全
-const link = $('a').attr('href') || '';
-const link = $('a').attr('href') ?? '';
-```
-
-### 变量命名
-
-```typescript
-// ✅ Cheerio 对象: 使用 $ 前缀
-const $ = load(html);
-const $detail = load(detailHTML);
-const $item = $(element);
-
-// ✅ DOM 元素迭代
-$('.item').toArray().map((element) => {         // 原始 DOM 元素
-    const $item = $(element);                   // Cheerio 包装对象
-    return { ... };
-});
-
-// ❌ 错误: 参数重新赋值
-.map((item) => {
-    item = $(item);  // 类型混乱!
-});
-```
-
-## 🔍 ESLint 规则
-
-### 关键规则
-
-```typescript
-// ❌ 错误: 直接使用 Cheerio .map()
+// ❌ WRONG - Direct .map() on Cheerio
 $('.item').map((index, item) => { ... })
 
-// ✅ 正确: 先转换为数组
+// ✅ CORRECT - Convert to array first
 $('.item').toArray().map((item) => { ... })
+```
 
-// ❌ 错误: 相对导入
+**Reason:** ESLint rule prevents direct Cheerio iteration (line 105-110 in eslint.config.mjs)
+
+### 2. Path Aliases - MUST use @/ prefix
+```typescript
+// ❌ WRONG - Relative imports
 import cache from '../../utils/cache';
 
-// ✅ 正确: 路径别名
+// ✅ CORRECT - Path alias
 import cache from '@/utils/cache';
+```
 
-// ❌ 错误: 参数重新赋值
+**Configured in:** `tsconfig.json` (`"@/*": ["./lib/*"]`)
+
+### 3. Parameter Reassignment - MUST use new variable
+```typescript
+// ❌ WRONG - Reassigning parameter
 .map((item) => { item = $(item); })
 
-// ✅ 正确: 新变量
+// ✅ CORRECT - New variable
 .map((item) => { const $item = $(item); })
 ```
 
-### 提交前检查
-
-```bash
-pnpm format     # 自动修复格式问题
-pnpm lint       # 检查剩余错误
-```
-
-## 🐛 调试工作流
-
-### 诊断 Route 问题
-
-```bash
-# 1. 测试连通性
-curl -I "https://example.com"
-
-# 2. 检查 HTML 结构
-curl -s "https://example.com" | grep -o 'class="[^"]*"' | sort -u
-
-# 3. 测试选择器
-curl -s "https://example.com" | grep -o '<div class="target">' | wc -l
-
-# 4. 添加 User-Agent (常见修复)
-curl -s -A "Mozilla/5.0" "https://example.com"
-
-# 5. 测试路由
-curl -s "http://localhost:1200/namespace/route?limit=1"
-
-# 6. 验证输出
-curl -s "http://localhost:1200/namespace/route?limit=2" | \
-  grep -E "<title>|<pubDate>|<link>"
-```
-
-### 常见网站变更
-
-| 变更类型         | 示例                    | 检测方法          | 修复策略         |
-| ---------------- | ----------------------- | ----------------- | ---------------- |
-| **Class 重命名** | `.rank-1` → `.abf-cate` | 旧选择器返回 0 项 | 搜索新 class 名  |
-| **结构变更**     | `.list` → `.table-row`  | 空 feed 或错误    | 检查当前 HTML    |
-| **API 移除**     | JSON → 404              | FetchError 404    | 切换到 HTML 解析 |
-
-## 📋 开发检查清单
-
-**开始前:**
-
-- [ ] 检查网站是否已有 RSS feed
-- [ ] 搜索现有类似路由 (`lib/routes/`)
-- [ ] 手动测试网站的 API/HTML 结构
-
-**开发中:**
-
-- [ ] 创建 `namespace.ts`
-- [ ] 定义 `ArticleItem` interface
-- [ ] 选择合适的数据获取方法
-- [ ] 详情页使用 `cache.tryGet()`
-- [ ] 使用 `timezone()` 处理时区
-- [ ] 支持 `limit` 参数
-
-**提交前:**
-
-- [ ] 运行 `pnpm format`
-- [ ] 运行 `pnpm lint`
-- [ ] 确保 `example` 字段可用
-- [ ] 测试边缘情况
-- [ ] 所有链接都是绝对 URL
-- [ ] 移除敏感数据 (API keys)
-
-## ⚠️ 常见陷阱
-
+### 4. Error Handling - MUST handle errors appropriately
 ```typescript
-// 1. ❌ 不使用路径别名
-import cache from '../../utils/cache';
-// ✅ 使用 @/ 别名
-import cache from '@/utils/cache';
+// ❌ WRONG - Swallowing errors
+.catch(() => null)
+.catch(() => undefined)
 
-// 2. ❌ 不缓存详情获取
-await Promise.all(list.map(item => got(item.link)))
-// ✅ 使用缓存
-await Promise.all(list.map(item => cache.tryGet(item.link, async () => {...})))
-
-// 3. ❌ 硬编码限制
-const items = data.slice(0, 10);
-// ✅ 可配置限制
-const limit = ctx.req.query('limit') ? Number.parseInt(ctx.req.query('limit')) : 20;
-
-// 4. ❌ 模糊时区
-parseDate('2024-01-01 12:00:00')
-// ✅ 明确时区
-timezone(parseDate('2024-01-01 12:00:00'), +8)
-
-// 5. ❌ 未声明 Puppeteer
-features: { requirePuppeteer: false }  // 但使用了 Puppeteer!
-// ✅ 正确声明
-features: { requirePuppeteer: true, antiCrawler: true }
-
-// 6. ❌ 返回字符串日期
-pubDate: '2024-01-01'
-// ✅ 返回 Date 对象
-pubDate: parseDate('2024-01-01')
+// ✅ CORRECT - Handle or log errors
+.catch((error) => {
+    logger.error(error);
+    throw error;
+})
 ```
 
-## 📊 Route 分类
+### 5. No console.log - Use logger
+```typescript
+// ❌ WRONG
+console.log('Debug message');
 
-必须使用以下值之一 (见 `lib/types.ts`):
+// ✅ CORRECT
+import logger from '@/utils/logger';
+logger.info('Debug message');
+```
 
+## TypeScript Configuration
+
+- **Target:** ESNext
+- **Module System:** ESNext with bundler resolution
+- **JSX:** React JSX (for Hono JSX components)
+- **Strict Mode:** Enabled (except `noImplicitAny: false`)
+- **Path Mapping:** `@/*` → `lib/*`
+
+**Important:** All route files MUST use `.ts` extension. The project uses `tsx` for development execution.
+
+## Data Fetching Patterns
+
+### Priority Order
+1. **JSON API** (★★★★★) - Use `got` from `@/utils/got`
+2. **RSS XML** (★★★★) - Use Cheerio with `xmlMode: true`
+3. **HTML Parsing** (★★★) - Use Cheerio with default mode
+4. **Puppeteer** (★) - Last resort, MUST set `requirePuppeteer: true`
+
+### Caching Pattern (MANDATORY for detail pages)
+```typescript
+const items = await Promise.all(
+    list.map((item) =>
+        cache.tryGet(item.link, async () => {
+            const { data } = await got(item.link);
+            // Process data
+            return item;
+        })
+    )
+);
+```
+
+**Why:** Prevents duplicate fetches, respects rate limits, improves performance.
+
+### RSS XML Processing (Two-Stage Pattern)
+```typescript
+// Stage 1: Parse RSS (xmlMode: true)
+const $ = load(rssXml, { xmlMode: true });
+const descriptionHtml = $item.find('description').text();  // Extract CDATA
+
+// Stage 2: Clean HTML (default mode)
+const $desc = load(descriptionHtml);  // No xmlMode!
+$desc('.ads').remove();
+const cleaned = $desc('body').html() || '';
+```
+
+**Critical:** Always use `.text()` to extract CDATA content, NOT `.html()`
+
+## Utility Abstraction Pattern
+
+When 3+ routes share identical logic, create reusable utilities. See `lib/utils/jtks/` for example:
+
+**Structure:**
+```
+lib/utils/<utility-name>/
+├── types.ts              # TypeScript interfaces
+├── <processor>.ts        # Core processing logic
+└── <engine>.ts           # Generic engine (e.g., HTML cleaner)
+```
+
+**Route file becomes configuration:**
+```typescript
+const config: UtilityConfig = {
+    name: 'route-name',
+    rules: [/* declarative rules */],
+};
+
+async function handler(ctx) {
+    return await processWithUtility(config, ctx);
+}
+```
+
+**Benefits:** Code reuse, declarative configuration, type safety, easier maintenance.
+
+## Common Pitfalls
+
+1. **Not caching detail fetches** - Always use `cache.tryGet()` for article/detail pages
+2. **Returning string dates** - MUST return `Date` objects from `parseDate()`, not strings
+3. **Vague timezones** - Use `timezone(parseDate(date), +offset)` where offset is SOURCE timezone
+4. **Undeclared Puppeteer** - If using `puppeteer`, MUST set `features.requirePuppeteer: true`
+5. **Null-unsafe Cheerio** - Always provide defaults: `.html() || ''`, `.attr('href') || ''`
+6. **Hardcoded limits** - Support `limit` query parameter: `ctx.req.query('limit')`
+7. **Missing namespace.ts** - REQUIRED file for every route directory
+
+## Testing Routes
+
+### Manual Testing
+```bash
+# Start dev server
+pnpm dev
+
+# Test route (replace namespace/path)
+curl -s "http://localhost:1200/namespace/path?limit=2"
+
+# Validate RSS output
+curl -s "http://localhost:1200/namespace/path" | grep -E "<title>|<pubDate>|<link>"
+
+# Test with JSON format
+curl -s "http://localhost:1200/namespace/path?format=json" | jq
+```
+
+### Route Example Requirements
+- The `example` field MUST be a working path
+- It will be tested in CI via `pnpm vitest:fullroutes`
+- Example should demonstrate the route with realistic parameters
+
+## Package Manager
+
+**MUST use pnpm** (version 10.20.0+). The project enforces this via `packageManager` field in `package.json`.
+
+```bash
+# Never use npm or yarn
+pnpm install           # Install dependencies
+pnpm add <package>     # Add dependency
+pnpm add -D <package>  # Add dev dependency
+```
+
+## Valid Categories
+
+Must use one of these values (from `lib/types.ts`):
 - `popular`, `social-media`, `new-media`, `traditional-media`
 - `bbs`, `blog`, `programming`, `design`, `live`
 - `multimedia`, `picture`, `anime`, `program-update`
 - `university`, `forecast`, `travel`, `shopping`, `game`
 - `reading`, `government`, `study`, `journal`, `finance`, `other`
 
-## 🔧 返回数据格式
+## Development Workflow
 
-### Feed 级别
+1. **Before starting:** Run `pnpm dev` (port 1200)
+2. **Create route:** Follow structure in `lib/routes/<namespace>/`
+3. **Test locally:** Access via `http://localhost:1200/namespace/path`
+4. **Before commit:** Run `pnpm format` (auto-fixes most issues)
+5. **Verify:** Run `pnpm lint` and `pnpm test`
+6. **Never commit:** Without running `pnpm format` first
 
+## Return Data Format
+
+### Feed Level
 ```typescript
 return {
-    // 必需
-    title: string,              // Feed 标题
-    link: string,               // Feed 源 URL
-    item: DataItem[],           // Feed 项数组
-
-    // 强烈推荐
-    description: string,        // Feed 描述
-
-    // 可选
-    image: string,              // Feed 图片 URL
-    language: string,           // 语言代码 (如 'en', 'zh-CN')
-    allowEmpty: boolean,        // 允许空 feed (默认 false)
-    ttl: number,                // 缓存 TTL (秒)
+    title: string,              // Required
+    link: string,               // Required
+    item: DataItem[],           // Required
+    description?: string,       // Strongly recommended
+    image?: string,
+    language?: string,          // e.g., 'en', 'zh-CN'
+    allowEmpty?: boolean,       // Allow empty feed (default false)
+    ttl?: number,               // Cache TTL (seconds)
 };
 ```
 
-### Item 级别
-
+### Item Level (DataItem)
 ```typescript
 {
-    // 必需
-    title: string,              // 项标题
-
-    // 强烈推荐
-    link: string,               // 项 URL
-    description: string,        // 项内容 (HTML)
-    pubDate: Date,              // 发布日期 (必须是 Date 对象!)
-
-    // 推荐
-    author: string,             // 作者
-    category: string[],         // 标签/分类
-    guid: string,               // 唯一标识符
-
-    // 可选
-    image: string,              // 项图片/缩略图
-    updated: Date,              // 最后更新时间
+    title: string,              // Required
+    link?: string,              // Strongly recommended
+    description?: string,       // HTML content
+    pubDate?: Date,             // MUST be Date object (use parseDate())
+    author?: string,
+    category?: string[],
+    guid?: string,              // Unique identifier
+    image?: string,
 }
 ```
 
-## 🧹 实战案例: 今天看啥微信公众号 RSS 清理
+## Documentation
 
-**基于方法 2 (RSS XML 处理) + 工具函数抽象的完整解决方案**
-
-### 背景
-
-**今天看啥** (`rss.jintiankansha.me`) 是一个微信公众号 RSS 聚合服务,但其 RSS feed 包含大量推广内容、招聘信息、追踪像素等垃圾元素。
-
-### 核心特点
-
-所有今天看啥的微信公众号 RSS 具有以下共同特征:
-
-1. **RSS 格式固定**: 所有公众号的 RSS XML 结构完全相同
-2. **HTML 结构固定**: `<description>` 中的 HTML 都包含 `#js_content` 等固定元素
-3. **差异仅在清理规则**: 不同公众号需要删除不同的垃圾内容
-
-**因此**: 可以将 RSS 解析和 HTML 清理逻辑抽象成通用工具函数,不同公众号只需配置清理规则。
-
-### 解决方案架构
-
-```
-lib/
-├── utils/
-│   └── jtks/                          # 今天看啥 (jintiankansha) 工具文件夹
-│       ├── types.ts                   # 类型定义
-│       ├── html-cleaner.ts            # 通用 HTML 清理引擎
-│       └── rss-parser.ts              # 通用 RSS 解析器
-└── routes/
-    └── wx-{name}/
-        └── index.ts                   # 配置 + handler (约 45 行)
-```
-
-### 工具函数说明
-
-**`lib/utils/jtks/html-cleaner.ts`** - 把 Cheerio 操作抽象成 4 种通用操作:
-
-- `keep-only`: 只保留选中元素,删除兄弟节点
-- `remove`: 删除选中元素
-- `remove-after`: 删除选中元素及其之后的所有内容
-- `remove-parent-after`: 删除选中元素的父节点及其之后的所有内容
-
-**`lib/utils/jtks/rss-parser.ts`** - 统一处理今天看啥 RSS:
-
-1. 获取并解析 RSS XML (xmlMode: true)
-2. 提取 feed 元数据
-3. 处理每个 item (提取 CDATA, 应用清理规则)
-4. 返回标准 RSSHub 格式
-
-### 路由文件模板
-
-```typescript
-// lib/routes/wx-{name}/index.ts
-import { Route } from '@/types';
-import { parseWechatRss } from '@/utils/jtks/rss-parser';
-import type { WechatSourceConfig } from '@/utils/jtks/types';
-
-// 配置部分 - 声明式定义清理规则
-const config: WechatSourceConfig = {
-    name: '{name}',
-    displayName: '{公众号名称}',
-    rssUrl: 'https://rss.jintiankansha.me/rss/{RSS_ID}',
-    cleanRules: [
-        {
-            description: '只保留正文内容区域 (#js_content)',
-            selector: '#js_content',
-            action: 'keep-only',
-        },
-        {
-            description: '删除推广内容',
-            selector: 'MARKER_SELECTOR',
-            action: 'remove-after',
-            textMatch: { type: 'contains', value: '关键词' },  // 可选
-            attrMatch: { name: 'class', pattern: '^prefix_' }, // 可选
-        },
-    ],
-};
-
-export const route: Route = {
-    path: '/',
-    categories: ['new-media'],
-    example: '/wx-{name}',
-    name: `${config.displayName}微信公众号`,
-    maintainers: ['likai'],
-    description: `
-处理由今天看啥抓取的${config.displayName}微信公众号 RSS。
-
-自动清理的内容:
-${config.cleanRules.map((rule) => `- ${rule.description}`).join('\n')}
-    `,
-    handler,
-};
-
-// Handler 部分 - 只需 3 行核心逻辑
-async function handler(ctx) {
-    const limit = ctx.req.query('limit')
-        ? Math.min(Number.parseInt(ctx.req.query('limit'), 10), 100)
-        : 20;
-    return await parseWechatRss(config, limit);
-}
-```
-
-### 实战案例
-
-| 公众号 | 清理规则 | 说明 |
-|--------|----------|------|
-| **虎嗅** (wx-huxiu) | `{ selector: 'span[leaf]', action: 'remove-parent-after', textMatch: { type: 'startsWith', value: '本内容为作者独立观点' } }` | 删除父节点及后续内容 |
-| **爱范儿** (wx-ifanr) | `{ selector: 'section', action: 'remove-after', attrMatch: { name: 'class', pattern: '^js_darkmode__' } }` | 属性前缀匹配 |
-| **新智元** (wx-xinzhiyuan) | `{ selector: 'section', action: 'remove-after', textMatch: { type: 'contains', value: '参考资料' } }` | 文本匹配 |
-
-### 添加新公众号步骤
-
-**步骤 1**: 创建路由文件 `lib/routes/wx-{name}/index.ts`
-
-```typescript
-import { Route } from '@/types';
-import { parseWechatRss } from '@/utils/jtks/rss-parser';
-import type { WechatSourceConfig } from '@/utils/jtks/types';
-
-const config: WechatSourceConfig = {
-    name: '{name}',
-    displayName: '{公众号名称}',
-    rssUrl: 'https://rss.jintiankansha.me/rss/{RSS_ID}',
-    cleanRules: [
-        {
-            description: '只保留正文内容区域 (#js_content)',
-            selector: '#js_content',
-            action: 'keep-only',
-        },
-        // 添加具体的清理规则...
-    ],
-};
-
-export const route: Route = {
-    path: '/',
-    categories: ['new-media'],
-    example: '/wx-{name}',
-    name: `${config.displayName}微信公众号`,
-    maintainers: ['likai'],
-    description: `
-处理由今天看啥抓取的${config.displayName}微信公众号 RSS。
-
-自动清理的内容:
-${config.cleanRules.map((rule) => `- ${rule.description}`).join('\n')}
-    `,
-    handler,
-};
-
-async function handler(ctx) {
-    const limit = ctx.req.query('limit')
-        ? Math.min(Number.parseInt(ctx.req.query('limit'), 10), 100)
-        : 20;
-    return await parseWechatRss(config, limit);
-}
-```
-
-**步骤 2**: 创建 namespace.ts (标准模板)
-
-```typescript
-import type { Namespace } from '@/types';
-
-export const namespace: Namespace = {
-    name: '{公众号名称}微信公众号',
-    url: 'rss.jintiankansha.me',
-    description: '{描述} (cleaned version)',
-    categories: ['new-media'],
-    lang: 'zh-CN',
-    zh: {
-        name: '{公众号名称}微信公众号',
-    },
-};
-```
-
-**完成！** 只需约 50 行代码，无需编写任何 RSS 解析或 HTML 清理逻辑。
-
-### 优势总结
-
-1. ✅ **代码复用**: RSS 解析和 HTML 清理逻辑完全复用
-2. ✅ **配置驱动**: 清理规则通过配置定义，而非硬编码
-3. ✅ **类型安全**: TypeScript 接口保证配置正确
-4. ✅ **易于维护**: 修改清理规则只需修改配置
-5. ✅ **易于扩展**: 添加新公众号只需约 50 行代码
-6. ✅ **符合 RSSHub 惯例**: 每个路由独立，配置在各自文件中
-
-### 调试技巧
-
-```bash
-# 1. 检查原始 RSS 结构
-curl -s "{RSS_URL}" | grep -A 100 'js_content' | head -200
-
-# 2. 测试清理效果
-curl -s "http://localhost:1200/wx-{name}?limit=1&format=json" | \
-  jq -r '.items[0].content_html' | grep -c '<标志文本>'
-
-# 3. 查看内容结尾
-curl -s "http://localhost:1200/wx-{name}?limit=1&format=json" | \
-  jq -r '.items[0].content_html' | tail -c 500
-```
-
-### 最佳实践
-
-1. **清理规则设计**:
-    - 第一条规则通常是 `keep-only` 保留 `#js_content`
-    - 后续规则删除特定的推广/垃圾内容
-    - 使用 `textMatch` 或 `attrMatch` 精确定位元素
-
-2. **选择器优先级**:
-    - **文本匹配** > 属性选择器 > 位置选择器
-    - 文本更稳定，不易受 DOM 结构变化影响
-
-3. **测试方法**:
-    - 至少测试 3-5 篇不同文章
-    - 检查标志元素位置是否稳定
-    - 验证正文不被误删
-
-4. **4 种操作的使用场景**:
-    - `keep-only`: 只保留主内容区域 (如 `#js_content`)
-    - `remove`: 删除广告、追踪元素等
-    - `remove-after`: 删除"参考资料"等标志性内容及后续
-    - `remove-parent-after`: 删除免责声明的整个容器及后续
-
----
-
-## 📚 资源
-
-- **官方文档**: https://docs.rsshub.app/
-- **贡献指南**: https://docs.rsshub.app/joinus/
-- **路由示例**: 浏览 `lib/routes/` 目录
-- **类型定义**: 查看 `lib/types.ts`
-- **Hono 文档**: https://hono.dev/
-- **Cheerio 文档**: https://cheerio.js.org/
-
----
-
-**记住**: 简单 > 复杂，删除代码 > 添加代码，实际验证 > 理论分析
+- **Official Docs:** https://docs.rsshub.app/
+- **Contribution Guide:** https://docs.rsshub.app/joinus/
+- **Route Examples:** Browse `lib/routes/` directory
+- **Hono Docs:** https://hono.dev/
+- **Cheerio Docs:** https://cheerio.js.org/
