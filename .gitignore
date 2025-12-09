@@ -1,6 +1,6 @@
 .DS_Store
 .cursorrules
-.env*
+.env
 .eslintcache
 .idea
 .log
@@ -24,6 +24,7 @@ memory-bank/
 node_modules
 tmp
 dist
+dist-lib
 
 Session.vim
 combined.log
