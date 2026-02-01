@@ -70,6 +70,10 @@ COPY --from=dep-builder /app /app
 WORKDIR /app
 RUN \
     set -ex && \
+    # Copy private routes to lib/routes/ before build
+    if [ -d /app/lib/routes-private ]; then \
+        cp -r /app/lib/routes-private/* /app/lib/routes/ ; \
+    fi && \
     pnpm build && \
     rm -rf /app/lib && \
     cp /app/scripts/docker/minify-docker.js /minifier/ && \
