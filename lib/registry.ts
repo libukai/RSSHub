@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import path from 'node:path';
 
 import { serveStatic } from '@hono/node-server/serve-static';
@@ -71,11 +72,28 @@ if (config.isPackage) {
                 namespaces = namespaces.default;
             }
             break;
-        default:
+        default: {
             modules = directoryImport({
                 targetDirectoryPath: path.join(__dirname, './routes'),
                 importPattern: /\.tsx?$/,
             }) as typeof modules;
+
+            // === Private routes loading START ===
+            const privateRoutesPath = path.join(__dirname, './routes-private');
+            if (fs.existsSync(privateRoutesPath)) {
+                const privateModules = directoryImport({
+                    targetDirectoryPath: privateRoutesPath,
+                    importPattern: /\.tsx?$/,
+                }) as typeof modules;
+
+                // Remap paths to look like they come from routes/ directory
+                for (const key in privateModules) {
+                    const newKey = key.replace('/routes-private/', '/routes/');
+                    modules[newKey] = privateModules[key];
+                }
+            }
+            // === Private routes loading END ===
+        }
     }
 }
 
